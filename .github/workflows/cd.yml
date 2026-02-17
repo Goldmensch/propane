@@ -199,6 +199,7 @@ jobs:
   create-gh-draft-release:
     runs-on: ubuntu-latest
     needs: [ check_if_release, maven_central ]
+    if: ${{ needs.check_if_release.outputs.release == 'true' }}
     steps:
       - uses: actions/checkout@v4
       - uses: softprops/action-gh-release@v2
