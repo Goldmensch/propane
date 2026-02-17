@@ -3,6 +3,7 @@ package project.convention
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.invoke
 import org.jreleaser.model.Active
+import org.jreleaser.model.Signing.Mode
 
 plugins {
     `maven-publish`
@@ -57,6 +58,7 @@ jreleaser {
     signing {
         active = Active.ALWAYS
         armored = true
+        mode = org.jreleaser.model.Signing.Mode.MEMORY
     }
 
     deploy {
