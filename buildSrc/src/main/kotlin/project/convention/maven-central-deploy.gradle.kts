@@ -15,8 +15,8 @@ publishing {
             from(components["java"])
 
             pom {
-                name.set(rootProject.name)
-                description.set("test")
+                name.set(provider { project.name })
+                description.set(provider { project.description })
                 url.set("https://github.com/Goldmensch/propane")
 
                 licenses {
