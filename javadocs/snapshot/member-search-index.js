@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"dev.goldmensch","c":"Library","l":"hello()"},{"p":"dev.goldmensch","c":"Library","l":"Library()","u":"%3Cinit%3E()","k":"3"}];updateSearchResults();
