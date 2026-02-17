@@ -1,0 +1,25 @@
+repository:
+  description: PROJECT_DESC
+  homepage: https://REPO_OWNER.github.io/REPO_WO_OWNER_NAME/wiki
+  has_wiki: false
+
+labels:
+  - name: Wiki
+    description: Indicates that files in ./wiki are changed.
+    color: 42bfac
+  - name: Source
+    description: Indicates that files in a "src" directory are changed.
+    color: f92c2c
+  - name: CI
+    description: Indicated that files in ./github/workflows are changed.
+    color: 2c41f9
+  - name: feature
+    description: This is a new feature.
+    color: c619a7
+  - name: fix
+    description: This is a bug/typo fix.
+    color: f6f931
+  - name: other
+    description: This is neither a new feature nor a fix.
+    color: 847b7b
+

@@ -1,0 +1,78 @@
+site_name: PROJECT_NAME Wiki
+site_url: https://REPO_OWNER.github.io/REPO_WO_OWNER_NAME/wiki
+
+theme:
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.integrate
+    - toc.follow
+    - search.share
+    - search.suggest
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/book-open-page-variant
+    admonition:
+      link: octicons/link-16
+  palette:
+    scheme: slate
+    primary: teal
+    accent: indigo
+  font:
+    text: Roboto
+    code: Roboto Mono
+  custom_dir: overrides
+
+repo_name: PROJECT_NAME
+repo_url: https://REPO_URL
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://REPO_URL
+  version:
+    default: wiki
+    provider: mike
+
+copyright: Copyright &copy; 2025 AUTHOR_NAME
+
+plugins:
+  - search
+#  - open-in-new-tab
+
+markdown_extensions:
+  - pymdownx.blocks.caption
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - Javadocs: https://REPO_OWNER.github.io/REPO_WO_OWNER_NAME/javadocs/MVN_ARTIFACT_JAVADOC_VERSION/

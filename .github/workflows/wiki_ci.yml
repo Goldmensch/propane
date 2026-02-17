@@ -1,0 +1,41 @@
+name: Wiki build & test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-wiki:
+    if: ${{ !(github.repository == 'Goldmensch/jtemplate' && github.ref_name == 'master')}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/setup-gradle
+      - name: Generate javadocs with Gradle
+        run: ./gradlew javadoc
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          cache: pip
+      - name: Build Wiki
+        id: build
+        run: |
+          cd wiki
+          pip install -r requirements.txt
+          
+          # replace online javadocs with local ones
+          sed -i -e "s#- 'https://kaktushose.github.io/jda-commands/javadocs/JDAC_JAVADOC_VERSION/'#-  '../jda-commands/build/docs/javadoc/'#g" mkdocs.yml
+
+          # replace all JDAC_JAVADOC_VERSION with actual version
+          grep -rl 'https' ./ | xargs sed -i -e 's/JDAC_JAVADOC_VERSION/snapshot/g'
+          
+          mkdocs build --verbose 2>&1 | tee ../out.log # 2>&1 -> redirect err to out
+      - name: Check for errors
+        run: |
+          pattern='^(WARNING|ERROR)'
+          if grep -Eq "$pattern" out.log; then
+            echo "Found warnings or errors:"
+            grep -E "$pattern" out.log
+            exit 1
+          fi

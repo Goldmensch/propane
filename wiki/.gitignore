@@ -1,0 +1,6 @@
+.gradle/
+.idea/
+jda-commands/
+target/
+testing/
+/*/build/
