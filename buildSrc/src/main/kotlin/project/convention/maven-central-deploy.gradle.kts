@@ -16,7 +16,7 @@ publishing {
 
             pom {
                 name.set(rootProject.name)
-                description.set(rootProject.description)
+                description.set("test")
                 url.set("https://github.com/Goldmensch/propane")
 
                 licenses {
