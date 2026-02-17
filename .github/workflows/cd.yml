@@ -140,7 +140,7 @@ jobs:
           pip install -r requirements.txt
           
           # replace all JDAC_JAVADOC_VERSION with actual version
-          grep -rl 'https' ./ | xargs sed -i -e 's/MVN_ARTIFACT_JAVADOC_VERSION/${{ needs.javadoc_target_dir.outputs.target }}/g'
+          grep -rl 'https' ./ | xargs sed -i -e 's/propane_JAVADOC_VERSION/${{ needs.javadoc_target_dir.outputs.target }}/g'
           
           if [ "${{ needs.check_if_release.outputs.release }}" = "true" ]; then 
             mike deploy -u ${{ needs.check_if_release.outputs.version }} wiki 2>&1 | tee ../out.log # 2>&1 -> redirect err to out
@@ -212,9 +212,9 @@ jobs:
             TBD
             
             ## :page_facing_up: Docs
-            You can find the wiki for this version [here](https://REPO_OWNER.github.io/REPO_WO_OWNER_NAME/${{ needs.check_if_release.outputs.version }}/).
+            You can find the wiki for this version [here](https://Goldmensch.github.io/propane/${{ needs.check_if_release.outputs.version }}/).
             
-            To visit this version's javadocs click [here](https://REPO_OWNER.github.io/REPO_WO_OWNER_NAME/javadocs/${{ needs.check_if_release.outputs.version_major }}/).
+            To visit this version's javadocs click [here](https://Goldmensch.github.io/propane/javadocs/${{ needs.check_if_release.outputs.version_major }}/).
             
             ## :package: Download / Usage
             ### Gradle
@@ -224,15 +224,15 @@ jobs:
             }
             
             dependencies {
-              implementation("MVN_GROUP:MVN_ARTIFACT:${{ needs.check_if_release.outputs.version }}")
+              implementation("dev.goldmensch:propane:${{ needs.check_if_release.outputs.version }}")
             }
             ```
             
             ### Maven
             ```xml
             <dependency>
-              <groupId>MVN_GROUP</groupId>
-              <artifactId>MVN_ARTIFACT</artifactId>
+              <groupId>dev.goldmensch</groupId>
+              <artifactId>propane</artifactId>
               <version>${{ needs.check_if_release.outputs.version }}</version>
             </dependency>
             ```

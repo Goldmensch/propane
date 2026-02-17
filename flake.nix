@@ -19,7 +19,7 @@
         system,
         ...
       }: let
-        javaVersion = JAVA_VERSION;
+        javaVersion = 25;
 
         jdk = pkgs."temurin-bin-${toString javaVersion}";
         jdks = [
@@ -34,7 +34,7 @@
         };
        in {
          devShells.default = pkgs.mkShell {
-           name = "PROJECT_NAME";
+           name = "propane";
            packages = with pkgs; [git maven] ++ jdks ++ [gradle];
          };
        };

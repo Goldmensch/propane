@@ -1,4 +1,4 @@
-package MVN_GROUP;
+package dev.goldmensch;
 
 /// My very cool library!
 public class Library {

@@ -1,5 +1,5 @@
-site_name: PROJECT_NAME Wiki
-site_url: https://REPO_OWNER.github.io/REPO_WO_OWNER_NAME/wiki
+site_name: propane Wiki
+site_url: https://Goldmensch.github.io/propane/wiki
 
 theme:
   features:
@@ -33,19 +33,19 @@ theme:
     code: Roboto Mono
   custom_dir: overrides
 
-repo_name: PROJECT_NAME
-repo_url: https://REPO_URL
+repo_name: propane
+repo_url: https://github.com/Goldmensch/propane
 
 extra:
   generator: false
   social:
     - icon: fontawesome/brands/github
-      link: https://REPO_URL
+      link: https://github.com/Goldmensch/propane
   version:
     default: wiki
     provider: mike
 
-copyright: Copyright &copy; 2025 AUTHOR_NAME
+copyright: Copyright &copy; 2025 Goldmensch
 
 plugins:
   - search
@@ -75,4 +75,4 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Javadocs: https://REPO_OWNER.github.io/REPO_WO_OWNER_NAME/javadocs/MVN_ARTIFACT_JAVADOC_VERSION/
+  - Javadocs: https://Goldmensch.github.io/propane/javadocs/propane_JAVADOC_VERSION/

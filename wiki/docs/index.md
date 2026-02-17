@@ -1,3 +1,3 @@
-# PROJECT_NAME
+# propane
 
-PROJECT_DESC
+A java framework for library configuration and service registration.

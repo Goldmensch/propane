@@ -1,6 +1,6 @@
 repository:
-  description: PROJECT_DESC
-  homepage: https://REPO_OWNER.github.io/REPO_WO_OWNER_NAME/wiki
+  description: A java framework for library configuration and service registration.
+  homepage: https://Goldmensch.github.io/propane/wiki
   has_wiki: false
 
 labels:

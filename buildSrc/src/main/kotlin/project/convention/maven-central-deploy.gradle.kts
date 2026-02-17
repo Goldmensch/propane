@@ -17,25 +17,25 @@ publishing {
             pom {
                 name.set(rootProject.name)
                 description.set(project.description)
-                url.set("https://REPO_URL")
+                url.set("https://github.com/Goldmensch/propane")
 
                 licenses {
                     license {
-                        name.set("LICENSE_NAME")
-                        url.set("LICENSE_URL")
+                        name.set("MIT")
+                        url.set("http://choosealicense.com/licenses/mit/")
                     }
                 }
 
                 developers {
                     developer {
-                        name.set("AUTHOR_NAME")
+                        name.set("Goldmensch")
                     }
                 }
 
                 scm {
-                    connection.set("scm:git:git://REPO_URL")
-                    developerConnection.set("scm:git:ssh://REPO_URL")
-                    url.set("https://REPO_URL")
+                    connection.set("scm:git:git://github.com/Goldmensch/propane")
+                    developerConnection.set("scm:git:ssh://github.com/Goldmensch/propane")
+                    url.set("https://github.com/Goldmensch/propane")
                 }
             }
         }
@@ -50,7 +50,7 @@ publishing {
 
 jreleaser {
     project {
-        copyright = "AUTHOR_NAME"
+        copyright = "Goldmensch"
     }
 
 

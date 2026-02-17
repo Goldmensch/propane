@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-description = "PROJECT_DESC"
+description = "A java framework for library configuration and service registration."
 
 repositories {
     mavenCentral()
