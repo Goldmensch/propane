@@ -4,4 +4,4 @@ plugins {
 }
 
 rootProject.name = "propane"
-include("lib")
+include("propane")
