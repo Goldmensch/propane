@@ -194,7 +194,7 @@ jobs:
           JRELEASER_NEXUS2_PASSWORD: ${{ secrets.JRELEASER_PASSWORD }}
           DEPLOY_ACTIVE: ${{ steps.find_active.outputs.active }}
         run: |
-          ./gradlew clean jreleaserDeploy --info
+          ./gradlew clean jreleaserDeploy --stacktrace
 
   create-gh-draft-release:
     runs-on: ubuntu-latest
