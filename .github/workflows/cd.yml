@@ -107,7 +107,7 @@ jobs:
       - name: Push docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: ./lib/build/docs/javadoc
+          folder: ./propane/build/docs/javadoc
           branch: gh-pages
           target-folder: javadocs/${{ needs.javadoc_target_dir.outputs.target }}
       - name: Deploy gh-pages
