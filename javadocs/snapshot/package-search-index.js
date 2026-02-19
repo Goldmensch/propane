@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html","k":"18"},{"l":"dev.goldmensch"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html","k":"18"},{"l":"dev.goldmensch.propane"},{"l":"dev.goldmensch.propane.internal"}];updateSearchResults();
