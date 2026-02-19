@@ -20,7 +20,7 @@ public class Properties {
             }
 
             if (property instanceof Property.MultiValue<?> val && val.fallbackBehaviour() != Property.FallbackBehaviour.ACCUMULATE) {
-                throw new RuntimeException("multi value property (collection/map) must have fallbackBehaviour set to accumulate");
+                throw new RuntimeException("provided multi value property (collection/map) must have fallbackBehaviour set to accumulate");
             }
         }
     }
