@@ -45,14 +45,14 @@ public class Resolver {
         Result<T> result = switch (property) {
             case Property.SingleProperty<T> _ -> handleOne(currentProviders, introspection);
             case Property.CollectionProperty<?> _ -> (Result<T>) handleMany(
-                    Helpers.<SortedSet<PropertyProvider<Collection<Object>>>>castUnsafe(providers),
+                    Helpers.<SortedSet<PropertyProvider<Collection<Object>>>>castUnsafe(currentProviders),
                     ArrayList::new,
                     List::addAll,
                     introspection
             );
 
             case Property.MapProperty<?, ?> _ -> (Result<T>) handleMany(
-                    Helpers.<SortedSet<PropertyProvider<Map<Object, Object>>>>castUnsafe(providers),
+                    Helpers.<SortedSet<PropertyProvider<Map<Object, Object>>>>castUnsafe(currentProviders),
                     HashMap::new,
                     java.util.Map::putAll,
                     introspection
