@@ -53,12 +53,13 @@ loadScripts(document, 'script');</script>
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
 <li><a href="#" tabindex="0">Description</a></li>
+<li><a href="#nested-class-summary" tabindex="0">Nested Class Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#get(dev.goldmensch.propane.Property,dev.goldmensch.propane.Introspection)" tabindex="0">get(Property, Introspection)</a></li>
 <li><a href="#compute(dev.goldmensch.propane.Property,dev.goldmensch.propane.Introspection)" tabindex="0">compute(Property, Introspection)</a></li>
-<li><a href="#properties()" tabindex="0">properties()</a></li>
+<li><a href="#state()" tabindex="0">state()</a></li>
 </ol>
 </li>
 </ol>
@@ -80,6 +81,23 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<li>
+<section class="nested-class-summary" id="nested-class-summary">
+<h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final record&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="Resolver.State.html" class="type-name-link" title="class in dev.goldmensch.propane.internal">Resolver.State</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The public full arg constructors should never be used outside this class!</div>
+</div>
+</div>
+</section>
+</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
@@ -99,9 +117,11 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get(dev.goldmensch.propane.Property,dev.goldmensch.propane.Introspection)" class="member-name-link">get</a><wbr>(<a href="../Property.html" title="interface in dev.goldmensch.propane">Property</a>&lt;T&gt;&nbsp;property,
  <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&nbsp;introspection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Properties.html" title="class in dev.goldmensch.propane.internal">Properties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#properties()" class="member-name-link">properties</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Resolver.State.html" title="class in dev.goldmensch.propane.internal">Resolver.State</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#state()" class="member-name-link">state</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns a (mutable) copy of this Resolvers state:</div>
+</div>
 </div>
 </div>
 </div>
@@ -138,10 +158,16 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="properties()">
-<h3>properties</h3>
+<section class="detail" id="state()">
+<h3>state</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Properties.html" title="class in dev.goldmensch.propane.internal">Properties</a></span>&nbsp;<span class="element-name">properties</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Resolver.State.html" title="class in dev.goldmensch.propane.internal">Resolver.State</a></span>&nbsp;<span class="element-name">state</span>()</div>
+<div class="block"><p>Returns a (mutable) copy of this Resolvers state:</p>
+<ul>
+<li><code>Resolver.State.cache</code> - a copy of the Resolvers cache</li>
+<li><code>Resolver.State.properties</code> - a copy of the Resolvers properties</li>
+</ul>
+</div>
 </div>
 </section>
 </li>
