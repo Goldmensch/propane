@@ -1,6 +1,7 @@
 import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.Property;
 import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.PropertyProvider.Priority;
 import org.junit.Test;
 
 import java.util.Map;
@@ -29,7 +30,7 @@ public class MapPropertyTest {
     @Test
     public void without_dependencies() {
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.FALLBACK_PRIORITY, MapPropertyTest.class, _ -> Map.of("hello", "world")))
+                .add(new PropertyProvider<>(Properties.ONE, Priority.FALLBACK, MapPropertyTest.class, _ -> Map.of("hello", "world")))
                 .build();
 
         assertEquals(Map.of("hello", "world"), introspection.get(Properties.ONE));
@@ -39,7 +40,7 @@ public class MapPropertyTest {
     public void should_always_return_same_instance() {
         AtomicReference<Map<String, Properties.TestStub>> ref = new AtomicReference<>();
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.TWO, PropertyProvider.FALLBACK_PRIORITY, MapPropertyTest.class, _ -> {
+                .add(new PropertyProvider<>(Properties.TWO, Priority.FALLBACK, MapPropertyTest.class, _ -> {
                     ref.set(Map.of("stub", new Properties.TestStub()));
                     return ref.get();
                 }))
@@ -55,8 +56,8 @@ public class MapPropertyTest {
     @Test
     public void should_not_accumulate_fallback() {
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.FALLBACK_PRIORITY, MapPropertyTest.class, _ -> Map.of("hello", "fallback")))
-                .add(new PropertyProvider<>(Properties.ONE, 10, MapPropertyTest.class, _ -> Map.of("hello", "world")))
+                .add(new PropertyProvider<>(Properties.ONE, Priority.FALLBACK, MapPropertyTest.class, _ -> Map.of("hello", "fallback")))
+                .add(new PropertyProvider<>(Properties.ONE, Priority.of(10), MapPropertyTest.class, _ -> Map.of("hello", "world")))
                 .build();
 
         assertEquals(Map.of("hello", "world"), introspection.get(Properties.ONE));
@@ -65,8 +66,8 @@ public class MapPropertyTest {
     @Test
     public void should_accumulate_fallback() {
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.TWO, PropertyProvider.FALLBACK_PRIORITY, MapPropertyTest.class, _ -> Map.of("1", new Properties.TestStub())))
-                .add(new PropertyProvider<>(Properties.TWO, 10, MapPropertyTest.class, _ -> Map.of("2", new Properties.TestStub())))
+                .add(new PropertyProvider<>(Properties.TWO, Priority.FALLBACK, MapPropertyTest.class, _ -> Map.of("1", new Properties.TestStub())))
+                .add(new PropertyProvider<>(Properties.TWO, Priority.of(10), MapPropertyTest.class, _ -> Map.of("2", new Properties.TestStub())))
                 .build();
 
         assertEquals(Map.of("1", new Properties.TestStub(), "2", new Properties.TestStub()), introspection.get(Properties.TWO));

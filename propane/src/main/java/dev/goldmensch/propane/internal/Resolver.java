@@ -96,9 +96,10 @@ public class Resolver {
         return new Result<>(collection, owners);
     }
 
+    // if there are more than 1 provider, check if we should accumulate fallback values
     private <T> boolean shouldSkip(SortedSet<PropertyProvider<T>> providers, PropertyProvider<T> provider) {
         return providers.size() > 1
-                && provider.priority() == PropertyProvider.FALLBACK_PRIORITY
+                && provider.priority() == PropertyProvider.Priority.FALLBACK
                 && ((Property.MultiValue<T>) provider.property()).fallbackBehaviour() == Property.FallbackBehaviour.OVERRIDE;
     }
 

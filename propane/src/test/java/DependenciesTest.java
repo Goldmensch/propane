@@ -30,8 +30,8 @@ public class DependenciesTest {
         Properties.TestStub testStub = new Properties.TestStub();
 
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.TEST_STUB, PropertyProvider.FALLBACK_PRIORITY, SinglePropertyTest.class, _ -> testStub))
-                .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.FALLBACK_PRIORITY, SinglePropertyTest.class, ctx -> {
+                .add(new PropertyProvider<>(Properties.TEST_STUB, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> testStub))
+                .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
                     assertSame(testStub, ctx.get(Properties.TEST_STUB));
                     return "Hello World";
                 }))
@@ -45,12 +45,12 @@ public class DependenciesTest {
         Properties.TestStub testStub = new Properties.TestStub();
 
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.TEST_STUB, PropertyProvider.FALLBACK_PRIORITY, SinglePropertyTest.class, _ -> testStub))
-                .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.FALLBACK_PRIORITY, SinglePropertyTest.class, ctx -> {
+                .add(new PropertyProvider<>(Properties.TEST_STUB, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> testStub))
+                .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
                     assertSame(testStub, ctx.get(Properties.TEST_STUB));
                     return "Hello World";
                 }))
-                .add(new PropertyProvider<>(Properties.GOODBYE, PropertyProvider.FALLBACK_PRIORITY, SinglePropertyTest.class, ctx -> {
+                .add(new PropertyProvider<>(Properties.GOODBYE, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
                     String hello = ctx.get(Properties.HELLO_WORLD);
                     return hello + " was nice, but now: Goodbye!";
                 }))

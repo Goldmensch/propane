@@ -23,7 +23,7 @@ public class ChildIntrospectionTest {
     @Test
     public void parent_values_in_child() {
         Introspection parent = Introspection.create()
-                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.FALLBACK_PRIORITY, ChildIntrospectionTest.class, _ -> "one"))
+                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "one"))
                 .build();
 
         Introspection child = parent.createChild().build();
@@ -37,7 +37,7 @@ public class ChildIntrospectionTest {
 
         // create child
         parent.createChild()
-                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.FALLBACK_PRIORITY, ChildIntrospectionTest.class, _ -> "one"))
+                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "one"))
                 .build();
 
         Assert.assertThrows(RuntimeException.class, () -> parent.get(Properties.ONE)); // must be same instance (cache is copied)

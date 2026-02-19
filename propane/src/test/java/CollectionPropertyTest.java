@@ -1,11 +1,11 @@
 import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.Property;
 import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.PropertyProvider.Priority;
 import org.junit.Test;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.assertEquals;
@@ -31,7 +31,7 @@ public class CollectionPropertyTest {
     @Test
     public void without_dependencies() {
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.FALLBACK_PRIORITY, CollectionPropertyTest.class, _ -> List.of("hello", "world")))
+                .add(new PropertyProvider<>(Properties.ONE, Priority.FALLBACK, CollectionPropertyTest.class, _ -> List.of("hello", "world")))
                 .build();
 
         assertEquals(List.of("hello", "world"), introspection.get(Properties.ONE));
@@ -41,7 +41,7 @@ public class CollectionPropertyTest {
     public void should_always_return_same_instance() {
         AtomicReference<Collection<Properties.TestStub>> ref = new AtomicReference<>();
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.TWO, PropertyProvider.FALLBACK_PRIORITY, MapPropertyTest.class, _ -> {
+                .add(new PropertyProvider<>(Properties.TWO, Priority.FALLBACK, MapPropertyTest.class, _ -> {
                     ref.set(List.of(new Properties.TestStub()));
                     return ref.get();
                 }))
@@ -57,8 +57,8 @@ public class CollectionPropertyTest {
     @Test
     public void should_not_accumulate_fallback() {
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.FALLBACK_PRIORITY, CollectionPropertyTest.class, _ -> List.of("hello", "fallback")))
-                .add(new PropertyProvider<>(Properties.ONE, 10, CollectionPropertyTest.class, _ -> List.of("hello", "world")))
+                .add(new PropertyProvider<>(Properties.ONE, Priority.FALLBACK, CollectionPropertyTest.class, _ -> List.of("hello", "fallback")))
+                .add(new PropertyProvider<>(Properties.ONE, Priority.of(10), CollectionPropertyTest.class, _ -> List.of("hello", "world")))
                 .build();
 
         assertEquals(List.of("hello", "world"), introspection.get(Properties.ONE));
@@ -67,8 +67,8 @@ public class CollectionPropertyTest {
     @Test
     public void should_accumulate_fallback() {
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.TWO, PropertyProvider.FALLBACK_PRIORITY, CollectionPropertyTest.class, _ -> List.of(new Properties.TestStub())))
-                .add(new PropertyProvider<>(Properties.TWO, 10, CollectionPropertyTest.class, _ -> List.of(new Properties.TestStub())))
+                .add(new PropertyProvider<>(Properties.TWO, Priority.FALLBACK, CollectionPropertyTest.class, _ -> List.of(new Properties.TestStub())))
+                .add(new PropertyProvider<>(Properties.TWO, Priority.of(10), CollectionPropertyTest.class, _ -> List.of(new Properties.TestStub())))
                 .build();
 
         assertEquals(List.of(new Properties.TestStub(), new Properties.TestStub()), introspection.get(Properties.TWO));

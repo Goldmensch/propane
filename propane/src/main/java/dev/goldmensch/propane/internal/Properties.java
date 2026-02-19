@@ -8,16 +8,14 @@ import java.util.*;
 public class Properties {
     private final Map<Property<?>, SortedSet<PropertyProvider<?>>> providers = new HashMap<>();
 
+
+
     public void add(PropertyProvider<?> provider) {
         list(provider.property()).add(provider);
     }
 
     private SortedSet<PropertyProvider<?>> list(Property<?> property) {
-        return providers.computeIfAbsent(property, _ -> newSet());
-    }
-
-    private SortedSet<PropertyProvider<?>> newSet() {
-        return new TreeSet<>(Comparator.<PropertyProvider<?>>comparingInt(PropertyProvider::priority).reversed());
+        return providers.computeIfAbsent(property, _ -> new TreeSet<>(Comparator.comparing((PropertyProvider<?> o) -> o.priority())));
     }
 
     Map<Property<?>, SortedSet<PropertyProvider<?>>> providers() {

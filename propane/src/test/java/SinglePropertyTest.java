@@ -1,6 +1,7 @@
 import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.Property;
 import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.PropertyProvider.Priority;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -29,7 +30,7 @@ public class SinglePropertyTest {
     @Test
     public void without_dependencies() {
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.FALLBACK_PRIORITY, SinglePropertyTest.class, _ -> "Hello World"))
+                .add(new PropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, SinglePropertyTest.class, _ -> "Hello World"))
                 .build();
 
         assertEquals("Hello World", introspection.get(Properties.HELLO_WORLD));
@@ -39,7 +40,7 @@ public class SinglePropertyTest {
     public void should_always_return_same_instance() {
         AtomicReference<Properties.TestStub> ref = new AtomicReference<>();
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.TEST_STUB, PropertyProvider.FALLBACK_PRIORITY, SinglePropertyTest.class, _ -> {
+                .add(new PropertyProvider<>(Properties.TEST_STUB, Priority.FALLBACK, SinglePropertyTest.class, _ -> {
                     ref.set(new Properties.TestStub());
                     return ref.get();
                 }))
@@ -55,8 +56,8 @@ public class SinglePropertyTest {
     @Test
     public void should_not_return_fallback() {
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.FALLBACK_PRIORITY, SinglePropertyTest.class, _ -> "Hello World (Fallback)"))
-                .add(new PropertyProvider<>(Properties.HELLO_WORLD, 10, SinglePropertyTest.class, _ -> "Hello World"))
+                .add(new PropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, SinglePropertyTest.class, _ -> "Hello World (Fallback)"))
+                .add(new PropertyProvider<>(Properties.HELLO_WORLD, Priority.of(10), SinglePropertyTest.class, _ -> "Hello World"))
                 .build();
 
         assertEquals("Hello World", introspection.get(Properties.HELLO_WORLD));
