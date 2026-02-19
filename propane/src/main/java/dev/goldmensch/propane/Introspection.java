@@ -1,6 +1,5 @@
 package dev.goldmensch.propane;
 
-import dev.goldmensch.propane.internal.Properties;
 import dev.goldmensch.propane.internal.Resolver;
 
 public class Introspection {
@@ -12,7 +11,7 @@ public class Introspection {
     }
 
     public static Builder create() {
-        return new Builder(new Properties());
+        return new Builder(new Resolver.State());
     }
 
     public <T> T get(Property<T> property) {
@@ -20,23 +19,23 @@ public class Introspection {
     }
 
     public Builder createChild() {
-        return new Builder(resolver.properties());
+        return new Builder(resolver.state());
     }
 
     public static class Builder {
-        private final Properties properties;
+        private final Resolver.State state;
 
-        private Builder(Properties properties) {
-            this.properties = properties;
+        private Builder(Resolver.State state) {
+            this.state = state;
         }
 
         public Builder add(PropertyProvider<?> provider) {
-            properties.add(provider);
+            state.properties().add(provider);
             return this;
         }
 
         public Introspection build() {
-            Resolver resolver = properties.createResolver();
+            Resolver resolver = state.create();
 
             return new Introspection(resolver);
         }

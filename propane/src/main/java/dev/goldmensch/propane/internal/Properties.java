@@ -20,8 +20,7 @@ public class Properties {
         return new TreeSet<>(Comparator.<PropertyProvider<?>>comparingInt(PropertyProvider::priority).reversed());
     }
 
-    public Resolver createResolver() {
-        return new Resolver(providers);
+    Map<Property<?>, SortedSet<PropertyProvider<?>>> providers() {
+        return providers;
     }
-
 }

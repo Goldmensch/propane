@@ -15,17 +15,16 @@ public class Resolver {
     private static final SortedSet<PropertyProvider<?>> EMPTY_SORTEDSET = new TreeSet<>();
     private static final ProviderExecutor executor = new ProviderExecutor();
 
-    private final Map<Property<?>, Object> cache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Property<?>, Object> cache;
     private final Map<Property<?>, SortedSet<PropertyProvider<?>>> providers;
 
-    Resolver(Map<Property<?>, SortedSet<PropertyProvider<?>>> providers) {
-        this.providers = deepImmutableCopy(providers);
-    }
-
-    private Map<Property<?>, SortedSet<PropertyProvider<?>>> deepImmutableCopy(Map<Property<?>, SortedSet<PropertyProvider<?>>> oldMap) {
-        Map<Property<?>, SortedSet<PropertyProvider<?>>> newMap = new HashMap<>();
-        oldMap.forEach((property, providers) -> newMap.put(property, Collections.unmodifiableSortedSet(new TreeSet<>(providers))));
-        return Collections.unmodifiableMap(newMap);
+    /// Creates a copy of the passed providers (so that the user can't change them after Resolver creation through [Introspection.Builder#add(PropertyProvider)].
+    /// The cache isn't exposed as a public API, thus it's directly used. It never leaves this class
+    ///
+    /// Only called by [State#create()]
+    private Resolver(Map<Property<?>, SortedSet<PropertyProvider<?>>> providers, ConcurrentHashMap<Property<?>, Object> cache) {
+        this.providers = providers;
+        this.cache = cache;
     }
 
     @SuppressWarnings("unchecked")
@@ -54,7 +53,7 @@ public class Resolver {
             case Property.MapProperty<?, ?> _ -> (Result<T>) handleMany(
                     Helpers.<SortedSet<PropertyProvider<Map<Object, Object>>>>castUnsafe(currentProviders),
                     HashMap::new,
-                    java.util.Map::putAll,
+                    Map::putAll,
                     introspection
             );
         };
@@ -103,7 +102,7 @@ public class Resolver {
                 && ((Property.MultiValue<T>) provider.property()).fallbackBehaviour() == Property.FallbackBehaviour.OVERRIDE;
     }
 
-    public Properties properties() {
+    private Properties properties() {
         Properties properties = new Properties();
         providers.values()
                 .stream()
@@ -111,6 +110,34 @@ public class Resolver {
                 .forEach(properties::add);
 
         return properties;
+    }
+
+    /// Returns a (mutable) copy of this Resolvers state:
+    ///
+    /// - [State#cache] - a copy of the Resolvers cache
+    /// - [State#properties] - a copy of the Resolvers properties
+    public State state() {
+        return new State(properties(), new ConcurrentHashMap<>(cache));
+    }
+
+    /// The public full arg constructors should never be used outside this class!
+    public record State(Properties properties, ConcurrentHashMap<Property<?>, Object> cache) {
+
+        public State() {
+            this(new Properties(), new ConcurrentHashMap<>());
+        }
+
+        /// cache either comes from [Resolver#state()] or [State()] - thus directly using it here is fine. Never exposed to user, invariant always fulfilled.
+        public Resolver create() {
+            Map<Property<?>, SortedSet<PropertyProvider<?>>> copy = deepImmutableCopy(properties.providers());
+            return new Resolver(copy, cache);
+        }
+
+        private static Map<Property<?>, SortedSet<PropertyProvider<?>>> deepImmutableCopy(Map<Property<?>, SortedSet<PropertyProvider<?>>> oldMap) {
+            Map<Property<?>, SortedSet<PropertyProvider<?>>> newMap = new HashMap<>();
+            oldMap.forEach((property, providers) -> newMap.put(property, Collections.unmodifiableSortedSet(new TreeSet<>(providers))));
+            return Collections.unmodifiableMap(newMap);
+        }
     }
 
     private record Result<T>(T value, Collection<Class<?>> owners) {}
