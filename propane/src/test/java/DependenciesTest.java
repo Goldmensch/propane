@@ -2,9 +2,9 @@ import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.Property;
 import dev.goldmensch.propane.PropertyProvider;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class DependenciesTest {
 
@@ -57,5 +57,45 @@ public class DependenciesTest {
                 .build();
 
         assertEquals("Hello World was nice, but now: Goodbye!", introspection.get(Properties.GOODBYE));
+    }
+
+    @Test
+    public void check_cycling_self() {
+        ThrowingRunnable run = () -> {
+            Introspection introspection = Introspection.create()
+                    .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
+                        ctx.get(Properties.HELLO_WORLD);
+                        return "Hello World";
+                    }))
+                    .build();
+            introspection.get(Properties.HELLO_WORLD);
+        };
+
+        assertThrows(RuntimeException.class, run);
+    }
+
+    @Test
+    public void check_cycling_middleman() {
+        Properties.TestStub testStub = new Properties.TestStub();
+
+        ThrowingRunnable run = () -> {
+            Introspection introspection = Introspection.create()
+                    .add(new PropertyProvider<>(Properties.TEST_STUB, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
+                        ctx.get(Properties.GOODBYE);
+                        return testStub;
+                    }))
+                    .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
+                        assertSame(testStub, ctx.get(Properties.TEST_STUB));
+                        return "Hello World";
+                    }))
+                    .add(new PropertyProvider<>(Properties.GOODBYE, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
+                        String hello = ctx.get(Properties.HELLO_WORLD);
+                        return hello + " was nice, but now: Goodbye!";
+                    }))
+                    .build();
+            introspection.get(Properties.GOODBYE);
+        };
+
+        assertThrows(RuntimeException.class, run);
     }
 }
