@@ -23,8 +23,8 @@ public class MapPropertyTest {
     private static class Properties {
         private record TestStub() {}
 
-        static Property<Map<String, String>> ONE = new Property.MapProperty<>("ONE", Property.Source.PROVIDED, Scopes.ROOT, String.class, String.class, Property.FallbackBehaviour.OVERRIDE);
-        static Property<Map<String, TestStub>> TWO = new Property.MapProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static Property<Map<String, String>> ONE = new Property.MapProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, String.class, Property.FallbackBehaviour.OVERRIDE);
+        static Property<Map<String, TestStub>> TWO = new Property.MapProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
     }
 
     @Test

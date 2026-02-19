@@ -23,8 +23,8 @@ public class SinglePropertyTest {
     private class Properties {
         private record TestStub() {}
 
-        static Property<String> HELLO_WORLD = new Property.SingleProperty<>("HELLO_WORLD", Property.Source.PROVIDED, Scopes.ROOT, String.class);
-        static Property<TestStub> TEST_STUB = new Property.SingleProperty<>("TEST_STUB", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class);
+        static Property<String> HELLO_WORLD = new Property.SingleProperty<>("HELLO_WORLD", Property.Source.EXTENSION, Scopes.ROOT, String.class);
+        static Property<TestStub> TEST_STUB = new Property.SingleProperty<>("TEST_STUB", Property.Source.EXTENSION, Scopes.ROOT, TestStub.class);
     }
 
     @Test

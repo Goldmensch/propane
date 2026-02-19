@@ -24,8 +24,8 @@ public class CollectionPropertyTest {
     private static class Properties {
         private record TestStub() {}
 
-        static Property<Collection<String>> ONE = new Property.CollectionProperty<>("ONE", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
-        static Property<Collection<TestStub>> TWO = new Property.CollectionProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, Properties.TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static Property<Collection<String>> ONE = new Property.CollectionProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
+        static Property<Collection<TestStub>> TWO = new Property.CollectionProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, Properties.TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
     }
 
     @Test
