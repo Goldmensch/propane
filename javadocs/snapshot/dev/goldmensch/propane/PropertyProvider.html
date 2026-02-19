@@ -53,18 +53,12 @@ loadScripts(document, 'script');</script>
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
 <li><a href="#" tabindex="0">Description</a></li>
-<li><a href="#field-summary" tabindex="0">Field Summary</a></li>
+<li><a href="#nested-class-summary" tabindex="0">Nested Class Summary</a></li>
 <li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
-<li><a href="#field-detail" tabindex="0">Field Details</a>
-<ol class="toc-list">
-<li><a href="#FALLBACK_PRIORITY" tabindex="0">FALLBACK_PRIORITY</a></li>
-<li><a href="#BUILDER_PRIORITY" tabindex="0">BUILDER_PRIORITY</a></li>
-</ol>
-</li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
-<li><a href="#%3Cinit%3E(dev.goldmensch.propane.Property,int,java.lang.Class,java.util.function.Function)" tabindex="0">PropertyProvider(Property, int, Class, Function)</a></li>
+<li><a href="#%3Cinit%3E(dev.goldmensch.propane.Property,dev.goldmensch.propane.PropertyProvider.Priority,java.lang.Class,java.util.function.Function)" tabindex="0">PropertyProvider(Property, PropertyProvider.Priority, Class, Function)</a></li>
 </ol>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
@@ -93,27 +87,24 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">PropertyProvider&lt;T&gt;</span>(<a href="Property.html" title="interface in dev.goldmensch.propane">Property</a>&lt;<a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;property, int&nbsp;priority, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;owner, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>, <a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;supplier)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">PropertyProvider&lt;T&gt;</span>(<a href="Property.html" title="interface in dev.goldmensch.propane">Property</a>&lt;<a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;property, <a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane">PropertyProvider.Priority</a>&nbsp;priority, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;owner, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>, <a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;supplier)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
 </div>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- =========== FIELD SUMMARY =========== -->
+<!-- ======== NESTED CLASS SUMMARY ======== -->
 <li>
-<section class="field-summary" id="field-summary">
-<h2>Field Summary</h2>
-<div class="caption"><span>Fields</span></div>
+<section class="nested-class-summary" id="nested-class-summary">
+<h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
+<div class="table-header col-second">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#BUILDER_PRIORITY" class="member-name-link">BUILDER_PRIORITY</a></code></div>
+<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="PropertyProvider.Priority.html" class="type-name-link" title="class in dev.goldmensch.propane">PropertyProvider.Priority</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#FALLBACK_PRIORITY" class="member-name-link">FALLBACK_PRIORITY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -125,8 +116,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(dev.goldmensch.propane.Property,int,java.lang.Class,java.util.function.Function)" class="member-name-link">PropertyProvider</a><wbr>(<a href="Property.html" title="interface in dev.goldmensch.propane">Property</a>&lt;<a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;property,
- int&nbsp;priority,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(dev.goldmensch.propane.Property,dev.goldmensch.propane.PropertyProvider.Priority,java.lang.Class,java.util.function.Function)" class="member-name-link">PropertyProvider</a><wbr>(<a href="Property.html" title="interface in dev.goldmensch.propane">Property</a>&lt;<a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;property,
+ <a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane">PropertyProvider.Priority</a>&nbsp;priority,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;owner,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>, <a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;supplier)</code></div>
 <div class="col-last even-row-color">
@@ -161,7 +152,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>owner</code> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane">PropertyProvider.Priority</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#priority()" class="member-name-link">priority</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>priority</code> record component.</div>
@@ -193,57 +184,17 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
-<!-- ============ FIELD DETAIL =========== -->
-<li>
-<section class="field-details" id="field-detail">
-<h2>Field Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="FALLBACK_PRIORITY">
-<h3>FALLBACK_PRIORITY</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">FALLBACK_PRIORITY</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#dev.goldmensch.propane.PropertyProvider.FALLBACK_PRIORITY">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="BUILDER_PRIORITY">
-<h3>BUILDER_PRIORITY</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">BUILDER_PRIORITY</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#dev.goldmensch.propane.PropertyProvider.BUILDER_PRIORITY">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</div>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(dev.goldmensch.propane.Property,int,java.lang.Class,java.util.function.Function)">
+<section class="detail" id="&lt;init&gt;(dev.goldmensch.propane.Property,dev.goldmensch.propane.PropertyProvider.Priority,java.lang.Class,java.util.function.Function)">
 <h3>PropertyProvider</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PropertyProvider</span><wbr><span class="parameters">(<a href="Property.html" title="interface in dev.goldmensch.propane">Property</a>&lt;<a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;property,
- int&nbsp;priority,
+ <a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane">PropertyProvider.Priority</a>&nbsp;priority,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;owner,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>, <a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;supplier)</span></div>
 <div class="block">Creates an instance of a <code>PropertyProvider</code> record class.</div>
@@ -300,7 +251,7 @@ loadScripts(document, 'script');</script>
 <h3>equals</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</span></div>
-<div class="block">Indicates whether some other object is "equal to" this one. The objects are equal if the other object is of the same class and if all the record components are equal. Reference components are compared with <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Objects.html#equals(java.lang.Object,java.lang.Object)" title="class or interface in java.util" class="external-link"><code>Objects::equals(Object,Object)</code></a>; primitive components are compared with the <code>compare</code> method from their corresponding wrapper classes.</div>
+<div class="block">Indicates whether some other object is "equal to" this one. The objects are equal if the other object is of the same class and if all the record components are equal. All components in this record class are compared with <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Objects.html#equals(java.lang.Object,java.lang.Object)" title="class or interface in java.util" class="external-link"><code>Objects::equals(Object,Object)</code></a>.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Record.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></code></dd>
@@ -329,7 +280,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="priority()">
 <h3>priority</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">priority</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane">PropertyProvider.Priority</a></span>&nbsp;<span class="element-name">priority</span>()</div>
 <div class="block">Returns the value of the <code>priority</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
