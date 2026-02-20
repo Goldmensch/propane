@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ChildIntrospectionTest {
@@ -27,6 +28,7 @@ public class ChildIntrospectionTest {
         static Property<TestStub> TWO = new Property.SingleProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class);
 
         static Property<Collection<TestStub>> COLLECTION = new Property.CollectionProperty<>("COLLECTION", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static Property<Map<String, TestStub>> MAP = new Property.MapProperty<>("MAP", Property.Source.PROVIDED, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
     }
 
     @Test
@@ -53,7 +55,7 @@ public class ChildIntrospectionTest {
     }
 
     @Test
-    public void replace_provider_in_child() {
+    public void singleton_replace_provider_in_child() {
         Introspection parent = Introspection.create()
                 .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "parent"))
                 .build();
@@ -88,6 +90,19 @@ public class ChildIntrospectionTest {
 
         Properties.TestStub[] childArray = child.get(Properties.COLLECTION).toArray(Properties.TestStub[]::new);
         Assert.assertEquals(List.of(parentVal, childArray[1]), Arrays.asList(childArray)); // must be same instance (cache is copied)
+    }
+
+    @Test
+    public void map_replace_provider_in_child() {
+        Introspection parent = Introspection.create()
+                .add(new PropertyProvider<>(Properties.MAP, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> Map.of("parent", new Properties.TestStub())))
+                .build();
+
+        Introspection child = parent.createChild()
+                .add(new PropertyProvider<>(Properties.MAP, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> Map.of("child", new Properties.TestStub())))
+                .build();
+
+        Assert.assertEquals(Map.of("child", new Properties.TestStub()), child.get(Properties.MAP)); // must be same instance (cache is copied)
     }
 
 }

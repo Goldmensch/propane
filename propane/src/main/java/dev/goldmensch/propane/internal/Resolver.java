@@ -26,9 +26,8 @@ public class Resolver {
         // invalidate caches / update merge information
         providers.forEach((property, _) -> {
             switch (property) {
-                case Property.SingleProperty<?> _ -> this.cache.remove(property);
+                case Property.SingleProperty<?> _, Property.MapProperty<?, ?> _ -> this.cache.remove(property); // TODO: implement map joining
                 case Property.CollectionProperty<?> _ -> this.cache.computeIfPresent(property, (_, old) -> new CacheEntry(old.value, true));
-                default -> {}
             }
         });
     }
