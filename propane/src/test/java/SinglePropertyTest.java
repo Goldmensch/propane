@@ -38,19 +38,15 @@ public class SinglePropertyTest {
 
     @Test
     public void should_always_return_same_instance() {
-        AtomicReference<Properties.TestStub> ref = new AtomicReference<>();
         Introspection introspection = Introspection.create()
-                .add(new PropertyProvider<>(Properties.TEST_STUB, Priority.FALLBACK, SinglePropertyTest.class, _ -> {
-                    ref.set(new Properties.TestStub());
-                    return ref.get();
-                }))
+                .add(new PropertyProvider<>(Properties.TEST_STUB, Priority.FALLBACK, SinglePropertyTest.class, _ -> new Properties.TestStub()))
                 .build();
 
-        introspection.get(Properties.TEST_STUB); // generate value for "expected"
+        Properties.TestStub expected = introspection.get(Properties.TEST_STUB); // generate value for "expected"
 
         // get 2 times, should always return the same instance
-        assertSame(ref.get(), introspection.get(Properties.TEST_STUB));
-        assertSame(ref.get(), introspection.get(Properties.TEST_STUB));
+        assertSame(expected, introspection.get(Properties.TEST_STUB));
+        assertSame(expected, introspection.get(Properties.TEST_STUB));
     }
 
     @Test

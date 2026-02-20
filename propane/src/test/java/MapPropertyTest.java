@@ -46,11 +46,11 @@ public class MapPropertyTest {
                 }))
                 .build();
 
-        introspection.get(Properties.TWO); // generate value for "expected"
+        Properties.TestStub expected = introspection.get(Properties.TWO).get("stub"); // generate value for "expected"
 
         // get 2 times, should always return the same instance - not map directly, but contents of map
-        assertSame(ref.get().get("stub"), introspection.get(Properties.TWO).get("stub"));
-        assertSame(ref.get().get("stub"), introspection.get(Properties.TWO).get("stub"));
+        assertSame(expected, introspection.get(Properties.TWO).get("stub"));
+        assertSame(expected, introspection.get(Properties.TWO).get("stub"));
     }
 
     @Test

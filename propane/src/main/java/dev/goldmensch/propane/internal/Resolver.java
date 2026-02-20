@@ -11,18 +11,26 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Resolver {
-    public static Resolver EMPTY = new Resolver(Map.of(), new ConcurrentHashMap<>());
+    public static Resolver EMPTY = new Resolver(new Properties(), new ConcurrentHashMap<>());
 
     private static final ProviderExecutor executor = new ProviderExecutor();
 
     private final ConcurrentHashMap<Property<?>, CacheEntry> cache;
     private final Map<Property<?>, List<PropertyProvider<?>>> providers;
 
-    /// Creates a copy of the passed providers (so that the user can't change them after Resolver creation through [Introspection.Builder#add(PropertyProvider)].
-    /// The cache isn't exposed as a public API, thus it's directly used. It never leaves this class
-    private Resolver(Map<Property<?>, List<PropertyProvider<?>>> providers, ConcurrentHashMap<Property<?>, CacheEntry> cache) {
-        this.providers = providers;
-        this.cache = cache;
+    private Resolver(Properties properties, ConcurrentHashMap<Property<?>, CacheEntry> oldCache) {
+        this.providers = properties.providers();
+
+        this.cache = new ConcurrentHashMap<>(oldCache);
+
+        // invalidate caches / update merge information
+        providers.forEach((property, _) -> {
+            switch (property) {
+                case Property.SingleProperty<?> _ -> this.cache.remove(property);
+                case Property.CollectionProperty<?> _ -> this.cache.computeIfPresent(property, (_, old) -> new CacheEntry(old.value, true));
+                default -> {}
+            }
+        });
     }
 
 
@@ -129,39 +137,11 @@ public class Resolver {
                 && ((Property.MultiValue<T>) provider.property()).fallbackBehaviour() == Property.FallbackBehaviour.OVERRIDE;
     }
 
-    private Properties propertiesCopy() {
-        Properties properties = new Properties();
-        providers.values()
-                .stream()
-                .flatMap(List::stream)
-                .forEach(properties::add);
-
-        return properties;
-    }
-
     public Resolver createChild(Properties additional) {
-        Properties properties = propertiesCopy();
-        properties.addAll(additional);
-
-        ConcurrentHashMap<Property<?>, CacheEntry> cacheCopy = new ConcurrentHashMap<>(cache);
-
-        // invalidate caches / update merge information
-        additional.providers().forEach((property, _) -> {
-            switch (property) {
-                case Property.SingleProperty<?> _ -> cacheCopy.remove(property);
-                case Property.CollectionProperty<?> _ -> cacheCopy.computeIfPresent(property, (_, old) -> new CacheEntry(old.value, true));
-                default -> {}
-            }
-        });
-
-        return new Resolver(deepImmutableCopy(properties.providers()), cacheCopy);
+        return new Resolver(additional, cache);
     }
 
-    private static Map<Property<?>, List<PropertyProvider<?>>> deepImmutableCopy(Map<Property<?>, List<PropertyProvider<?>>> oldMap) {
-        Map<Property<?>, List<PropertyProvider<?>>> newMap = new HashMap<>();
-        oldMap.forEach((property, providers) -> newMap.put(property, List.copyOf(providers)));
-        return Collections.unmodifiableMap(newMap);
-    }
+
 
     // merge indicates that the cached value must be merged once in Resolver#get
     // It can only transition from true to false within one Resolver, merge=true can only be set in createChild

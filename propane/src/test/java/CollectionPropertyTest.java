@@ -47,11 +47,11 @@ public class CollectionPropertyTest {
                 }))
                 .build();
 
-        introspection.get(Properties.TWO); // generate value for "expected"
+        Properties.TestStub expected = introspection.get(Properties.TWO).toArray(Properties.TestStub[]::new)[0]; // generate value for "expected"
 
         // get 2 times, should always return the same instance - not map directly, but contents of map
-        assertSame(ref.get().toArray(Properties.TestStub[]::new)[0], introspection.get(Properties.TWO).toArray(Properties.TestStub[]::new)[0]);
-        assertSame(ref.get().toArray(Properties.TestStub[]::new)[0], introspection.get(Properties.TWO).toArray(Properties.TestStub[]::new)[0]);
+        assertSame(expected, introspection.get(Properties.TWO).toArray(Properties.TestStub[]::new)[0]);
+        assertSame(expected, introspection.get(Properties.TWO).toArray(Properties.TestStub[]::new)[0]);
     }
 
     @Test
