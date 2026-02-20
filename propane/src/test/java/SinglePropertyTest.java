@@ -29,7 +29,7 @@ public class SinglePropertyTest {
 
     @Test
     public void without_dependencies() {
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, SinglePropertyTest.class, _ -> "Hello World"))
                 .build();
 
@@ -38,7 +38,7 @@ public class SinglePropertyTest {
 
     @Test
     public void should_always_return_same_instance() {
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.TEST_STUB, Priority.FALLBACK, SinglePropertyTest.class, _ -> new Properties.TestStub()))
                 .build();
 
@@ -51,7 +51,7 @@ public class SinglePropertyTest {
 
     @Test
     public void should_not_return_fallback() {
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, SinglePropertyTest.class, _ -> "Hello World (Fallback)"))
                 .add(new PropertyProvider<>(Properties.HELLO_WORLD, Priority.of(10), SinglePropertyTest.class, _ -> "Hello World"))
                 .build();

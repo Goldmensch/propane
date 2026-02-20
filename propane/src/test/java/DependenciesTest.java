@@ -29,7 +29,7 @@ public class DependenciesTest {
     public void one_layer_dependency() {
         Properties.TestStub testStub = new Properties.TestStub();
 
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.TEST_STUB, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> testStub))
                 .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
                     assertSame(testStub, ctx.get(Properties.TEST_STUB));
@@ -44,7 +44,7 @@ public class DependenciesTest {
     public void two_layer_dependency() {
         Properties.TestStub testStub = new Properties.TestStub();
 
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.TEST_STUB, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> testStub))
                 .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
                     assertSame(testStub, ctx.get(Properties.TEST_STUB));
@@ -62,7 +62,7 @@ public class DependenciesTest {
     @Test
     public void check_cycling_self() {
         ThrowingRunnable run = () -> {
-            Introspection introspection = Introspection.create()
+            Introspection introspection = Introspection.create(Scopes.ROOT)
                     .add(new PropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
                         ctx.get(Properties.HELLO_WORLD);
                         return "Hello World";
@@ -79,7 +79,7 @@ public class DependenciesTest {
         Properties.TestStub testStub = new Properties.TestStub();
 
         ThrowingRunnable run = () -> {
-            Introspection introspection = Introspection.create()
+            Introspection introspection = Introspection.create(Scopes.ROOT)
                     .add(new PropertyProvider<>(Properties.TEST_STUB, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, ctx -> {
                         ctx.get(Properties.GOODBYE);
                         return testStub;

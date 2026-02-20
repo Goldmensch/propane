@@ -1,6 +1,7 @@
 package dev.goldmensch.propane;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Map;
 
 @SuppressWarnings("unused")

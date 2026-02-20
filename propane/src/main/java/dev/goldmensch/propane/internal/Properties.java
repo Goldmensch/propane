@@ -6,13 +6,22 @@ import dev.goldmensch.propane.PropertyProvider;
 import java.util.*;
 
 public class Properties {
+    private final Property.Scope scope;
     private final Map<Property<?>, List<PropertyProvider<?>>> providers = new HashMap<>();
+
+    public Properties(Property.Scope scope) {
+        this.scope = scope;
+    }
 
     /// validates property and provider invariants
     private void validate(PropertyProvider<?> provider) {
         PropertyProvider.Priority priority = provider.priority();
         Property<?> property = provider.property();
         Property.Source source = property.source();
+
+        if (property.scope().priority() < 0) {
+            throw new RuntimeException("priority of scope can't be negative");
+        }
 
         if (source == Property.Source.PROVIDED) {
             if (priority != PropertyProvider.Priority.FALLBACK) {
@@ -22,6 +31,11 @@ public class Properties {
             if (property instanceof Property.MultiValue<?> val && val.fallbackBehaviour() != Property.FallbackBehaviour.ACCUMULATE) {
                 throw new RuntimeException("provided multi value property (collection/map) must have fallbackBehaviour set to accumulate");
             }
+        }
+
+        Property.Scope propertyScope = property.scope();
+        if (!Scopes.isChild(scope, propertyScope)) {
+            throw new RuntimeException("scope of property (%s) must be equal or parent of current scope (%s)".formatted(propertyScope, scope));
         }
     }
 

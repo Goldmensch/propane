@@ -29,7 +29,7 @@ public class MapPropertyTest {
 
     @Test
     public void without_dependencies() {
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.ONE, Priority.FALLBACK, MapPropertyTest.class, _ -> Map.of("hello", "world")))
                 .build();
 
@@ -39,7 +39,7 @@ public class MapPropertyTest {
     @Test
     public void should_always_return_same_instance() {
         AtomicReference<Map<String, Properties.TestStub>> ref = new AtomicReference<>();
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.TWO, Priority.FALLBACK, MapPropertyTest.class, _ -> {
                     ref.set(Map.of("stub", new Properties.TestStub()));
                     return ref.get();
@@ -55,7 +55,7 @@ public class MapPropertyTest {
 
     @Test
     public void should_not_accumulate_fallback() {
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.ONE, Priority.FALLBACK, MapPropertyTest.class, _ -> Map.of("hello", "fallback")))
                 .add(new PropertyProvider<>(Properties.ONE, Priority.of(10), MapPropertyTest.class, _ -> Map.of("hello", "world")))
                 .build();
@@ -65,7 +65,7 @@ public class MapPropertyTest {
 
     @Test
     public void should_accumulate_fallback() {
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.TWO, Priority.FALLBACK, MapPropertyTest.class, _ -> Map.of("1", new Properties.TestStub())))
                 .add(new PropertyProvider<>(Properties.TWO, Priority.of(10), MapPropertyTest.class, _ -> Map.of("2", new Properties.TestStub())))
                 .build();

@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Resolver {
-    public static Resolver EMPTY = new Resolver(new Properties(), new ConcurrentHashMap<>());
+    public static Resolver EMPTY = new Resolver(new Properties(ScopeStub.INSTANCE), new ConcurrentHashMap<>());
 
     private static final ProviderExecutor executor = new ProviderExecutor();
 

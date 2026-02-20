@@ -30,7 +30,7 @@ public class CollectionPropertyTest {
 
     @Test
     public void without_dependencies() {
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.ONE, Priority.FALLBACK, CollectionPropertyTest.class, _ -> List.of("hello", "world")))
                 .build();
 
@@ -40,7 +40,7 @@ public class CollectionPropertyTest {
     @Test
     public void should_always_return_same_instance() {
         AtomicReference<Collection<Properties.TestStub>> ref = new AtomicReference<>();
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.TWO, Priority.FALLBACK, MapPropertyTest.class, _ -> {
                     ref.set(List.of(new Properties.TestStub()));
                     return ref.get();
@@ -56,7 +56,7 @@ public class CollectionPropertyTest {
 
     @Test
     public void should_not_accumulate_fallback() {
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.ONE, Priority.FALLBACK, CollectionPropertyTest.class, _ -> List.of("hello", "fallback")))
                 .add(new PropertyProvider<>(Properties.ONE, Priority.of(10), CollectionPropertyTest.class, _ -> List.of("hello", "world")))
                 .build();
@@ -66,7 +66,7 @@ public class CollectionPropertyTest {
 
     @Test
     public void should_accumulate_fallback() {
-        Introspection introspection = Introspection.create()
+        Introspection introspection = Introspection.create(Scopes.ROOT)
                 .add(new PropertyProvider<>(Properties.TWO, Priority.FALLBACK, CollectionPropertyTest.class, _ -> List.of(new Properties.TestStub())))
                 .add(new PropertyProvider<>(Properties.TWO, Priority.of(10), CollectionPropertyTest.class, _ -> List.of(new Properties.TestStub())))
                 .build();
