@@ -64,8 +64,7 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#get(dev.goldmensch.propane.Property,dev.goldmensch.propane.Introspection)" tabindex="0">get(Property, Introspection)</a></li>
 <li><a href="#compute(dev.goldmensch.propane.Property,dev.goldmensch.propane.Introspection)" tabindex="0">compute(Property, Introspection)</a></li>
-<li><a href="#ensureAllComputed(dev.goldmensch.propane.Introspection)" tabindex="0">ensureAllComputed(Introspection)</a></li>
-<li><a href="#createChild(dev.goldmensch.propane.internal.Properties)" tabindex="0">createChild(Properties)</a></li>
+<li><a href="#createChild(dev.goldmensch.propane.internal.Properties,dev.goldmensch.propane.Introspection)" tabindex="0">createChild(Properties, Introspection)</a></li>
 </ol>
 </li>
 </ol>
@@ -118,15 +117,13 @@ loadScripts(document, 'script');</script>
  <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&nbsp;introspection)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createChild(dev.goldmensch.propane.internal.Properties)" class="member-name-link">createChild</a><wbr>(<a href="Properties.html" title="class in dev.goldmensch.propane.internal">Properties</a>&nbsp;additional)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createChild(dev.goldmensch.propane.internal.Properties,dev.goldmensch.propane.Introspection)" class="member-name-link">createChild</a><wbr>(<a href="Properties.html" title="class in dev.goldmensch.propane.internal">Properties</a>&nbsp;additional,
+ <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&nbsp;parentIntrospection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ensureAllComputed(dev.goldmensch.propane.Introspection)" class="member-name-link">ensureAllComputed</a><wbr>(<a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&nbsp;introspection)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;T</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get(dev.goldmensch.propane.Property,dev.goldmensch.propane.Introspection)" class="member-name-link">get</a><wbr>(<a href="../Property.html" title="interface in dev.goldmensch.propane">Property</a>&lt;T&gt;&nbsp;property,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;T</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get(dev.goldmensch.propane.Property,dev.goldmensch.propane.Introspection)" class="member-name-link">get</a><wbr>(<a href="../Property.html" title="interface in dev.goldmensch.propane">Property</a>&lt;T&gt;&nbsp;property,
  <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&nbsp;introspection)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -179,18 +176,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="ensureAllComputed(dev.goldmensch.propane.Introspection)">
-<h3>ensureAllComputed</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">ensureAllComputed</span><wbr><span class="parameters">(<a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&nbsp;introspection)</span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="createChild(dev.goldmensch.propane.internal.Properties)">
+<section class="detail" id="createChild(dev.goldmensch.propane.internal.Properties,dev.goldmensch.propane.Introspection)">
 <h3>createChild</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a></span>&nbsp;<span class="element-name">createChild</span><wbr><span class="parameters">(<a href="Properties.html" title="class in dev.goldmensch.propane.internal">Properties</a>&nbsp;additional)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a></span>&nbsp;<span class="element-name">createChild</span><wbr><span class="parameters">(<a href="Properties.html" title="class in dev.goldmensch.propane.internal">Properties</a>&nbsp;additional,
+ <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&nbsp;parentIntrospection)</span></div>
 </div>
 </section>
 </li>
