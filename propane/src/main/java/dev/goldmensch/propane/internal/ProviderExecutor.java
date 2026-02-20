@@ -3,6 +3,7 @@ package dev.goldmensch.propane.internal;
 import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.Property;
 import dev.goldmensch.propane.PropertyProvider;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import java.util.stream.Stream;
 public class ProviderExecutor {
     private static final ScopedValue<SequencedMap<Property<?>, PropertyProvider<?>>> STACK = ScopedValue.newInstance();
 
+    @Nullable
     <T> T applyProvider(PropertyProvider<T> provider, Introspection introspection) {
         SequencedMap<Property<?>, PropertyProvider<?>> stack = STACK.isBound()
                 ? new LinkedHashMap<>(STACK.get())

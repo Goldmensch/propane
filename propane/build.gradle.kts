@@ -4,4 +4,8 @@ plugins {
     id("project.convention.maven-central-deploy")
 }
 
+dependencies {
+    api(libs.org.jspecify)
+}
+
 description = "A java framework for library configuration and service registration."

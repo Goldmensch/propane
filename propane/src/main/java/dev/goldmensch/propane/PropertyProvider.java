@@ -1,5 +1,7 @@
 package dev.goldmensch.propane;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Comparator;
 import java.util.function.Function;
 
@@ -7,7 +9,7 @@ public record PropertyProvider<T>(
         Property<T> property,
         Priority priority,
         Class<?> owner,
-        Function<Introspection, T> supplier
+        Function<Introspection, @Nullable T> supplier
 ) {
     public static class Priority implements Comparable<Priority> {
         public static final Priority FALLBACK = new Priority(0);

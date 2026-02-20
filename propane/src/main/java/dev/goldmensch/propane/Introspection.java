@@ -5,7 +5,7 @@ import dev.goldmensch.propane.internal.Resolver;
 
 public class Introspection {
 
-    protected final Resolver resolver;
+    private final Resolver resolver;
 
     private Introspection(Resolver resolver) {
         this.resolver = resolver;
