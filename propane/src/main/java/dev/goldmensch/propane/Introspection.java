@@ -5,14 +5,14 @@ import dev.goldmensch.propane.internal.Resolver;
 
 public class Introspection {
 
-    private final Resolver resolver;
+    protected final Resolver resolver;
 
     private Introspection(Resolver resolver) {
         this.resolver = resolver;
     }
 
     public static Builder create() {
-        return new Builder(Resolver.EMPTY);
+        return new Introspection(Resolver.EMPTY).new Builder();
     }
 
     public <T> T get(Property<T> property) {
@@ -20,21 +20,11 @@ public class Introspection {
     }
 
     public Builder createChild() {
-        // ensure all values are inside cache, so that child don't 'compute' parent properties.
-        // if we wouldn't do that, child and parent may get different instances from the same provider
-        // we load it here instead of in Builder#build() so that the majority of values is still computed lazy
-        resolver.ensureAllComputed(this);
-
-        return new Builder(resolver);
+        return this.new Builder(); // create non-static inner class
     }
 
-    public static class Builder {
-        private final Resolver oldResolver;
+    public class Builder {
         private final Properties properties = new Properties();
-
-        public Builder(Resolver oldResolver) {
-            this.oldResolver = oldResolver;
-        }
 
         public Builder add(PropertyProvider<?> provider) {
             properties.add(provider);
@@ -42,7 +32,8 @@ public class Introspection {
         }
 
         public Introspection build() {
-            Resolver resolver = oldResolver.createChild(properties);
+            Resolver old = Introspection.this.resolver;
+            Resolver resolver = old.createChild(properties, Introspection.this);
 
             return new Introspection(resolver);
         }

@@ -94,10 +94,18 @@ public class Resolver {
         };
     }
 
-    public void ensureAllComputed(Introspection introspection) {
-        providers.keySet().forEach(property -> get(property, introspection));
+    public Resolver createChild(Properties additional, Introspection parentIntrospection) {
+        // ensure all values are inside cache, so that all children have the same values from this parent
+        // children couldn't compute them either, because they don't hav their parents providers
+        // do that as the "last" step, so that the majority of property values can be computed lazily
+        ensureAllComputed(parentIntrospection);
+
+        return new Resolver(additional, cache);
     }
 
+    private void ensureAllComputed(Introspection introspection) {
+        providers.keySet().forEach(property -> get(property, introspection));
+    }
 
     private <T> Result<T> handleOne(Collection<PropertyProvider<T>> providers, Introspection introspection) {
         return providers.stream()
@@ -135,11 +143,6 @@ public class Resolver {
                 && provider.priority() == PropertyProvider.Priority.FALLBACK
                 && ((Property.MultiValue<T>) provider.property()).fallbackBehaviour() == Property.FallbackBehaviour.OVERRIDE;
     }
-
-    public Resolver createChild(Properties additional) {
-        return new Resolver(additional, cache);
-    }
-
 
 
     // merge indicates that the cached value must be merged once in Resolver#get
