@@ -11,35 +11,57 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Resolver {
-    @SuppressWarnings("SortedCollectionWithNonComparableKeys")
-    private static final SortedSet<PropertyProvider<?>> EMPTY_SORTEDSET = new TreeSet<>();
+    public static Resolver EMPTY = new Resolver(Map.of(), new ConcurrentHashMap<>());
+
     private static final ProviderExecutor executor = new ProviderExecutor();
 
-    private final ConcurrentHashMap<Property<?>, Object> cache;
-    private final Map<Property<?>, SortedSet<PropertyProvider<?>>> providers;
+    private final ConcurrentHashMap<Property<?>, CacheEntry> cache;
+    private final Map<Property<?>, List<PropertyProvider<?>>> providers;
 
     /// Creates a copy of the passed providers (so that the user can't change them after Resolver creation through [Introspection.Builder#add(PropertyProvider)].
     /// The cache isn't exposed as a public API, thus it's directly used. It never leaves this class
-    ///
-    /// Only called by [State#create()]
-    private Resolver(Map<Property<?>, SortedSet<PropertyProvider<?>>> providers, ConcurrentHashMap<Property<?>, Object> cache) {
+    private Resolver(Map<Property<?>, List<PropertyProvider<?>>> providers, ConcurrentHashMap<Property<?>, CacheEntry> cache) {
         this.providers = providers;
         this.cache = cache;
     }
 
+
+    // Invariant:
+    // merge == true only originates from createChild()
+    // and is monotonic within a Resolver instance (true -> false).
+    // get() never writes merge=true.
     @SuppressWarnings("unchecked")
     public <T> T get(Property<T> property, Introspection introspection) {
-        if (cache.containsKey(property)) return (T) cache.get(property);
+        CacheEntry existing = cache.get(property);
+        if (existing != null && !existing.merge) {
+            return (T) existing.value;
+        }
 
         // for thread safety
         T computed = compute(property, introspection);
-        var old = (T) cache.putIfAbsent(property, computed);
-        return old == null ? computed : old;
+
+        // if we have an exising, it must be old and merged
+        if (existing != null) {
+            ArrayList<T> copy = new ArrayList<>((List<T>) computed);
+            copy.addAll((Collection<T>) existing.value);
+
+            List<T> finalList = Collections.unmodifiableList(copy);
+            if (cache.replace(property, existing, new CacheEntry(finalList, false))) {
+                return (T) finalList;
+            }
+        } else {
+            if (cache.putIfAbsent(property, new CacheEntry(computed, false)) == null) {
+                return computed;
+            }
+        }
+
+        // must be newly computed (and maybe) merged value
+        return (T) cache.get(property);
     }
 
     @SuppressWarnings("unchecked")
     public <T> T compute(Property<T> property, Introspection introspection) {
-        SortedSet<PropertyProvider<T>> currentProviders = Helpers.castUnsafe(providers.getOrDefault(property, EMPTY_SORTEDSET));
+        List<PropertyProvider<T>> currentProviders = Helpers.castUnsafe(providers.getOrDefault(property, List.of()));
 
         Result<T> result = switch (property) {
             case Property.SingleProperty<T> _ -> handleOne(currentProviders, introspection);
@@ -65,8 +87,12 @@ public class Resolver {
         };
     }
 
+    public void ensureAllComputed(Introspection introspection) {
+        providers.keySet().forEach(property -> get(property, introspection));
+    }
 
-    private <T> Result<T> handleOne(SortedSet<PropertyProvider<T>> providers, Introspection introspection) {
+
+    private <T> Result<T> handleOne(Collection<PropertyProvider<T>> providers, Introspection introspection) {
         return providers.stream()
                 .flatMap(provider -> {
                     T obj = executor.applyProvider(provider, introspection);
@@ -78,7 +104,7 @@ public class Resolver {
                 .orElseThrow(() -> new RuntimeException("property-not-set"));
     }
 
-    private <T, B extends T> Result<T> handleMany(SortedSet<PropertyProvider<T>> providers, Supplier<B> collectionSup, BiConsumer<B, T> adder, Introspection introspection) {
+    private <T, B extends T> Result<T> handleMany(Collection<PropertyProvider<T>> providers, Supplier<B> collectionSup, BiConsumer<B, T> adder, Introspection introspection) {
         Collection<Class<?>> owners = new ArrayList<>();
 
         B collection = collectionSup.get();
@@ -97,49 +123,48 @@ public class Resolver {
     }
 
     // if there are more than 1 provider, check if we should accumulate fallback values
-    private <T> boolean shouldSkip(SortedSet<PropertyProvider<T>> providers, PropertyProvider<T> provider) {
+    private <T> boolean shouldSkip(Collection<PropertyProvider<T>> providers, PropertyProvider<T> provider) {
         return providers.size() > 1
                 && provider.priority() == PropertyProvider.Priority.FALLBACK
                 && ((Property.MultiValue<T>) provider.property()).fallbackBehaviour() == Property.FallbackBehaviour.OVERRIDE;
     }
 
-    private Properties properties() {
+    private Properties propertiesCopy() {
         Properties properties = new Properties();
         providers.values()
                 .stream()
-                .flatMap(SortedSet::stream)
+                .flatMap(List::stream)
                 .forEach(properties::add);
 
         return properties;
     }
 
-    /// Returns a (mutable) copy of this Resolvers state:
-    ///
-    /// - [State#cache] - a copy of the Resolvers cache
-    /// - [State#properties] - a copy of the Resolvers properties
-    public State state() {
-        return new State(properties(), new ConcurrentHashMap<>(cache));
+    public Resolver createChild(Properties additional) {
+        Properties properties = propertiesCopy();
+        properties.addAll(additional);
+
+        ConcurrentHashMap<Property<?>, CacheEntry> cacheCopy = new ConcurrentHashMap<>(cache);
+
+        // invalidate caches / update merge information
+        additional.providers().forEach((property, _) -> {
+            switch (property) {
+                case Property.SingleProperty<?> _ -> cacheCopy.remove(property);
+                case Property.CollectionProperty<?> _ -> cacheCopy.computeIfPresent(property, (_, old) -> new CacheEntry(old.value, true));
+                default -> {}
+            }
+        });
+
+        return new Resolver(deepImmutableCopy(properties.providers()), cacheCopy);
     }
 
-    /// The public full arg constructors should never be used outside this class!
-    public record State(Properties properties, ConcurrentHashMap<Property<?>, Object> cache) {
-
-        public State() {
-            this(new Properties(), new ConcurrentHashMap<>());
-        }
-
-        /// cache either comes from [Resolver#state()] or [State()] - thus directly using it here is fine. Never exposed to user, invariant always fulfilled.
-        public Resolver create() {
-            Map<Property<?>, SortedSet<PropertyProvider<?>>> copy = deepImmutableCopy(properties.providers());
-            return new Resolver(copy, cache);
-        }
-
-        private static Map<Property<?>, SortedSet<PropertyProvider<?>>> deepImmutableCopy(Map<Property<?>, SortedSet<PropertyProvider<?>>> oldMap) {
-            Map<Property<?>, SortedSet<PropertyProvider<?>>> newMap = new HashMap<>();
-            oldMap.forEach((property, providers) -> newMap.put(property, Collections.unmodifiableSortedSet(new TreeSet<>(providers))));
-            return Collections.unmodifiableMap(newMap);
-        }
+    private static Map<Property<?>, List<PropertyProvider<?>>> deepImmutableCopy(Map<Property<?>, List<PropertyProvider<?>>> oldMap) {
+        Map<Property<?>, List<PropertyProvider<?>>> newMap = new HashMap<>();
+        oldMap.forEach((property, providers) -> newMap.put(property, List.copyOf(providers)));
+        return Collections.unmodifiableMap(newMap);
     }
 
+    // merge indicates that the cached value must be merged once in Resolver#get
+    // It can only transition from true to false within one Resolver, merge=true can only be set in createChild
+    private record CacheEntry(Object value, boolean merge) {}
     private record Result<T>(T value, Collection<Class<?>> owners) {}
 }

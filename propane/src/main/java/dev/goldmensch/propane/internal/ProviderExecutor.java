@@ -32,7 +32,6 @@ public class ProviderExecutor {
                 throw new RuntimeException("cycling: call it self");
             }
 
-
             String tree = formatTree(callchain, current);
             throw new RuntimeException("cycling: cycling tree: " + tree);
         }

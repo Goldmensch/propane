@@ -18,16 +18,18 @@ public class ChildIntrospectionTest {
         private record TestStub() {}
 
         static Property<String> ONE = new Property.SingleProperty<>("ONE", Property.Source.PROVIDED, Scopes.ROOT, String.class);
+
+        static Property<TestStub> TWO = new Property.SingleProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class);
     }
 
     @Test
     public void parent_values_in_child() {
         Introspection parent = Introspection.create()
-                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "one"))
+                .add(new PropertyProvider<>(Properties.TWO, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> new Properties.TestStub()))
                 .build();
 
         Introspection child = parent.createChild().build();
-        Assert.assertSame(parent.get(Properties.ONE), child.get(Properties.ONE)); // must be same instance (cache is copied)
+        Assert.assertSame(parent.get(Properties.TWO), child.get(Properties.TWO)); // must be same instance (cache is copied)
     }
 
     @Test
@@ -37,10 +39,33 @@ public class ChildIntrospectionTest {
 
         // create child
         parent.createChild()
-                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "one"))
+                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "foo"))
                 .build();
 
         Assert.assertThrows(RuntimeException.class, () -> parent.get(Properties.ONE)); // must be same instance (cache is copied)
+    }
+
+    @Test
+    public void replace_provider_in_child() {
+        Introspection parent = Introspection.create()
+                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "parent"))
+                .build();
+
+        Introspection child = parent.createChild()
+                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "child"))
+                .build();
+
+        Assert.assertEquals("child", child.get(Properties.ONE)); // must be same instance (cache is copied)
+    }
+
+    @Test
+    public void singleton_always_take_last_inserted_value() {
+        Introspection introspection = Introspection.create()
+                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "one"))
+                .add(new PropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "two"))
+                .build();
+
+        Assert.assertEquals("two", introspection.get(Properties.ONE));
     }
 
 }
