@@ -1,7 +1,7 @@
 package dev.goldmensch.propane.internal;
 
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
 import org.jspecify.annotations.Nullable;
 

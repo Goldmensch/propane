@@ -1,6 +1,6 @@
 package dev.goldmensch.propane.internal;
 
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.property.Property;
 
 public class Scopes {
     private static int compare(Property.Scope one, Property.Scope other) {

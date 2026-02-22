@@ -1,8 +1,12 @@
 package dev.goldmensch.propane.internal;
 
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.internal.exposed.Properties;
+import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.property.CollectionProperty;
+import dev.goldmensch.propane.property.MapProperty;
+import dev.goldmensch.propane.property.SingleProperty;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -12,7 +16,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Resolver {
-    public static final Resolver EMPTY = new Resolver(null, null, new Properties(ScopeStub.INSTANCE));
+    public static final Resolver EMPTY = new Resolver(null, null, new dev.goldmensch.propane.internal.exposed.Properties(ScopeStub.INSTANCE));
 
     private static final ProviderExecutor executor = new ProviderExecutor();
 
@@ -22,7 +26,7 @@ public class Resolver {
     private final Map<Property<?>, List<PropertyProvider<?>>> providers;
 
     // if introspection and parent == null -> EMPTY resolver, get() -> always Optional.empty()
-    private Resolver(@Nullable Introspection introspection, @Nullable Resolver parent, Properties properties) {
+    private Resolver(@Nullable Introspection introspection, @Nullable Resolver parent, dev.goldmensch.propane.internal.exposed.Properties properties) {
         this.introspection = introspection;
         this.parent = parent;
         this.providers = properties.providers();
@@ -45,16 +49,16 @@ public class Resolver {
         Optional<T> computed = compute(property);
 
         return switch (property) {
-            case Property.SingleProperty<T> _ -> computed
+            case SingleProperty<T> _ -> computed
                     .or(() -> parent.get(property))
                     .flatMap(t -> putInCache(property, t));
 
-            case Property.MapProperty<?,?> _ -> computed
+            case MapProperty<?,?> _ -> computed
                     .or(() -> parent.get(property))
                     .map(t -> Map.copyOf((Map<?, ?>) t))
                     .flatMap(t -> putInCache(property, (T) t));
 
-            case Property.CollectionProperty<?> colP -> {
+            case CollectionProperty<?> colP -> {
                 Collection<Object> computedList = ((Optional<Collection<Object>>) computed).orElseGet(ArrayList::new);
 
                 parent.get(property)
@@ -77,15 +81,15 @@ public class Resolver {
         List<PropertyProvider<T>> currentProviders = Helpers.castUnsafe(providers.getOrDefault(property, List.of()));
 
         Result<T> result = switch (property) {
-            case Property.SingleProperty<T> _ -> handleOne(currentProviders, introspection);
-            case Property.CollectionProperty<?> _ -> (Result<T>) handleMany(
+            case SingleProperty<T> _ -> handleOne(currentProviders, introspection);
+            case CollectionProperty<?> _ -> (Result<T>) handleMany(
                     this.<Collection<Object>>castProvider(currentProviders),
                     ArrayList::new,
                     List::addAll,
                     introspection
             );
 
-            case Property.MapProperty<?, ?> _ -> (Result<T>) handleMany(
+            case MapProperty<?, ?> _ -> (Result<T>) handleMany(
                     this.<Map<?, ?>>castProvider(currentProviders),
                     HashMap::new,
                     Map::putAll,

@@ -1,10 +1,9 @@
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.PropertyProvider.Priority;
+import dev.goldmensch.propane.property.SingleProperty;
 import org.junit.Test;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -23,8 +22,8 @@ public class SinglePropertyTest {
     private class Properties {
         private record TestStub() {}
 
-        static Property<String> HELLO_WORLD = new Property.SingleProperty<>("HELLO_WORLD", Property.Source.EXTENSION, Scopes.ROOT, String.class);
-        static Property<TestStub> TEST_STUB = new Property.SingleProperty<>("TEST_STUB", Property.Source.EXTENSION, Scopes.ROOT, TestStub.class);
+        static Property<String> HELLO_WORLD = new SingleProperty<>("HELLO_WORLD", Property.Source.EXTENSION, Scopes.ROOT, String.class);
+        static Property<TestStub> TEST_STUB = new SingleProperty<>("TEST_STUB", Property.Source.EXTENSION, Scopes.ROOT, TestStub.class);
     }
 
     @Test

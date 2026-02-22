@@ -1,6 +1,8 @@
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.property.CollectionProperty;
+import dev.goldmensch.propane.property.SingleProperty;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,7 +20,7 @@ public class PropertyProviderValidationTest {
         }
     }
 
-    private final Property<String> providedProperty = new Property.SingleProperty<>("FOO", Property.Source.PROVIDED, Scopes.ROOT, String.class);
+    private final Property<String> providedProperty = new SingleProperty<>("FOO", Property.Source.PROVIDED, Scopes.ROOT, String.class);
     @Test
     public void provided_always_fallback_priority() {
         Introspection.create(Scopes.ROOT)
@@ -41,8 +43,8 @@ public class PropertyProviderValidationTest {
 
     @Test
     public void provided_multi_value_must_be_accumulate() {
-        Property<Collection<String>> accumulate = new Property.CollectionProperty<>("BAR", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.ACCUMULATE);
-        Property<Collection<String>> override = new Property.CollectionProperty<>("BAR", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
+        Property<Collection<String>> accumulate = new CollectionProperty<>("BAR", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.ACCUMULATE);
+        Property<Collection<String>> override = new CollectionProperty<>("BAR", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
 
         // should work
         Introspection.create(Scopes.ROOT)

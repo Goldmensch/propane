@@ -1,6 +1,7 @@
-package dev.goldmensch.propane.internal;
+package dev.goldmensch.propane.internal.exposed;
 
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.internal.Scopes;
+import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
 
 import java.util.*;
@@ -50,7 +51,7 @@ public class Properties {
     }
 
     // sorts and returns a copy of the providers
-    Map<Property<?>, List<PropertyProvider<?>>> providers() {
+    public Map<Property<?>, List<PropertyProvider<?>>> providers() {
         return deepImmutableCopySorted(providers);
     }
 

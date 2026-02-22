@@ -1,6 +1,9 @@
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.property.CollectionProperty;
+import dev.goldmensch.propane.property.MapProperty;
+import dev.goldmensch.propane.property.SingleProperty;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,12 +25,12 @@ public class ChildIntrospectionTest {
     private class Properties {
         private record TestStub() {}
 
-        static Property<String> ONE = new Property.SingleProperty<>("ONE", Property.Source.PROVIDED, Scopes.ROOT, String.class);
+        static Property<String> ONE = new SingleProperty<>("ONE", Property.Source.PROVIDED, Scopes.ROOT, String.class);
 
-        static Property<TestStub> TWO = new Property.SingleProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class);
+        static Property<TestStub> TWO = new SingleProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class);
 
-        static Property<Collection<TestStub>> COLLECTION = new Property.CollectionProperty<>("COLLECTION", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
-        static Property<Map<String, TestStub>> MAP = new Property.MapProperty<>("MAP", Property.Source.PROVIDED, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static Property<Collection<TestStub>> COLLECTION = new CollectionProperty<>("COLLECTION", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static Property<Map<String, TestStub>> MAP = new MapProperty<>("MAP", Property.Source.PROVIDED, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
     }
 
     @Test

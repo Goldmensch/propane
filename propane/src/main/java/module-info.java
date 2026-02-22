@@ -5,4 +5,5 @@ module dev.goldmensch.propane {
     requires org.jspecify;
 
     exports dev.goldmensch.propane;
+    exports dev.goldmensch.propane.property;
 }

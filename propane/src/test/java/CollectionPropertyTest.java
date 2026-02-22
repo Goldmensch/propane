@@ -1,7 +1,8 @@
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.PropertyProvider.Priority;
+import dev.goldmensch.propane.property.CollectionProperty;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -24,8 +25,8 @@ public class CollectionPropertyTest {
     private static class Properties {
         private record TestStub() {}
 
-        static Property<Collection<String>> ONE = new Property.CollectionProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
-        static Property<Collection<TestStub>> TWO = new Property.CollectionProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, Properties.TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static Property<Collection<String>> ONE = new CollectionProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
+        static Property<Collection<TestStub>> TWO = new CollectionProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, Properties.TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
     }
 
     @Test

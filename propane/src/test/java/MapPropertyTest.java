@@ -1,7 +1,8 @@
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.PropertyProvider.Priority;
+import dev.goldmensch.propane.property.MapProperty;
 import org.junit.Test;
 
 import java.util.Map;
@@ -23,8 +24,8 @@ public class MapPropertyTest {
     private static class Properties {
         private record TestStub() {}
 
-        static Property<Map<String, String>> ONE = new Property.MapProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, String.class, Property.FallbackBehaviour.OVERRIDE);
-        static Property<Map<String, TestStub>> TWO = new Property.MapProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static Property<Map<String, String>> ONE = new MapProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, String.class, Property.FallbackBehaviour.OVERRIDE);
+        static Property<Map<String, TestStub>> TWO = new MapProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
     }
 
     @Test

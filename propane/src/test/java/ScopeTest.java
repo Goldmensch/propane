@@ -1,13 +1,10 @@
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
-import dev.goldmensch.propane.internal.Scopes;
+import dev.goldmensch.propane.property.SingleProperty;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
-
-import java.util.Collection;
-import java.util.Map;
 
 public class ScopeTest {
 
@@ -31,11 +28,11 @@ public class ScopeTest {
     }
 
     private static class Properties {
-        static Property<String> NEGATIVE = new Property.SingleProperty<>("NEGATIVE", Property.Source.PROVIDED, ScopeTest.Scopes.NEGATIVE, String.class);
+        static Property<String> NEGATIVE = new SingleProperty<>("NEGATIVE", Property.Source.PROVIDED, ScopeTest.Scopes.NEGATIVE, String.class);
 
-        static Property<String> ONE = new Property.SingleProperty<>("ONE", Property.Source.PROVIDED, ScopeTest.Scopes.ROOT, String.class);
+        static Property<String> ONE = new SingleProperty<>("ONE", Property.Source.PROVIDED, ScopeTest.Scopes.ROOT, String.class);
 
-        static Property<String> TWO = new Property.SingleProperty<>("TWO", Property.Source.PROVIDED, ScopeTest.Scopes.CHILD, String.class);
+        static Property<String> TWO = new SingleProperty<>("TWO", Property.Source.PROVIDED, ScopeTest.Scopes.CHILD, String.class);
     }
 
     @Test

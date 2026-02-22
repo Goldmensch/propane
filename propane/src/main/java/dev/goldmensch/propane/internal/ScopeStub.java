@@ -1,6 +1,6 @@
 package dev.goldmensch.propane.internal;
 
-import dev.goldmensch.propane.Property;
+import dev.goldmensch.propane.property.Property;
 
 public class ScopeStub implements Property.Scope {
 
