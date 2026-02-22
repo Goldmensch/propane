@@ -7,16 +7,23 @@ import dev.goldmensch.propane.internal.Scopes;
 
 public class Introspection {
 
+    public static final Introspection EMPTY = new Introspection();
+
     private final Property.Scope scope;
     private final Resolver resolver;
 
-    private Introspection(Property.Scope scope, Resolver resolver) {
+    private Introspection(Property.Scope scope, Properties properties, Introspection parent) {
         this.scope = scope;
-        this.resolver = resolver;
+        this.resolver = parent.resolver.createChild(properties, this);
+    }
+
+    private Introspection() {
+        this.scope = ScopeStub.INSTANCE;
+        this.resolver = Resolver.EMPTY;
     }
 
     public static Builder create(Property.Scope scope) {
-        return new Introspection(ScopeStub.INSTANCE, Resolver.EMPTY).createChild(scope);
+        return EMPTY.createChild(scope);
     }
 
     public <T> T get(Property<T> property) {
@@ -25,7 +32,7 @@ public class Introspection {
             throw new RuntimeException("scope (%s) of property (%s) isn't child of or equal to introspection scope %s".formatted(propertyScope, property.name(), scope));
         }
 
-        return resolver.get(property, this);
+        return resolver.get(property).orElseThrow();
     }
 
     public Builder createChild(Property.Scope scope) {
@@ -47,14 +54,11 @@ public class Introspection {
         }
 
         public Introspection build() {
-            Resolver old = Introspection.this.resolver;
-            Resolver resolver = old.createChild(properties, Introspection.this);
-
             if (!Scopes.isChild(scope, Introspection.this.scope)) {
                 throw new RuntimeException("Child scope must be equal or subscope of parent scope");
             }
 
-            return new Introspection(scope, resolver);
+            return new Introspection(scope, properties, Introspection.this);
         }
     }
 }

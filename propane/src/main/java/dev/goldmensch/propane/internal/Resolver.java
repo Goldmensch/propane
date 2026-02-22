@@ -3,6 +3,7 @@ package dev.goldmensch.propane.internal;
 import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.Property;
 import dev.goldmensch.propane.PropertyProvider;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,102 +12,100 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Resolver {
-    public static Resolver EMPTY = new Resolver(new Properties(ScopeStub.INSTANCE), new ConcurrentHashMap<>());
+    public static final Resolver EMPTY = new Resolver(null, null, new Properties(ScopeStub.INSTANCE));
 
     private static final ProviderExecutor executor = new ProviderExecutor();
 
-    private final ConcurrentHashMap<Property<?>, CacheEntry> cache;
+    private final @Nullable Introspection introspection;
+    private final @Nullable Resolver parent;
+    private final ConcurrentHashMap<Property<?>, Object> cache = new ConcurrentHashMap<>();
     private final Map<Property<?>, List<PropertyProvider<?>>> providers;
 
-    private Resolver(Properties properties, ConcurrentHashMap<Property<?>, CacheEntry> oldCache) {
+    // if introspection and parent == null -> EMPTY resolver, get() -> always Optional.empty()
+    private Resolver(@Nullable Introspection introspection, @Nullable Resolver parent, Properties properties) {
+        this.introspection = introspection;
+        this.parent = parent;
         this.providers = properties.providers();
-
-        this.cache = new ConcurrentHashMap<>(oldCache);
-
-        // invalidate caches / update merge information
-        providers.forEach((property, _) -> {
-            switch (property) {
-                case Property.SingleProperty<?> _, Property.MapProperty<?, ?> _ -> this.cache.remove(property); // TODO: implement map joining
-                case Property.CollectionProperty<?> _ -> this.cache.computeIfPresent(property, (_, old) -> new CacheEntry(old.value, true));
-            }
-        });
     }
 
 
-    // Invariant:
-    // merge == true only originates from createChild()
-    // and is monotonic within a Resolver instance (true -> false).
-    // get() never writes merge=true.
+    public Resolver createChild(Properties additional, Introspection child) {
+        return new Resolver(child, this, additional);
+    }
+
     @SuppressWarnings("unchecked")
-    public <T> T get(Property<T> property, Introspection introspection) {
-        CacheEntry existing = cache.get(property);
-        if (existing != null && !existing.merge) {
-            return (T) existing.value;
-        }
+    public <T> Optional<T> get(Property<T> property) {
+        if (this.introspection == null && this.parent == null) return Optional.empty();
 
-        // for thread safety
-        T computed = compute(property, introspection);
-
-        // if we have an exising, it must be old and merged
+        T existing = (T) cache.get(property);
         if (existing != null) {
-            ArrayList<T> copy = new ArrayList<>((List<T>) computed);
-            copy.addAll((Collection<T>) existing.value);
-
-            List<T> finalList = Collections.unmodifiableList(copy);
-            if (cache.replace(property, existing, new CacheEntry(finalList, false))) {
-                return (T) finalList;
-            }
-        } else {
-            if (cache.putIfAbsent(property, new CacheEntry(computed, false)) == null) {
-                return computed;
-            }
+            return Optional.of(existing);
         }
 
-        // must be newly computed (and maybe) merged value
-        return (T) cache.get(property);
+        Optional<T> computed = compute(property);
+
+        return switch (property) {
+            case Property.SingleProperty<T> _ -> computed
+                    .or(() -> parent.get(property))
+                    .flatMap(t -> putInCache(property, t));
+
+            case Property.MapProperty<?,?> _ -> computed
+                    .or(() -> parent.get(property))
+                    .map(t -> Map.copyOf((Map<?, ?>) t))
+                    .flatMap(t -> putInCache(property, (T) t));
+
+            case Property.CollectionProperty<?> colP -> {
+                Collection<Object> computedList = ((Optional<Collection<Object>>) computed).orElseGet(ArrayList::new);
+
+                parent.get(property)
+                        .ifPresent(t -> computedList.addAll((Collection<Object>) t));
+
+                yield putInCache(colP, (T) List.copyOf(computedList));
+            }
+        };
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T compute(Property<T> property, Introspection introspection) {
+    private <T> Optional<T> putInCache(Property<?> property, T computed) {
+        T raced = (T) cache.putIfAbsent(property, computed);
+        T val = Objects.requireNonNullElse(raced, computed);
+        return Optional.of(val);
+    }
+
+    @SuppressWarnings("unchecked")
+    private  <T> Optional<T> compute(Property<T> property) {
         List<PropertyProvider<T>> currentProviders = Helpers.castUnsafe(providers.getOrDefault(property, List.of()));
 
         Result<T> result = switch (property) {
             case Property.SingleProperty<T> _ -> handleOne(currentProviders, introspection);
             case Property.CollectionProperty<?> _ -> (Result<T>) handleMany(
-                    Helpers.<SortedSet<PropertyProvider<Collection<Object>>>>castUnsafe(currentProviders),
+                    this.<Collection<Object>>castProvider(currentProviders),
                     ArrayList::new,
                     List::addAll,
                     introspection
             );
 
             case Property.MapProperty<?, ?> _ -> (Result<T>) handleMany(
-                    Helpers.<SortedSet<PropertyProvider<Map<Object, Object>>>>castUnsafe(currentProviders),
+                    this.<Map<?, ?>>castProvider(currentProviders),
                     HashMap::new,
                     Map::putAll,
                     introspection
             );
         };
 
-        return (T) switch (result) {
-            case Result(List<?> list, _) -> Collections.unmodifiableList(list);
-            case Result(Map<?, ?> map, _) -> Collections.unmodifiableMap(map);
-            case Result(T val, _) -> val;
-        };
+        if (result == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(result.value);
+
     }
 
-    public Resolver createChild(Properties additional, Introspection parentIntrospection) {
-        // ensure all values are inside cache, so that all children have the same values from this parent
-        // children couldn't compute them either, because they don't hav their parents providers
-        // do that as the "last" step, so that the majority of property values can be computed lazily
-        ensureAllComputed(parentIntrospection);
-
-        return new Resolver(additional, cache);
+    private <T> Collection<PropertyProvider<T>> castProvider(List<?> providers) {
+        return Helpers.castUnsafe(providers);
     }
 
-    private void ensureAllComputed(Introspection introspection) {
-        providers.keySet().forEach(property -> get(property, introspection));
-    }
-
+    @Nullable
     private <T> Result<T> handleOne(Collection<PropertyProvider<T>> providers, Introspection introspection) {
         return providers.stream()
                 .flatMap(provider -> {
@@ -116,7 +115,7 @@ public class Resolver {
                             .map(t -> new Result<>(t, List.of(provider.owner())));
                 })
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("property-not-set"));
+                .orElse(null);
     }
 
     private <T, B extends T> Result<T> handleMany(Collection<PropertyProvider<T>> providers, Supplier<B> collectionSup, BiConsumer<B, T> adder, Introspection introspection) {
@@ -145,8 +144,5 @@ public class Resolver {
     }
 
 
-    // merge indicates that the cached value must be merged once in Resolver#get
-    // It can only transition from true to false within one Resolver, merge=true can only be set in createChild
-    private record CacheEntry(Object value, boolean merge) {}
     private record Result<T>(T value, Collection<Class<?>> owners) {}
 }
