@@ -54,16 +54,11 @@ loadScripts(document, 'script');</script>
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
 <li><a href="#" tabindex="0">Description</a></li>
-<li><a href="#field-summary" tabindex="0">Field Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
-<li><a href="#field-detail" tabindex="0">Field Details</a>
-<ol class="toc-list">
-<li><a href="#EMPTY" tabindex="0">EMPTY</a></li>
-</ol>
-</li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
-<li><a href="#createChild(dev.goldmensch.propane.internal.exposed.Properties,dev.goldmensch.propane.Introspection)" tabindex="0">createChild(Properties, Introspection)</a></li>
+<li><a href="#createEmpty()" tabindex="0">createEmpty()</a></li>
+<li><a href="#createChild(dev.goldmensch.propane.internal.exposed.Properties,INTROSPECTION)" tabindex="0">createChild(Properties, INTROSPECTION)</a></li>
 <li><a href="#get(dev.goldmensch.propane.property.Property)" tabindex="0">get(Property)</a></li>
 </ol>
 </li>
@@ -72,53 +67,41 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<h1 title="Class Resolver" class="title">Class Resolver</h1>
+<h1 title="Class Resolver" class="title">Class Resolver&lt;<span id="type-param-SP">SP extends <a href="../property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;?&gt;</span>, <span id="type-param-INTROSPECTION">INTROSPECTION extends <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;SP&gt;</span>&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">dev.goldmensch.propane.internal.Resolver</div>
+<div class="inheritance">dev.goldmensch.propane.internal.Resolver&lt;SP, INTROSPECTION&gt;</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Resolver</span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Resolver&lt;SP extends <a href="../property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;?&gt;, INTROSPECTION extends <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;SP&gt;&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 </div>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- =========== FIELD SUMMARY =========== -->
-<li>
-<section class="field-summary" id="field-summary">
-<h2>Field Summary</h2>
-<div class="caption"><span>Fields</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final <a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a></code></div>
-<div class="col-second even-row-color"><code><a href="#EMPTY" class="member-name-link">EMPTY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-</div>
-</section>
-</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createChild(dev.goldmensch.propane.internal.exposed.Properties,dev.goldmensch.propane.Introspection)" class="member-name-link">createChild</a><wbr>(<a href="exposed/Properties.html" title="class in dev.goldmensch.propane.internal.exposed">Properties</a>&nbsp;additional,
- <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&nbsp;child)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a><wbr>&lt;<a href="#type-param-SP" title="type parameter in Resolver">SP</a>, <a href="#type-param-INTROSPECTION" title="type parameter in Resolver">INTROSPECTION</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createChild(dev.goldmensch.propane.internal.exposed.Properties,INTROSPECTION)" class="member-name-link">createChild</a><wbr>(<a href="exposed/Properties.html" title="class in dev.goldmensch.propane.internal.exposed">Properties</a>&lt;<a href="#type-param-SP" title="type parameter in Resolver">SP</a>, <a href="#type-param-INTROSPECTION" title="type parameter in Resolver">INTROSPECTION</a>&gt;&nbsp;additional,
+ <a href="#type-param-INTROSPECTION" title="type parameter in Resolver">INTROSPECTION</a>&nbsp;child)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a><wbr>&lt;T&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get(dev.goldmensch.propane.property.Property)" class="member-name-link">get</a><wbr>(<a href="../property/Property.html" title="interface in dev.goldmensch.propane.property">Property</a>&lt;T&gt;&nbsp;property)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;SP extends <a href="../property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;?&gt;, INTROSPECTION extends <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;SP&gt;&gt;<br><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a><wbr>&lt;SP, INTROSPECTION&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createEmpty()" class="member-name-link">createEmpty</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a><wbr>&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get(dev.goldmensch.propane.property.Property)" class="member-name-link">get</a><wbr>(<a href="../property/Property.html" title="interface in dev.goldmensch.propane.property">Property</a>&lt;T&gt;&nbsp;property)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -131,33 +114,26 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
-<!-- ============ FIELD DETAIL =========== -->
-<li>
-<section class="field-details" id="field-detail">
-<h2>Field Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="EMPTY">
-<h3>EMPTY</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a></span>&nbsp;<span class="element-name">EMPTY</span></div>
-</div>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <!-- ============ METHOD DETAIL ========== -->
 <li>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createChild(dev.goldmensch.propane.internal.exposed.Properties,dev.goldmensch.propane.Introspection)">
-<h3>createChild</h3>
+<section class="detail" id="createEmpty()">
+<h3>createEmpty</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a></span>&nbsp;<span class="element-name">createChild</span><wbr><span class="parameters">(<a href="exposed/Properties.html" title="class in dev.goldmensch.propane.internal.exposed">Properties</a>&nbsp;additional,
- <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&nbsp;child)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="type-parameters">&lt;SP extends <a href="../property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;?&gt;, INTROSPECTION extends <a href="../Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;SP&gt;&gt;</span>
+<span class="return-type"><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a>&lt;SP, INTROSPECTION&gt;</span>&nbsp;<span class="element-name">createEmpty</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="createChild(dev.goldmensch.propane.internal.exposed.Properties,INTROSPECTION)">
+<h3 id="createChild(dev.goldmensch.propane.internal.exposed.Properties,dev.goldmensch.propane.Introspection)">createChild</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a>&lt;<a href="#type-param-SP" title="type parameter in Resolver">SP</a>, <a href="#type-param-INTROSPECTION" title="type parameter in Resolver">INTROSPECTION</a>&gt;</span>&nbsp;<span class="element-name">createChild</span><wbr><span class="parameters">(<a href="exposed/Properties.html" title="class in dev.goldmensch.propane.internal.exposed">Properties</a>&lt;<a href="#type-param-SP" title="type parameter in Resolver">SP</a>, <a href="#type-param-INTROSPECTION" title="type parameter in Resolver">INTROSPECTION</a>&gt;&nbsp;additional,
+ <a href="#type-param-INTROSPECTION" title="type parameter in Resolver">INTROSPECTION</a>&nbsp;child)</span></div>
 </div>
 </section>
 </li>

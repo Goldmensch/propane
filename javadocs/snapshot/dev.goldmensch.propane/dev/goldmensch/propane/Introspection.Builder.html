@@ -55,11 +55,25 @@ loadScripts(document, 'script');</script>
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
 <li><a href="#" tabindex="0">Description</a></li>
+<li><a href="#field-summary" tabindex="0">Field Summary</a></li>
+<li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
+<li><a href="#field-detail" tabindex="0">Field Details</a>
+<ol class="toc-list">
+<li><a href="#properties" tabindex="0">properties</a></li>
+<li><a href="#scope" tabindex="0">scope</a></li>
+</ol>
+</li>
+<li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
+<ol class="toc-list">
+<li><a href="#%3Cinit%3E(dev.goldmensch.propane.property.Property.Scope)" tabindex="0">Builder(Property.Scope)</a></li>
+</ol>
+</li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
-<li><a href="#add(dev.goldmensch.propane.PropertyProvider)" tabindex="0">add(PropertyProvider)</a></li>
+<li><a href="#add(PROVIDER)" tabindex="0">add(PROVIDER)</a></li>
 <li><a href="#build()" tabindex="0">build()</a></li>
+<li><a href="#newInstance()" tabindex="0">newInstance()</a></li>
 </ol>
 </li>
 </ol>
@@ -67,24 +81,57 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<h1 title="Class Introspection.Builder" class="title">Class Introspection.Builder</h1>
+<h1 title="Class Introspection.Builder" class="title">Class Introspection.Builder&lt;<span id="type-param-SELF">SELF extends <a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;SP&gt;.Builder&lt;SELF, INTROSPECTION, PROVIDER&gt;</span>, <span id="type-param-INTROSPECTION">INTROSPECTION extends <a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;SP&gt;</span>, <span id="type-param-PROVIDER">PROVIDER extends <a href="PropertyProvider.html" title="class in dev.goldmensch.propane">PropertyProvider</a>&lt;?, ?, SP, INTROSPECTION&gt;</span>&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">dev.goldmensch.propane.Introspection.Builder</div>
+<div class="inheritance">dev.goldmensch.propane.Introspection.Builder&lt;SELF, INTROSPECTION, PROVIDER&gt;</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Enclosing class:</dt>
-<dd><code><a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a></code></dd>
+<dd><code><a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;<a href="Introspection.html#type-param-SP" title="type parameter in Introspection">SP</a> extends <a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;?&gt;&gt;</code></dd>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">Introspection.Builder</span>
+<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">Introspection.Builder&lt;SELF extends <a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;SP&gt;.Builder&lt;SELF, INTROSPECTION, PROVIDER&gt;, INTROSPECTION extends <a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;SP&gt;, PROVIDER extends <a href="PropertyProvider.html" title="class in dev.goldmensch.propane">PropertyProvider</a>&lt;?, ?, SP, INTROSPECTION&gt;&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 </div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected final <a href="internal/exposed/Properties.html" title="class in dev.goldmensch.propane.internal.exposed">Properties</a><wbr>&lt;<a href="Introspection.html#type-param-SP" title="type parameter in Introspection">SP</a>, <a href="#type-param-INTROSPECTION" title="type parameter in Introspection.Builder">INTROSPECTION</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#properties" class="member-name-link">properties</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#scope" class="member-name-link">scope</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<li>
+<section class="constructor-summary" id="constructor-summary">
+<h2>Constructor Summary</h2>
+<div class="caption"><span>Constructors</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier</div>
+<div class="table-header col-second">Constructor</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected </code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(dev.goldmensch.propane.property.Property.Scope)" class="member-name-link">Builder</a><wbr>(<a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;scope)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
@@ -96,12 +143,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Introspection.Builder.html" title="class in dev.goldmensch.propane">Introspection.Builder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#add(dev.goldmensch.propane.PropertyProvider)" class="member-name-link">add</a><wbr>(<a href="PropertyProvider.html" title="class in dev.goldmensch.propane">PropertyProvider</a>&lt;?&gt;&nbsp;provider)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#type-param-SELF" title="type parameter in Introspection.Builder">SELF</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#add(PROVIDER)" class="member-name-link">add</a><wbr>(<a href="#type-param-PROVIDER" title="type parameter in Introspection.Builder">PROVIDER</a>&nbsp;provider)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#build()" class="member-name-link">build</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#type-param-INTROSPECTION" title="type parameter in Introspection.Builder">INTROSPECTION</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#build()" class="member-name-link">build</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="#type-param-INTROSPECTION" title="type parameter in Introspection.Builder">INTROSPECTION</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#newInstance()" class="member-name-link">newInstance</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -114,16 +164,56 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="properties">
+<h3>properties</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="internal/exposed/Properties.html" title="class in dev.goldmensch.propane.internal.exposed">Properties</a>&lt;<a href="Introspection.html#type-param-SP" title="type parameter in Introspection">SP</a> extends <a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;?&gt;, <a href="#type-param-INTROSPECTION" title="type parameter in Introspection.Builder">INTROSPECTION</a> extends <a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a>&lt;<a href="Introspection.html#type-param-SP" title="type parameter in Introspection">SP</a>&gt;&gt;</span>&nbsp;<span class="element-name">properties</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="scope">
+<h3>scope</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a></span>&nbsp;<span class="element-name">scope</span></div>
+</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<li>
+<section class="constructor-details" id="constructor-detail">
+<h2>Constructor Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="&lt;init&gt;(dev.goldmensch.propane.property.Property.Scope)">
+<h3>Builder</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">Builder</span><wbr><span class="parameters">(<a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;scope)</span></div>
+</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ============ METHOD DETAIL ========== -->
 <li>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="add(dev.goldmensch.propane.PropertyProvider)">
-<h3>add</h3>
+<section class="detail" id="add(PROVIDER)">
+<h3 id="add(dev.goldmensch.propane.PropertyProvider)">add</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Introspection.Builder.html" title="class in dev.goldmensch.propane">Introspection.Builder</a></span>&nbsp;<span class="element-name">add</span><wbr><span class="parameters">(<a href="PropertyProvider.html" title="class in dev.goldmensch.propane">PropertyProvider</a>&lt;?&gt;&nbsp;provider)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="#type-param-SELF" title="type parameter in Introspection.Builder">SELF</a></span>&nbsp;<span class="element-name">add</span><wbr><span class="parameters">(<a href="#type-param-PROVIDER" title="type parameter in Introspection.Builder">PROVIDER</a>&nbsp;provider)</span></div>
 </div>
 </section>
 </li>
@@ -131,7 +221,15 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="build()">
 <h3>build</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="Introspection.html" title="class in dev.goldmensch.propane">Introspection</a></span>&nbsp;<span class="element-name">build</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="#type-param-INTROSPECTION" title="type parameter in Introspection.Builder">INTROSPECTION</a></span>&nbsp;<span class="element-name">build</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="newInstance()">
+<h3>newInstance</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="#type-param-INTROSPECTION" title="type parameter in Introspection.Builder">INTROSPECTION</a></span>&nbsp;<span class="element-name">newInstance</span>()</div>
 </div>
 </section>
 </li>

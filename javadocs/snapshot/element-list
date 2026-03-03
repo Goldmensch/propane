@@ -1,6 +1,5 @@
 module:dev.goldmensch.propane
 dev.goldmensch.propane
 dev.goldmensch.propane.internal
-dev.goldmensch.propane.internal.annotation
 dev.goldmensch.propane.internal.exposed
 dev.goldmensch.propane.property
