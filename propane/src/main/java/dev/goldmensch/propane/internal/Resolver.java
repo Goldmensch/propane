@@ -9,8 +9,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION>> {
@@ -19,37 +17,26 @@ public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION>> {
     private final @Nullable INTROSPECTION introspection;
     private final @Nullable Resolver<INTROSPECTION> parent;
     private final ConcurrentHashMap<Property<?>, Object> cache = new ConcurrentHashMap<>();
-    private final Map<Property<?>, List<Special<?>>> providers;
+    private final Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> providers;
 
     // if introspection and parent == null -> EMPTY resolver, get() -> always Optional.empty()
-    private Resolver(@Nullable INTROSPECTION introspection, @Nullable Resolver<INTROSPECTION> parent, dev.goldmensch.propane.internal.exposed.Properties<INTROSPECTION> properties) {
+    private Resolver(@Nullable INTROSPECTION introspection, @Nullable Resolver<INTROSPECTION> parent, Properties<INTROSPECTION> properties) {
         this.introspection = introspection;
         this.parent = parent;
         this.providers = copy(properties.providers());
     }
 
-    private Map<Property<?>, List<Special<?>>> copy(Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> oldMap) {
-        Map<Property<?>, List<Special<?>>> newMap = new HashMap<>();
+    private Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> copy(Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> oldMap) {
+        Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> newMap = new HashMap<>();
         oldMap.forEach((property, providers) -> {
-            List<Special<?>> list = providers.stream()
-                    .map(this::from)
+            List<PropertyProvider<?, ?, INTROSPECTION>> list = providers.stream()
                     .sorted(Comparator.comparing(PropertyProvider::priority))
-                    .collect(Collectors.toUnmodifiableList());
+                    .toList();
 
             newMap.put(property, list);
         });
 
         return Collections.unmodifiableMap(newMap);
-    }
-
-    private <T> Special<?> from(PropertyProvider<T, ?, INTROSPECTION> provider) {
-        return new Special<>(provider.property(), provider.priority(), provider.owner(), provider.supplier());
-    }
-
-    private final class Special<T> extends PropertyProvider<T, SpecificProperty<T>, INTROSPECTION> {
-        public Special(SpecificProperty<T> property, Priority priority, Class<?> owner, Function<INTROSPECTION, T> supplier) {
-            super(property, priority, owner, supplier);
-        }
     }
 
     @SuppressWarnings("Convert2Diamond") // Resolver<INTROSPECTION> needed by javac
@@ -101,7 +88,7 @@ public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION>> {
 
     @SuppressWarnings("unchecked")
     private  <T> Optional<T> compute(Property<T> property) {
-        List<Special<T>> currentProviders = Helpers.castUnsafe(providers.getOrDefault(property, List.of()));
+        List<PropertyProvider<T, ?, INTROSPECTION>> currentProviders = Helpers.castUnsafe(providers.getOrDefault(property, List.of()));
 
         Result<T> result = switch (property) {
             case SingleProperty<T> _ -> handleOne(currentProviders);
@@ -126,12 +113,12 @@ public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION>> {
 
     }
 
-    private <T> List<Special<T>> castProvider(List<?> providers) {
+    private <T> List<PropertyProvider<T, ?, INTROSPECTION>> castProvider(List<?> providers) {
         return Helpers.castUnsafe(providers);
     }
 
     @Nullable
-    private <T> Result<T> handleOne(Collection<Special<T>> providers) {
+    private <T> Result<T> handleOne(Collection<PropertyProvider<T, ?, INTROSPECTION>> providers) {
         return providers.stream()
                 .flatMap(provider -> {
                     T obj = executor.applyProvider(provider, introspection);
@@ -143,10 +130,10 @@ public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION>> {
                 .orElse(null);
     }
 
-    private <T, B extends T> Result<T> handleMany(Collection<Special<T>> providers, B collection, BiConsumer<B, T> adder) {
+    private <T, B extends T> Result<T> handleMany(Collection<PropertyProvider<T, ?, INTROSPECTION>> providers, B collection, BiConsumer<B, T> adder) {
         Collection<Class<?>> owners = new ArrayList<>();
 
-        for (Special<T> provider : providers) {
+        for (PropertyProvider<T, ?, INTROSPECTION> provider : providers) {
             if (shouldSkip(providers, provider)) {
                 continue;
             }
@@ -161,7 +148,7 @@ public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION>> {
     }
 
     // if there are more than 1 provider, check if we should accumulate fallback values
-    private <T> boolean shouldSkip(Collection<Special<T>> providers, Special<T> provider) {
+    private <T> boolean shouldSkip(Collection<PropertyProvider<T, ?, INTROSPECTION>> providers, PropertyProvider<T, ?, INTROSPECTION> provider) {
         return providers.size() > 1
                 && provider.priority() == PropertyProvider.Priority.FALLBACK
                 && ((Property.MultiValue<T>) provider.property().generalized()).fallbackBehaviour() == Property.FallbackBehaviour.OVERRIDE;
