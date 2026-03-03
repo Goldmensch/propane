@@ -1,0 +1,64 @@
+package logic;
+
+import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.property.Property;
+import logic.impl.TestIntrospection;
+import logic.impl.TestProperty;
+import logic.impl.TestPropertyProvider;
+import logic.impl.TestSingleProperty;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+public class SinglePropertyTest {
+
+    private enum Scopes implements Property.Scope {
+        ROOT;
+
+        @Override
+        public int priority() {
+            return ordinal();
+        }
+    }
+
+    private class Properties {
+        private record TestStub() {}
+
+        static TestProperty<String> HELLO_WORLD = new TestSingleProperty<>("HELLO_WORLD", Property.Source.EXTENSION, Scopes.ROOT, String.class);
+        static TestProperty<TestStub> TEST_STUB = new TestSingleProperty<>("TEST_STUB", Property.Source.EXTENSION, Scopes.ROOT, TestStub.class);
+    }
+
+    @Test
+    public void without_dependencies() {
+        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> "Hello World"))
+                .build();
+
+        assertEquals("Hello World", introspection.get(Properties.HELLO_WORLD));
+    }
+
+    @Test
+    public void should_always_return_same_instance() {
+        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+                .add(new TestPropertyProvider<>(Properties.TEST_STUB, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> new Properties.TestStub()))
+                .build();
+
+        Properties.TestStub expected = introspection.get(Properties.TEST_STUB); // generate value for "expected"
+
+        // get 2 times, should always return the same instance
+        assertSame(expected, introspection.get(Properties.TEST_STUB));
+        assertSame(expected, introspection.get(Properties.TEST_STUB));
+    }
+
+    @Test
+    public void should_not_return_fallback() {
+        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> "Hello World (Fallback)"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.of(10), SinglePropertyTest.class, _ -> "Hello World"))
+                .build();
+
+        assertEquals("Hello World", introspection.get(Properties.HELLO_WORLD));
+    }
+
+}

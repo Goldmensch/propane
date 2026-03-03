@@ -4,24 +4,26 @@ import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.internal.Resolver;
 import dev.goldmensch.propane.internal.ScopeStub;
 import dev.goldmensch.propane.internal.Scopes;
-import dev.goldmensch.propane.internal.annotation.Specialized;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.SpecificProperty;
 
-public abstract class Introspection {
+public abstract class Introspection<SP extends SpecificProperty<?>> {
     private final Property.Scope scope;
-    private final Resolver resolver;
+    private final Resolver<SP, Introspection<SP>> resolver;
 
-    // called by Builder#build
-    private Introspection(Property.Scope scope, Properties properties, Introspection parent) {
+    // called by Builder#newInstance
+    @SuppressWarnings("unchecked")
+    protected Introspection(Property.Scope scope, Properties<SP, ? extends Introspection<SP>> properties, Introspection<SP> parent) {
         this.scope = scope;
-        this.resolver = parent.resolver.createChild(properties, this);
+
+        // cast is fine, but needed since we have ? extends Introspection<SP, ?> vs. Introspection<SP, ?>
+        this.resolver = parent.resolver.createChild((Properties<SP, Introspection<SP>>) properties, this);
     }
 
     // called by create(Scope)
-    private Introspection() {
+    protected Introspection() {
         this.scope = ScopeStub.INSTANCE;
-        this.resolver = Resolver.EMPTY;
+        this.resolver = Resolver.createEmpty();
     }
 
     // --- must be added by annotation processor
@@ -30,9 +32,8 @@ public abstract class Introspection {
 //    }
 
     // overridden with real SpecificProperty implementation
-    @SuppressWarnings("unchecked")
     public <T> T get(SpecificProperty<T> specific) {
-        Property<T> property = (Property<T>) specific;
+        Property<T> property = specific.generalized();
         Property.Scope propertyScope = property.scope();
         if (!Scopes.isChild(propertyScope, scope)) {
             throw new RuntimeException("scope (%s) of property (%s) isn't child of or equal to introspection scope %s".formatted(propertyScope, property.name(), scope));
@@ -43,34 +44,39 @@ public abstract class Introspection {
 
     // body:
     // return this.new Builder(scope);
-    // overridden with real Builder implementation
-    public abstract Builder createChild(Property.Scope scope);
+    // overridden with real Builder implementation and real Builder implementation
+    public abstract <B extends Builder<B, Introspection<SP>, ?>> B createChild(Property.Scope scope);
 
-    public abstract class Builder {
-        private final Properties properties;
-        private final Property.Scope scope;
+    public abstract class Builder<SELF extends Builder<SELF, INTROSPECTION, PROVIDER>, INTROSPECTION extends Introspection<SP>, PROVIDER extends PropertyProvider<?, ?, SP, INTROSPECTION>> {
+        protected final Properties<SP, INTROSPECTION> properties;
+        protected final Property.Scope scope;
 
-        private Builder(Property.Scope scope) {
+        protected Builder(Property.Scope scope) {
             this.scope = scope;
-            this.properties = new Properties(scope);
+            this.properties = new Properties<>(scope);
         }
 
-        @Specialized
-        public Builder add(PropertyProvider<?> provider) {
+        public SELF add(PROVIDER provider) {
             properties.add(provider);
-            return this;
+            return self();
         }
 
-        private void validate() {
+        public INTROSPECTION build() {
             if (!Scopes.isChild(scope, Introspection.this.scope)) {
                 throw new RuntimeException("Child scope must be equal or subscope of parent scope");
             }
+
+            return newInstance();
         }
 
-        // body:
-        // validate()
+        @SuppressWarnings("unchecked")
+        private SELF self() {
+            return (SELF) this;
+        }
+
         // return new Introspection(scope, properties, Introspection.this);
-        // overridden with real Introspection instance
-        public abstract Introspection build();
+        protected abstract INTROSPECTION newInstance();
+
+
     }
 }

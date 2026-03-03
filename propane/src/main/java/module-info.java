@@ -6,4 +6,5 @@ module dev.goldmensch.propane {
 
     exports dev.goldmensch.propane;
     exports dev.goldmensch.propane.property;
+    exports dev.goldmensch.propane.internal.exposed;
 }

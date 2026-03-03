@@ -1,17 +1,73 @@
 package dev.goldmensch.propane;
 
 import dev.goldmensch.propane.property.Property;
+import dev.goldmensch.propane.property.SpecificProperty;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.function.Function;
 
-public record PropertyProvider<T>(
-        Property<T> property,
-        Priority priority,
-        Class<?> owner,
-        Function<Introspection, @Nullable T> supplier
-) {
+public abstract class PropertyProvider<T, PROPERTY extends SpecificProperty<T>, PROPERTY_WILDCARD extends SpecificProperty<?>, INTROSPECTION extends Introspection<PROPERTY_WILDCARD>> {
+    private final PROPERTY property;
+    private final Priority priority;
+    private final Class<?> owner;
+    private final Function<INTROSPECTION, @Nullable T> supplier;
+
+    public PropertyProvider(
+            PROPERTY property,
+            Priority priority,
+            Class<?> owner,
+            Function<INTROSPECTION, @Nullable T> supplier
+    ) {
+        this.property = property;
+        this.priority = priority;
+        this.owner = owner;
+        this.supplier = supplier;
+    }
+
+    public PROPERTY property() {
+        return property;
+    }
+
+    public Priority priority() {
+        return priority;
+    }
+
+    public Class<?> owner() {
+        return owner;
+    }
+
+    public Function<INTROSPECTION, @Nullable T> supplier() {
+        return supplier;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (PropertyProvider<?, ?, ?, ?>) obj;
+        return Objects.equals(this.property, that.property) &&
+                Objects.equals(this.priority, that.priority) &&
+                Objects.equals(this.owner, that.owner) &&
+                Objects.equals(this.supplier, that.supplier);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(property, priority, owner, supplier);
+    }
+
+    @Override
+    public String toString() {
+        return "PropertyProvider[" +
+                "property=" + property + ", " +
+                "priority=" + priority + ", " +
+                "owner=" + owner + ", " +
+                "supplier=" + supplier + ']';
+    }
+
+
     public static class Priority implements Comparable<Priority> {
         public static final Priority FALLBACK = new Priority(0);
         public static final Priority BUILDER = new Priority(Integer.MAX_VALUE);
