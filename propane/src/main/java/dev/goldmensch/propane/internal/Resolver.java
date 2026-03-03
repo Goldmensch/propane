@@ -13,22 +13,22 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Resolver<SP extends SpecificProperty<?>, INTROSPECTION extends Introspection<SP>> {
+public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION>> {
     private static final ProviderExecutor executor = new ProviderExecutor();
 
     private final @Nullable INTROSPECTION introspection;
-    private final @Nullable Resolver<SP, INTROSPECTION> parent;
+    private final @Nullable Resolver<INTROSPECTION> parent;
     private final ConcurrentHashMap<Property<?>, Object> cache = new ConcurrentHashMap<>();
     private final Map<Property<?>, List<Special<?>>> providers;
 
     // if introspection and parent == null -> EMPTY resolver, get() -> always Optional.empty()
-    private Resolver(@Nullable INTROSPECTION introspection, @Nullable Resolver<SP, INTROSPECTION> parent, dev.goldmensch.propane.internal.exposed.Properties<SP, INTROSPECTION> properties) {
+    private Resolver(@Nullable INTROSPECTION introspection, @Nullable Resolver<INTROSPECTION> parent, dev.goldmensch.propane.internal.exposed.Properties<INTROSPECTION> properties) {
         this.introspection = introspection;
         this.parent = parent;
         this.providers = copy(properties.providers());
     }
 
-    private Map<Property<?>, List<Special<?>>> copy(Map<SP, List<PropertyProvider<?, ?, SP, INTROSPECTION>>> oldMap) {
+    private Map<Property<?>, List<Special<?>>> copy(Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> oldMap) {
         Map<Property<?>, List<Special<?>>> newMap = new HashMap<>();
         oldMap.forEach((property, providers) -> {
             List<Special<?>> list = providers.stream()
@@ -36,27 +36,28 @@ public class Resolver<SP extends SpecificProperty<?>, INTROSPECTION extends Intr
                     .sorted(Comparator.comparing(PropertyProvider::priority))
                     .collect(Collectors.toUnmodifiableList());
 
-            newMap.put(property.generalized(), list);
+            newMap.put(property, list);
         });
 
         return Collections.unmodifiableMap(newMap);
     }
 
-    private <T> Special<?> from(PropertyProvider<T, ?, SP, INTROSPECTION> provider) {
+    private <T> Special<?> from(PropertyProvider<T, ?, INTROSPECTION> provider) {
         return new Special<>(provider.property(), provider.priority(), provider.owner(), provider.supplier());
     }
 
-    private final class Special<T> extends PropertyProvider<T, SpecificProperty<T>, SP, INTROSPECTION> {
+    private final class Special<T> extends PropertyProvider<T, SpecificProperty<T>, INTROSPECTION> {
         public Special(SpecificProperty<T> property, Priority priority, Class<?> owner, Function<INTROSPECTION, T> supplier) {
             super(property, priority, owner, supplier);
         }
     }
 
-    public static <SP extends SpecificProperty<?>, INTROSPECTION extends Introspection<SP>> Resolver<SP, INTROSPECTION> createEmpty() {
-        return new Resolver<>(null, null, new Properties<>(ScopeStub.INSTANCE));
+    @SuppressWarnings("Convert2Diamond") // Resolver<INTROSPECTION> needed by javac
+    public static <INTROSPECTION extends Introspection<INTROSPECTION>> Resolver<INTROSPECTION> createEmpty() {
+        return new Resolver<INTROSPECTION>(null, null, new Properties<>(ScopeStub.INSTANCE));
     }
 
-    public Resolver<SP, INTROSPECTION> createChild(Properties<SP, INTROSPECTION> additional, INTROSPECTION child) {
+    public Resolver<INTROSPECTION> createChild(Properties<INTROSPECTION> additional, INTROSPECTION child) {
         return new Resolver<>(child, this, additional);
     }
 

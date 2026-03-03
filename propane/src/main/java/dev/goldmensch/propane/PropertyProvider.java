@@ -1,6 +1,5 @@
 package dev.goldmensch.propane;
 
-import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.SpecificProperty;
 import org.jspecify.annotations.Nullable;
 
@@ -8,7 +7,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Function;
 
-public abstract class PropertyProvider<T, PROPERTY extends SpecificProperty<T>, PROPERTY_WILDCARD extends SpecificProperty<?>, INTROSPECTION extends Introspection<PROPERTY_WILDCARD>> {
+public class PropertyProvider<T, PROPERTY extends SpecificProperty<T>, INTROSPECTION extends Introspection<?>> {
     private final PROPERTY property;
     private final Priority priority;
     private final Class<?> owner;
@@ -46,7 +45,7 @@ public abstract class PropertyProvider<T, PROPERTY extends SpecificProperty<T>, 
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (PropertyProvider<?, ?, ?, ?>) obj;
+        var that = (PropertyProvider<?, ?, ?>) obj;
         return Objects.equals(this.property, that.property) &&
                 Objects.equals(this.priority, that.priority) &&
                 Objects.equals(this.owner, that.owner) &&

@@ -1,6 +1,7 @@
 package logic;
 
 
+import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.*;
 import org.junit.Assert;

@@ -8,16 +8,16 @@ import dev.goldmensch.propane.property.SpecificProperty;
 
 import java.util.*;
 
-public class Properties<SP extends SpecificProperty<?>, INTROSPECTION extends Introspection<SP>> {
+public class Properties<INTROSPECTION extends Introspection<?>> {
     private final Property.Scope scope;
-    private final Map<SP, List<PropertyProvider<?, ?, SP, INTROSPECTION>>> providers = new HashMap<>();
+    private final Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> providers = new HashMap<>();
 
     public Properties(Property.Scope scope) {
         this.scope = scope;
     }
 
     /// validates property and provider invariants
-    private void validate(PropertyProvider<?, ?, ?, ?> provider) {
+    private void validate(PropertyProvider<?, ?, ?> provider) {
         PropertyProvider.Priority priority = provider.priority();
         Property<?> property = provider.property().generalized();
         Property.Source source = property.source();
@@ -42,20 +42,18 @@ public class Properties<SP extends SpecificProperty<?>, INTROSPECTION extends In
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void add(PropertyProvider<?, ?, SP, INTROSPECTION> provider) {
+    public void add(PropertyProvider<?, ?, INTROSPECTION> provider) {
         validate(provider);
 
-        // cast fine, because SpecificProperty<T> is in bound of SpecificProperty<?>
-        list((SP) provider.property()).addFirst(provider);
+        list(provider.property().generalized()).addFirst(provider);
     }
 
-    private List<PropertyProvider<?, ?, SP, INTROSPECTION>> list(SP property) {
+    private List<PropertyProvider<?, ?, INTROSPECTION>> list(Property<?> property) {
         return providers.computeIfAbsent(property, _ -> new LinkedList<>());
     }
 
     // exposes the providers
-    public Map<SP, List<PropertyProvider<?, ?, SP, INTROSPECTION>>> providers() {
+    public Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> providers() {
         return providers;
     }
 }
