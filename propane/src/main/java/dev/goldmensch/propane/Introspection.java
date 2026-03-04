@@ -7,6 +7,7 @@ import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.SpecificProperty;
 
+// I've got insane with that. But it had to be typesafe. It just had to be.
 public abstract class Introspection<I_SELF extends Introspection<I_SELF, BUILDER, PROVIDER>, BUILDER extends Introspection<I_SELF, BUILDER, PROVIDER>.Builder, PROVIDER extends PropertyProvider<?, ?, I_SELF>> {
     private final Property.Scope scope;
     final Resolver<I_SELF> resolver;
