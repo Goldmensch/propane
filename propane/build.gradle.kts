@@ -6,6 +6,10 @@ plugins {
 
 dependencies {
     api(libs.org.jspecify)
+
+    api("com.palantir.javapoet:javapoet:0.12.0")
+
+    testAnnotationProcessor(project(":propane"))
 }
 
 description = "A java framework for library configuration and service registration."
