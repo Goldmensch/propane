@@ -7,7 +7,7 @@ import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.SpecificProperty;
 
-public abstract class Introspection<I_SELF extends Introspection<I_SELF>> {
+public abstract class Introspection<I_SELF extends Introspection<I_SELF, BUILDER, PROVIDER>, BUILDER extends Introspection<I_SELF, BUILDER, PROVIDER>.Builder, PROVIDER extends PropertyProvider<?, ?, I_SELF>> {
     private final Property.Scope scope;
     final Resolver<I_SELF> resolver;
 
@@ -44,9 +44,9 @@ public abstract class Introspection<I_SELF extends Introspection<I_SELF>> {
     // body:
     // return this.new Builder(scope);
     // overridden with real Builder implementation and real Builder implementation
-    public abstract <B extends Builder<B, ?>> B createChild(Property.Scope scope);
+    public abstract BUILDER createChild(Property.Scope scope);
 
-    public abstract class Builder<SELF extends Builder<SELF, PROVIDER>, PROVIDER extends PropertyProvider<?, ?, I_SELF>> {
+    public abstract class Builder {
         protected final Properties<I_SELF> properties;
         protected final Property.Scope scope;
 
@@ -55,7 +55,7 @@ public abstract class Introspection<I_SELF extends Introspection<I_SELF>> {
             this.properties = new Properties<>(scope);
         }
 
-        public SELF add(PROVIDER provider) {
+        public BUILDER add(PROVIDER provider) {
             properties.add(provider);
             return self();
         }
@@ -69,8 +69,8 @@ public abstract class Introspection<I_SELF extends Introspection<I_SELF>> {
         }
 
         @SuppressWarnings("unchecked")
-        private SELF self() {
-            return (SELF) this;
+        private BUILDER self() {
+            return (BUILDER) this;
         }
 
         // return new Introspection(scope, properties, Introspection.this);

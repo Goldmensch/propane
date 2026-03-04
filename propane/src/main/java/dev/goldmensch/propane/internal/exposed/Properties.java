@@ -8,7 +8,7 @@ import dev.goldmensch.propane.property.SpecificProperty;
 
 import java.util.*;
 
-public class Properties<INTROSPECTION extends Introspection<?>> {
+public class Properties<INTROSPECTION extends Introspection<?, ?, ?>> {
     private final Property.Scope scope;
     private final Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> providers = new HashMap<>();
 

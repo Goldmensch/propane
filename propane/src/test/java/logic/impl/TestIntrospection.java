@@ -4,7 +4,7 @@ import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.property.Property;
 
-public class TestIntrospection extends Introspection<TestIntrospection>  {
+public class TestIntrospection extends Introspection<TestIntrospection, TestIntrospection.TestBuilder, TestPropertyProvider<?>>  {
 
     private static final TestIntrospection EMPTY = new TestIntrospection();
 
@@ -30,7 +30,8 @@ public class TestIntrospection extends Introspection<TestIntrospection>  {
         return this.new TestBuilder(scope);
     }
 
-    public class TestBuilder extends Builder<TestBuilder, TestPropertyProvider<?>> {
+    // TestIntrospection.TestBuilder doesn't work, because of.. yeah idk
+    public class TestBuilder extends Introspection<TestIntrospection, TestBuilder, TestPropertyProvider<?>>.Builder {
         private TestBuilder(Property.Scope scope) {
             super(scope);
         }

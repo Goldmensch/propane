@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION>> {
+public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION, ?, ?>> {
     private static final ProviderExecutor executor = new ProviderExecutor();
 
     private final @Nullable INTROSPECTION introspection;
@@ -40,7 +40,7 @@ public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION>> {
     }
 
     @SuppressWarnings("Convert2Diamond") // Resolver<INTROSPECTION> needed by javac
-    public static <INTROSPECTION extends Introspection<INTROSPECTION>> Resolver<INTROSPECTION> createEmpty() {
+    public static <INTROSPECTION extends Introspection<INTROSPECTION, ?, ?>> Resolver<INTROSPECTION> createEmpty() {
         return new Resolver<INTROSPECTION>(null, null, new Properties<>(ScopeStub.INSTANCE));
     }
 
