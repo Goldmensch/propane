@@ -21,16 +21,12 @@ public class TestIntrospection extends Introspection<TestIntrospection, TestIntr
         return EMPTY.createChild(scope);
     }
 
-    public <T> T get(TestProperty<T> specific) {
-        return super.get(specific);
-    }
-
     @Override
     public TestBuilder createChild(Property.Scope scope) {
         return this.new TestBuilder(scope);
     }
 
-    // TestIntrospection.TestBuilder doesn't work, because of.. yeah idk
+    // TestIntrospection.TestBuilder doesn't work, because of... java generics
     public class TestBuilder extends Introspection<TestIntrospection, TestBuilder, TestPropertyProvider<?>>.Builder {
         private TestBuilder(Property.Scope scope) {
             super(scope);
