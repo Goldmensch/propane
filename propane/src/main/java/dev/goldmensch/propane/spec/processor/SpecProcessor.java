@@ -19,6 +19,8 @@ import java.util.stream.Stream;
 @SupportedSourceVersion(SourceVersion.RELEASE_25)
 public class SpecProcessor extends AbstractProcessor {
 
+    private final Map<Name, SpecMeta> metadata = new HashMap<>();
+
     private Messager messager;
     private Types types;
     private Elements elements;
@@ -41,18 +43,24 @@ public class SpecProcessor extends AbstractProcessor {
                 continue;
             }
 
-            PackageElement pkg = packageOf(klass);
+            PackageElement pkg = elements.getPackageOf(klass);
             DslGenerator dslGenerator = new DslGenerator(pkg, processingEnv.getFiler());
 
             SpecMeta meta = new SpecMeta(propane.value(), scopes.value(), klass.getSimpleName().toString());
+            metadata.put(((TypeElement) klass).getQualifiedName(), meta);
+
             dslGenerator.generate(meta);
         }
 
         for (Element scopeKlass : roundEnv.getElementsAnnotatedWith(GeneratedForSpec.class)) {
             AnnotationMirror ann = getAnnotation(scopeKlass, GeneratedForSpec.class.getSimpleName()).orElseThrow();
-            Element spec = getValue(ann, "spec").accept(new TypeMirrorExtractor(), null);
-            List<SpecProperty> properties = readProperties(spec);
-            messager.printError(properties.toString());
+            TypeElement spec = getValue(ann, "spec").accept(new TypeElementExtractor(), null);
+            List<? extends SpecProperty> properties = readProperties(spec);
+
+            messager.printNote(properties.toString());
+            messager.printNote(metadata.get(spec.getQualifiedName()).toString());
+
+
         }
 
         return true;
@@ -61,10 +69,6 @@ public class SpecProcessor extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         return Set.of(Propane.class.getName(), GeneratedForSpec.class.getName());
-    }
-
-    private PackageElement packageOf(Element element) {
-        return elements.getPackageOf(element);
     }
 
     private Optional<? extends AnnotationMirror> getAnnotation(Element element, String name) {
@@ -87,10 +91,10 @@ public class SpecProcessor extends AbstractProcessor {
         return getValue(mirror, name).accept(new EnumConstantExtract(), null);
     }
 
-    private class TypeMirrorExtractor extends SimpleAnnotationValueVisitor14<Element, Void> {
+    private class TypeElementExtractor extends SimpleAnnotationValueVisitor14<TypeElement, Void> {
         @Override
-        public Element visitType(TypeMirror t, Void unused) {
-            return types.asElement(t);
+        public TypeElement visitType(TypeMirror t, Void unused) {
+            return (TypeElement) types.asElement(t);
         }
     }
 
@@ -121,11 +125,11 @@ public class SpecProcessor extends AbstractProcessor {
             this::specMapping
     );
 
-    private List<SpecProperty> readProperties(Element klass) {
+    private List<? extends SpecProperty> readProperties(TypeElement klass) {
         return klass.getEnclosedElements()
                 .stream()
                 .filter(element -> element.getKind() == ElementKind.METHOD)
-                .<SpecProperty>flatMap(element -> {
+                .flatMap(element -> {
                     String name = element.getSimpleName().toString();
                     TypeMirror type = ((ExecutableElement) element).getReturnType();
 
