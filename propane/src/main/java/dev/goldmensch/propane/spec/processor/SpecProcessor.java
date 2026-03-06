@@ -1,25 +1,58 @@
 package dev.goldmensch.propane.spec.processor;
 
+import dev.goldmensch.propane.property.Property;
+import dev.goldmensch.propane.spec.annotation.GeneratedForSpec;
 import dev.goldmensch.propane.spec.annotation.Propane;
 import dev.goldmensch.propane.spec.annotation.Scopes;
-import dev.goldmensch.propane.spec.processor.syntax.SpecMeta;
+import dev.goldmensch.propane.spec.processor.syntax.*;
+import dev.goldmensch.propane.spec.processor.util.TriFunction;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
-import java.util.Set;
+import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.*;
+import java.util.*;
+import java.util.stream.Stream;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_25)
 public class SpecProcessor extends AbstractProcessor {
 
+    private Messager messager;
+    private Types types;
+    private Elements elements;
+
+    @Override
+    public synchronized void init(ProcessingEnvironment processingEnv) {
+        super.init(processingEnv);
+        this.messager = processingEnv.getMessager();
+        this.types = processingEnv.getTypeUtils();
+        this.elements = processingEnv.getElementUtils();
+    }
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        for (Element klasses : roundEnv.getElementsAnnotatedWith(Propane.class)) {
-            generateDSL(klasses);
+        for (Element klass : roundEnv.getElementsAnnotatedWith(Propane.class)) {
+            Scopes scopes = klass.getAnnotation(Scopes.class);
+            Propane propane = klass.getAnnotation(Propane.class);
+            if (scopes == null || propane == null) {
+                messager.printError("@Scope and @Propane must be present on property spec class!", klass);
+                continue;
+            }
+
+            PackageElement pkg = packageOf(klass);
+            DslGenerator dslGenerator = new DslGenerator(pkg, processingEnv.getFiler());
+
+            SpecMeta meta = new SpecMeta(propane.value(), scopes.value(), klass.getSimpleName().toString());
+            dslGenerator.generate(meta);
+        }
+
+        for (Element scopeKlass : roundEnv.getElementsAnnotatedWith(GeneratedForSpec.class)) {
+            AnnotationMirror ann = getAnnotation(scopeKlass, GeneratedForSpec.class.getSimpleName()).orElseThrow();
+            Element spec = getValue(ann, "spec").accept(new TypeMirrorExtractor(), null);
+            List<SpecProperty> properties = readProperties(spec);
+            messager.printError(properties.toString());
         }
 
         return true;
@@ -27,21 +60,155 @@ public class SpecProcessor extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return Set.of(Propane.class.getName());
+        return Set.of(Propane.class.getName(), GeneratedForSpec.class.getName());
     }
 
-    private void generateDSL(Element klass) {
-        PackageElement klassPackage = processingEnv.getElementUtils().getPackageOf(klass);
+    private PackageElement packageOf(Element element) {
+        return elements.getPackageOf(element);
+    }
 
-        Scopes scopes = klass.getAnnotation(Scopes.class);
-        Propane propane = klass.getAnnotation(Propane.class);
-        if (scopes == null || propane == null) {
-            processingEnv.getMessager().printError("@Scope and @Propane must be present on property spec class!", klass);
-            return;
+    private Optional<? extends AnnotationMirror> getAnnotation(Element element, String name) {
+        return element.getAnnotationMirrors()
+                .stream()
+                .filter(mirror -> mirror.getAnnotationType().asElement().getSimpleName().contentEquals(name))
+                .findFirst();
+    }
+
+    private AnnotationValue getValue(AnnotationMirror mirror, String name) {
+        return mirror.getElementValues().entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().getSimpleName().contentEquals(name))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private String getEnumConstant(AnnotationMirror mirror, String name) {
+        return getValue(mirror, name).accept(new EnumConstantExtract(), null);
+    }
+
+    private class TypeMirrorExtractor extends SimpleAnnotationValueVisitor14<Element, Void> {
+        @Override
+        public Element visitType(TypeMirror t, Void unused) {
+            return types.asElement(t);
         }
-
-        SpecMeta meta = new SpecMeta(propane.value(), scopes.value());
-
-        new DSLGenerator(klassPackage, processingEnv.getFiler()).generate(meta);
     }
+
+    private static class EnumConstantExtract extends SimpleAnnotationValueVisitor14<String, Void> {
+        @Override
+        public String visitEnumConstant(VariableElement c, Void unused) {
+            return c.getSimpleName().toString();
+        }
+    }
+
+    private class TypeArgumentExtractor extends SimpleTypeVisitor14<List<TypeElement>, Void> {
+        @Override
+        public List<TypeElement> visitDeclared(DeclaredType t, Void unused) {
+            return t.getTypeArguments()
+                    .stream()
+                    .map(typeMirror -> (TypeElement) types.asElement(typeMirror))
+                    .toList();
+        }
+    }
+
+    private TypeMirror asType(Class<?> klass) {
+        return elements.getTypeElement(klass.getName()).asType();
+    }
+
+    private final List<TriFunction<String, TypeMirror, Element, Optional<? extends SpecProperty>>> specExtractors = List.of(
+            this::specSingleton,
+            this::specCollection,
+            this::specMapping
+    );
+
+    private List<SpecProperty> readProperties(Element klass) {
+        return klass.getEnclosedElements()
+                .stream()
+                .filter(element -> element.getKind() == ElementKind.METHOD)
+                .<SpecProperty>flatMap(element -> {
+                    String name = element.getSimpleName().toString();
+                    TypeMirror type = ((ExecutableElement) element).getReturnType();
+
+                    for (var specExtractor : specExtractors) {
+                        Optional<? extends SpecProperty> result = specExtractor.accept(name, type, element);
+                        if (result.isPresent()) {
+                            return result.stream();
+                        }
+                    }
+
+                    return Stream.empty();
+                })
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
+    private Optional<SpecSingleton> specSingleton(String name, TypeMirror type, Element element) {
+        return getAnnotation(element, SpecSingleton.ANNOTATION)
+                .map(mirror -> new SpecSingleton(
+                        name,
+                        Property.Source.valueOf(getEnumConstant(mirror, "source")),
+                        getEnumConstant(mirror, "scope"),
+                        (TypeElement) types.asElement(type)
+                ));
+    }
+
+    private boolean isDifferentTypeErased(TypeMirror one, TypeMirror other) {
+        return !types.isSameType(types.erasure(one), types.erasure(other));
+    }
+
+    private Optional<SpecEnumeration> specCollection(String name, TypeMirror type, Element element) {
+        return getAnnotation(element, SpecEnumeration.ANNOTATION)
+                .flatMap(mirror -> {
+                    if (isDifferentTypeErased(type, asType(Collection.class))) {
+                        messager.printError("@Collection property method must have return type Collection<TYPE>!");
+                        return Optional.empty();
+                    }
+
+                    List<TypeElement> typeArgument = type.accept(new TypeArgumentExtractor(), null);
+                    if (typeArgument.isEmpty()) {
+                        messager.printError("Collection must have type parameter!");
+                        return Optional.empty();
+                    }
+
+
+                    SpecEnumeration spec = new SpecEnumeration(
+                            name,
+                            Property.Source.valueOf(getEnumConstant(mirror, "source")),
+                            getEnumConstant(mirror, "scope"),
+                            typeArgument.getFirst(),
+                            Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback"))
+                    );
+                    return Optional.of(spec);
+                });
+    }
+
+    private Optional<SpecMapping> specMapping(String name, TypeMirror type, Element element) {
+        return getAnnotation(element, SpecMapping.ANNOTATION)
+                .flatMap(mirror -> {
+                    if (isDifferentTypeErased(type, asType(Map.class))) {
+                        messager.printError("@Mapping property method must have return type Map<KEY_TYPE, VALUE_TYPE>!");
+                        return Optional.empty();
+                    }
+
+                    List<TypeElement> typeArgument = type.accept(new TypeArgumentExtractor(), null);
+                    if (typeArgument.size() < 2) {
+                        messager.printError("Map must have type parameters!");
+                        return Optional.empty();
+                    }
+
+
+                    SpecMapping spec = new SpecMapping(
+                            name,
+                            Property.Source.valueOf(getEnumConstant(mirror, "source")),
+                            getEnumConstant(mirror, "scope"),
+                            typeArgument.get(0),
+                            typeArgument.get(1),
+                            Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback"))
+                    );
+                    return Optional.of(spec);
+                });
+    }
+
+
+
 }

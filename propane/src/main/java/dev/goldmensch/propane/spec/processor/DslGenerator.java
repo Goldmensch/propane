@@ -2,13 +2,16 @@ package dev.goldmensch.propane.spec.processor;
 
 import com.palantir.javapoet.*;
 import dev.goldmensch.propane.property.Property;
+import dev.goldmensch.propane.spec.annotation.GeneratedForSpec;
+import dev.goldmensch.propane.spec.processor.syntax.SpecEnumeration;
+import dev.goldmensch.propane.spec.processor.syntax.SpecMapping;
 import dev.goldmensch.propane.spec.processor.syntax.SpecMeta;
+import dev.goldmensch.propane.spec.processor.syntax.SpecSingleton;
 import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
-import java.io.IOException;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -16,40 +19,32 @@ import java.lang.annotation.Target;
 import java.util.List;
 import java.util.function.Function;
 
-public class DSLGenerator {
+class DslGenerator extends AbstractGenerator {
 
-    private final List<Function<SpecMeta, JavaFile>> generators = List.of(
-            this::generateScope,
-            this::generateSingleton,
-            meta -> generateMulti(meta, "Collection"),
-            meta -> generateMulti(meta, "Map")
-    );
-
-
-    private final String packageName;
-    private final Filer filer;
     private @Nullable ClassName scopeClass;
 
-    public DSLGenerator(PackageElement pkg, Filer filer) {
-        this.packageName = pkg.getQualifiedName().toString();
-        this.filer = filer;
+    DslGenerator(PackageElement pkg, Filer filer) {
+        super(pkg, filer);
     }
 
-    public void generate(SpecMeta meta) {
-        for (Function<SpecMeta, JavaFile> generator : generators) {
-            JavaFile file = generator.apply(meta);
-            try {
-                file.writeTo(filer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    @Override
+    List<Function<SpecMeta, TypeSpec>> generators() {
+        return List.of(
+                this::generateScope,
+                this::generateSingleton,
+                _ -> generateMulti(SpecEnumeration.ANNOTATION),
+                _ -> generateMulti(SpecMapping.ANNOTATION)
+        );
     }
 
-    private JavaFile generateScope(SpecMeta meta) {
+    private TypeSpec generateScope(SpecMeta meta) {
+        var specClass = ClassName.get(packageName, meta.specClass());
         this.scopeClass = ClassName.get(packageName, meta.prefix() + "Scope");
 
         TypeSpec.Builder builder = TypeSpec.enumBuilder(scopeClass)
+                .addAnnotation(AnnotationSpec.builder(GeneratedForSpec.class)
+                        .addMember("spec", "$T.class", specClass)
+                        .build())
                 .addSuperinterface(Property.Scope.class);
 
         for (String name : meta.scopes()) {
@@ -63,9 +58,7 @@ public class DSLGenerator {
                 .addAnnotation(Override.class)
                 .build());
 
-
-
-        return JavaFile.builder(packageName, builder.build()).build();
+        return builder.build();
     }
 
     private TypeSpec.Builder annotationBuilder(String name) {
@@ -86,21 +79,17 @@ public class DSLGenerator {
                         .build());
     }
 
-    private JavaFile generateSingleton(SpecMeta meta) {
-        TypeSpec typeSpec = annotationBuilder("Singleton").build();
-
-        return JavaFile.builder(packageName, typeSpec).build();
+    private TypeSpec generateSingleton(SpecMeta meta) {
+        return annotationBuilder(SpecSingleton.ANNOTATION).build();
     }
 
-    private JavaFile generateMulti(SpecMeta meta, String name) {
-        TypeSpec typeSpec = annotationBuilder(name)
-                .addMethod(MethodSpec.methodBuilder("fallbackBehaviour")
+    private TypeSpec generateMulti(String name) {
+        return annotationBuilder(name)
+                .addMethod(MethodSpec.methodBuilder("fallback")
                         .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                         .returns(Property.FallbackBehaviour.class)
                         .build()
                 )
                 .build();
-
-        return JavaFile.builder(packageName, typeSpec).build();
     }
 }
