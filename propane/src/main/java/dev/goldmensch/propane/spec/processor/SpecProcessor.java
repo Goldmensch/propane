@@ -6,6 +6,7 @@ import dev.goldmensch.propane.spec.annotation.Propane;
 import dev.goldmensch.propane.spec.annotation.Scopes;
 import dev.goldmensch.propane.spec.processor.syntax.*;
 import dev.goldmensch.propane.spec.processor.util.TriFunction;
+import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -36,6 +37,11 @@ public class SpecProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (Element klass : roundEnv.getElementsAnnotatedWith(Propane.class)) {
+            Name qualifiedName = ((TypeElement) klass).getQualifiedName();
+            if (metadata.containsKey(qualifiedName)) {
+                continue; // already run in previous round
+            }
+            
             Scopes scopes = klass.getAnnotation(Scopes.class);
             Propane propane = klass.getAnnotation(Propane.class);
             if (scopes == null || propane == null) {
@@ -46,8 +52,13 @@ public class SpecProcessor extends AbstractProcessor {
             PackageElement pkg = elements.getPackageOf(klass);
             DslGenerator dslGenerator = new DslGenerator(pkg, processingEnv.getFiler());
 
-            SpecMeta meta = new SpecMeta(propane.value(), scopes.value(), klass.getSimpleName().toString());
-            metadata.put(((TypeElement) klass).getQualifiedName(), meta);
+            String prefix = getPrefix(propane, klass.getSimpleName().toString());
+            if (prefix == null) {
+                continue;
+            }
+
+            SpecMeta meta = new SpecMeta(prefix, scopes.value(), klass.getSimpleName().toString());
+            metadata.put(qualifiedName, meta);
 
             dslGenerator.generate(meta);
         }
@@ -64,6 +75,21 @@ public class SpecProcessor extends AbstractProcessor {
         }
 
         return true;
+    }
+
+    private @Nullable String getPrefix(Propane propane, String simpleClassName) {
+        String annValue = propane.value();
+        if (annValue.isEmpty()) {
+            if (!simpleClassName.endsWith("PropertySpec")) {
+                messager.printError("Classname of property specification must end with 'PropertySpec' if prefix should be extracted!");
+                return null;
+            }
+
+            int last = simpleClassName.lastIndexOf("PropertySpec");
+            return simpleClassName.substring(0, last);
+        }
+
+        return annValue;
     }
 
     @Override

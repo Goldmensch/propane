@@ -7,7 +7,7 @@ import dev.goldmensch.propane.spec.annotation.*;
 import java.util.Collection;
 import java.util.Map;
 
-@Propane("Bar")
+@Propane
 @Scopes("ROOT")
 public interface BarPropertySpec {
 

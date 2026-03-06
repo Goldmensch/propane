@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface Propane {
-    // the prefix, e.g. JDAC
-    String value();
+    // the prefix, e.g. JDAC --- if empty -> prefix extracted from name PREFIXPropertySpec
+    String value() default "";
 }
