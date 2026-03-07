@@ -1,4 +1,4 @@
-package dev.goldmensch.propane.spec.processor;
+package dev.goldmensch.propane.spec.processor.generator;
 
 import com.palantir.javapoet.*;
 import dev.goldmensch.propane.property.Property;
@@ -19,16 +19,16 @@ import java.lang.annotation.Target;
 import java.util.List;
 import java.util.function.Function;
 
-class DslGenerator extends AbstractGenerator {
+public class DslGenerator extends AbstractGenerator<SpecMeta> {
 
     private @Nullable ClassName scopeClass;
 
-    DslGenerator(PackageElement pkg, Filer filer) {
+    public DslGenerator(PackageElement pkg, Filer filer) {
         super(pkg, filer);
     }
 
     @Override
-    List<Function<SpecMeta, TypeSpec>> generators() {
+    List<Function<SpecMeta, TypeSpec>> generators(SpecMeta meta) {
         return List.of(
                 this::generateScope,
                 this::generateSingleton,

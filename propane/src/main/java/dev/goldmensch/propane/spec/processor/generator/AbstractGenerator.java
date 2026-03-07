@@ -1,4 +1,4 @@
-package dev.goldmensch.propane.spec.processor;
+package dev.goldmensch.propane.spec.processor.generator;
 
 import com.palantir.javapoet.JavaFile;
 import com.palantir.javapoet.TypeSpec;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
 
-abstract class AbstractGenerator {
+abstract class AbstractGenerator<T> {
 
     protected final String packageName;
     private final Filer filer;
@@ -25,8 +25,8 @@ abstract class AbstractGenerator {
         this.filer = filer;
     }
 
-    void generate(SpecMeta meta) {
-        for (Function<SpecMeta, TypeSpec> generator : generators()) {
+    public void generate(T meta) {
+        for (Function<T, TypeSpec> generator : generators(meta)) {
             TypeSpec spec = generator.apply(meta);
             JavaFile file = JavaFile.builder(packageName, spec).build();
             try {
@@ -37,5 +37,5 @@ abstract class AbstractGenerator {
         }
     }
 
-    abstract List<Function<SpecMeta, TypeSpec>> generators();
+    abstract List<Function<T, TypeSpec>> generators(T meta);
 }

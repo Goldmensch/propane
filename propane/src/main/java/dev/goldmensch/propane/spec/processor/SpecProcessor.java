@@ -4,6 +4,8 @@ import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.spec.annotation.GeneratedForSpec;
 import dev.goldmensch.propane.spec.annotation.Propane;
 import dev.goldmensch.propane.spec.annotation.Scopes;
+import dev.goldmensch.propane.spec.processor.generator.DslGenerator;
+import dev.goldmensch.propane.spec.processor.generator.PropertyGenerator;
 import dev.goldmensch.propane.spec.processor.syntax.*;
 import dev.goldmensch.propane.spec.processor.util.TriFunction;
 import org.jspecify.annotations.Nullable;
@@ -67,6 +69,10 @@ public class SpecProcessor extends AbstractProcessor {
             AnnotationMirror ann = getAnnotation(scopeKlass, GeneratedForSpec.class.getSimpleName()).orElseThrow();
             TypeElement spec = getValue(ann, "spec").accept(new TypeElementExtractor(), null);
             List<? extends SpecProperty> properties = readProperties(spec);
+
+            PropertyGenerator generator = new PropertyGenerator(elements.getPackageOf(spec), processingEnv.getFiler());
+            SpecMeta specMeta = metadata.get(spec.getQualifiedName());
+            generator.generate(new PropertyGenerator.PropertyMeta(specMeta, properties, scopeKlass.asType()));
 
             messager.printNote(properties.toString());
             messager.printNote(metadata.get(spec.getQualifiedName()).toString());
