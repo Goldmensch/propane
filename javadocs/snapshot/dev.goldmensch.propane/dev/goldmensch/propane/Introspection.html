@@ -61,6 +61,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#accessScoped()" tabindex="0">accessScoped()</a></li>
 <li><a href="#scopedGet(dev.goldmensch.propane.property.SpecificProperty)" tabindex="0">scopedGet(SpecificProperty)</a></li>
 <li><a href="#get(dev.goldmensch.propane.property.SpecificProperty)" tabindex="0">get(SpecificProperty)</a></li>
+<li><a href="#scope()" tabindex="0">scope()</a></li>
 </ol>
 </li>
 </ol>
@@ -68,7 +69,7 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<h1 title="Interface Introspection" class="title">Interface Introspection</h1>
+<h1 title="Interface Introspection" class="title">Interface Introspection&lt;<span id="type-param-S">S extends <a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a></span>&gt;</h1>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
@@ -77,7 +78,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Introspection</span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Introspection&lt;S extends <a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&gt;</span></div>
 </div>
 </section>
 <section class="summary">
@@ -96,15 +97,18 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#accessible()" class="member-name-link">accessible</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a><wbr>&lt;?&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#accessScoped()" class="member-name-link">accessScoped</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>&lt;T&gt;&nbsp;T</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#get(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">get</a><wbr>(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;specific)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;T</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#scopedGet(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">scopedGet</a><wbr>(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;property)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#type-param-S" title="type parameter in Introspection">S</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#scope()" class="member-name-link">scope</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;T</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#scopedGet(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">scopedGet</a><wbr>(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;property)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -131,7 +135,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="accessScoped()">
 <h3>accessScoped</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></span>&nbsp;<span class="element-name">accessScoped</span>()</div>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;?&gt;</span>&nbsp;<span class="element-name">accessScoped</span>()</div>
 </div>
 </section>
 </li>
@@ -148,6 +152,14 @@ loadScripts(document, 'script');</script>
 <h3>get</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">get</span><wbr><span class="parameters">(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;specific)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="scope()">
+<h3>scope</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="return-type"><a href="#type-param-S" title="type parameter in Introspection">S</a></span>&nbsp;<span class="element-name">scope</span>()</div>
 </div>
 </section>
 </li>

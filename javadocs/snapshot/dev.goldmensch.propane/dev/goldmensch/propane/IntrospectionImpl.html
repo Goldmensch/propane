@@ -67,6 +67,7 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#create(dev.goldmensch.propane.property.Property.Scope)" tabindex="0">create(Property.Scope)</a></li>
 <li><a href="#get(dev.goldmensch.propane.property.SpecificProperty)" tabindex="0">get(SpecificProperty)</a></li>
+<li><a href="#scope()" tabindex="0">scope()</a></li>
 <li><a href="#createChild(S)" tabindex="0">createChild(S)</a></li>
 </ol>
 </li>
@@ -75,7 +76,7 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<h1 title="Class IntrospectionImpl" class="title">Class IntrospectionImpl&lt;<span id="type-param-I_SELF">I_SELF extends IntrospectionImpl&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;</span>, <span id="type-param-I">I extends <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></span>, <span id="type-param-B">B extends IntrospectionImpl&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;.<a href="IntrospectionImpl.Builder.html" title="class in dev.goldmensch.propane">Builder</a></span>, <span id="type-param-S">S extends <a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a></span>&gt;</h1>
+<h1 title="Class IntrospectionImpl" class="title">Class IntrospectionImpl&lt;<span id="type-param-I_SELF">I_SELF extends IntrospectionImpl&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;</span>, <span id="type-param-I">I extends <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;S&gt;</span>, <span id="type-param-B">B extends IntrospectionImpl&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;.<a href="IntrospectionImpl.Builder.html" title="class in dev.goldmensch.propane">Builder</a></span>, <span id="type-param-S">S extends <a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a></span>&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance">dev.goldmensch.propane.IntrospectionImpl&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;</div>
@@ -83,13 +84,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></code></dd>
+<dd><code><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;S&gt;</code></dd>
 </dl>
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">IntrospectionImpl&lt;I_SELF extends IntrospectionImpl&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;, I extends <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>, B extends IntrospectionImpl&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;.<a href="IntrospectionImpl.Builder.html" title="class in dev.goldmensch.propane">Builder</a>, S extends <a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&gt;</span>
+<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">IntrospectionImpl&lt;I_SELF extends IntrospectionImpl&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;, I extends <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;S&gt;, B extends IntrospectionImpl&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;.<a href="IntrospectionImpl.Builder.html" title="class in dev.goldmensch.propane">Builder</a>, S extends <a href="property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></span></div>
+implements <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;S&gt;</span></div>
 </div>
 </section>
 <section class="summary">
@@ -149,6 +150,9 @@ implements <a href="Introspection.html" title="interface in dev.goldmensch.propa
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;T</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">get</a><wbr>(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;specific)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scope()" class="member-name-link">scope</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -207,7 +211,19 @@ implements <a href="Introspection.html" title="interface in dev.goldmensch.propa
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">get</span><wbr><span class="parameters">(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;specific)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="Introspection.html#get(dev.goldmensch.propane.property.SpecificProperty)">get</a></code>&nbsp;in interface&nbsp;<code><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></code></dd>
+<dd><code><a href="Introspection.html#get(dev.goldmensch.propane.property.SpecificProperty)">get</a></code>&nbsp;in interface&nbsp;<code><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a> extends <a href="IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a>,<wbr><a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>,<wbr><a href="#type-param-B" title="type parameter in IntrospectionImpl">B</a>,<wbr><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;&gt;</code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="scope()">
+<h3>scope</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a></span>&nbsp;<span class="element-name">scope</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="Introspection.html#scope()">scope</a></code>&nbsp;in interface&nbsp;<code><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a> extends <a href="IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a>,<wbr><a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>,<wbr><a href="#type-param-B" title="type parameter in IntrospectionImpl">B</a>,<wbr><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;&gt;</code></dd>
 </dl>
 </div>
 </section>
