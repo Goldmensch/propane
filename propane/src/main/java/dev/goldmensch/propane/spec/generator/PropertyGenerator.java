@@ -100,7 +100,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
     private TypeSpec introspection() {
         return TypeSpec.interfaceBuilder(introspectionName)
-                .addSuperinterface(Introspection.class)
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Introspection.class), scopeName))
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(MethodSpec.methodBuilder("get")
                         .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)

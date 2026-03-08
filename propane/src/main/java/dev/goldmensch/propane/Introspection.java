@@ -5,7 +5,7 @@ import dev.goldmensch.propane.property.SpecificProperty;
 import dev.goldmensch.propane.spec.SkeletonMethod;
 import dev.goldmensch.propane.spec.SkeletonMethodException;
 
-public interface Introspection {
+public interface Introspection<S extends Property.Scope> {
 
     @SkeletonMethod
     static boolean accessible() {
@@ -14,7 +14,7 @@ public interface Introspection {
     }
 
     @SkeletonMethod
-    static Introspection accessScoped() {
+    static Introspection<?> accessScoped() {
         // return IntrospectionImpl.INTROSPECTION.get();
         throw new SkeletonMethodException();
     }
@@ -28,4 +28,6 @@ public interface Introspection {
 
     // overridden with real SpecificProperty implementation
     <T> T get(SpecificProperty<T> specific);
+
+    S scope();
 }
