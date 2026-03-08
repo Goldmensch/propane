@@ -6,6 +6,9 @@ import dev.goldmensch.propane.internal.ScopeStub;
 import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.SpecificProperty;
+import org.jspecify.annotations.Nullable;
+
+import java.util.function.Function;
 
 // I've got insane with that. But it had to be typesafe. It just had to be.
 public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B>, I extends Introspection, B extends IntrospectionImpl<I_SELF, I, B>.Builder>
@@ -45,7 +48,7 @@ implements Introspection {
 
     // body:
     // return this.new Builder(scope);
-    // overridden with real Builder implementation and real Builder implementation
+    // overridden with real Builder implementation
     public abstract B createChild(Property.Scope scope);
 
     public abstract class Builder {
@@ -63,6 +66,16 @@ implements Introspection {
             return self();
         }
 
+//        ---- added by generator
+//        public abstract <T> B addFallback(SpecificProperty<T> property, Function<I, @Nullable T> supplier);
+//
+//        public abstract <T> B addBuilder(SpecificProperty<T> property, Function<I, @Nullable T> supplier);
+
+
+//        public abstract <T> B addFallback(SpecificProperty<T> property, Class<?> owner, Function<I, @Nullable T> supplier);
+//
+//        public abstract <T> B addBuilder(SpecificProperty<T> property, Class<?> owner, Function<I, @Nullable T> supplier);
+
         public I_SELF build() {
             if (!Scopes.isChild(scope, IntrospectionImpl.this.scope)) {
                 throw new RuntimeException("Child scope must be equal or subscope of parent scope");
@@ -76,10 +89,13 @@ implements Introspection {
             return (B) this;
         }
 
+        protected Class<?> caller() {
+            return StackWalker.getInstance().getCallerClass();
+        }
+
         // validate()
         // return new IntrospectionImpl(scope, properties, IntrospectionImpl.this);
         protected abstract I_SELF newInstance();
-
 
     }
 }

@@ -1,8 +1,13 @@
 package logic.impl;
 
 import dev.goldmensch.propane.IntrospectionImpl;
+import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.property.Property;
+import dev.goldmensch.propane.property.SpecificProperty;
+import org.jspecify.annotations.Nullable;
+
+import java.util.function.Function;
 
 public class TestIntrospectionImpl extends IntrospectionImpl<TestIntrospectionImpl, TestIntrospection, TestIntrospectionImpl.TestBuilder> implements TestIntrospection {
 
@@ -37,6 +42,23 @@ public class TestIntrospectionImpl extends IntrospectionImpl<TestIntrospectionIm
         private TestBuilder(Property.Scope scope) {
             super(scope);
         }
+
+        public <T> TestBuilder addFallback(TestProperty<T> property, Function<TestIntrospection, T> supplier) {
+            return add(new TestPropertyProvider<>(property, PropertyProvider.Priority.FALLBACK, caller(), supplier));
+        }
+
+        public <T> TestBuilder addBuilder(TestProperty<T> property, Function<TestIntrospection, T> supplier) {
+            return add(new TestPropertyProvider<>(property, PropertyProvider.Priority.BUILDER, caller(), supplier));
+        }
+
+        public <T> TestBuilder addFallback(TestProperty<T> property, Class<?> owner, Function<TestIntrospection, T> supplier) {
+            return add(new TestPropertyProvider<>(property, PropertyProvider.Priority.FALLBACK, owner, supplier));
+        }
+
+        public <T> TestBuilder addBuilder(TestProperty<T> property, Class<?> owner, Function<TestIntrospection, T> supplier) {
+            return add(new TestPropertyProvider<>(property, PropertyProvider.Priority.BUILDER, owner, supplier));
+        }
+
         @Override
         protected TestIntrospectionImpl newInstance() {
             return new TestIntrospectionImpl(scope, properties, TestIntrospectionImpl.this);

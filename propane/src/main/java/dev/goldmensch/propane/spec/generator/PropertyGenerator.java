@@ -37,6 +37,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
     private ClassName introspectionName;
     private ClassName introspectionImplName;
     private ClassName specificCName;
+    private ClassName builderName;
 
 
     @Override
@@ -46,6 +47,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         introspectionName = ClassName.get(packageName, meta.name("Introspection"));
         introspectionImplName = ClassName.get(packageName + ".internal", meta.name("IntrospectionImpl"));
         specificCName = ClassName.get(packageName, meta.name("Property"));
+        builderName = ClassName.get(introspectionImplName.packageName(), introspectionImplName.simpleName(), "Builder");
 
         List<Supplier<TypeSpec>> root = List.of(
                 this::introspection,
@@ -87,7 +89,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addModifiers(Modifier.PUBLIC)
                         .addParameter(withTGeneric(specificCName), "property")
                         .addParameter(PropertyProvider.Priority.class, "priority")
-                        .addParameter(WildcardTypeName.get(Class.class), "owner")
+                        .addParameter(withGeneric(ClassName.get(Class.class), "?"), "owner")
                         .addParameter(function, "supplier")
                         .addStatement("super(property, priority, owner, supplier)")
                         .build())
@@ -126,9 +128,8 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
     }
 
     private TypeSpec introspectionImpl() {
-        ClassName builderClassName = ClassName.get(introspectionImplName.packageName(), introspectionImplName.simpleName(), "Builder");
         ParameterizedTypeName parentIntrospection = ParameterizedTypeName.get(ClassName.get(IntrospectionImpl.class),
-                introspectionImplName, introspectionName, builderClassName);
+                introspectionImplName, introspectionName, builderName);
 
         return TypeSpec.classBuilder(introspectionImplName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
@@ -153,16 +154,16 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .build())
                 .addMethod(MethodSpec.methodBuilder("create")
                         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                        .returns(builderClassName)
+                        .returns(builderName)
                         .addParameter(Property.Scope.class, "scope")
                         .addStatement("return EMPTY.createChild(scope)")
                         .build())
                 .addMethod(MethodSpec.methodBuilder("createChild")
                         .addAnnotation(Override.class)
                         .addModifiers(Modifier.PUBLIC)
-                        .returns(builderClassName)
+                        .returns(builderName)
                         .addParameter(Property.Scope.class, "scope")
-                        .addStatement("return this.new $T(scope)", builderClassName)
+                        .addStatement("return this.new $T(scope)", builderName)
                         .build())
                 .addMethod(MethodSpec.methodBuilder("get")
                         .addTypeVariable(T)
@@ -171,7 +172,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addParameter(withTGeneric(specificCName), "specific")
                         .addStatement("return super.get(specific)")
                         .build())
-                .addType(TypeSpec.classBuilder(builderClassName)
+                .addType(TypeSpec.classBuilder(builderName)
                         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                         .superclass(parentIntrospection.nestedClass("Builder"))
                         .addMethod(MethodSpec.constructorBuilder()
@@ -184,7 +185,39 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                                 .addAnnotation(Override.class)
                                 .addStatement("return new $T(scope, properties, $T.this)", introspectionImplName, introspectionImplName)
                                 .build())
+                        .addMethod(addX("FALLBACK", false))
+                        .addMethod(addX("BUILDER",false))
+                        .addMethod(addX("FALLBACK", true))
+                        .addMethod(addX("BUILDER",true))
                         .build())
+                .build();
+    }
+
+    private MethodSpec addX(String name, boolean ownerExplicit) {
+        StringBuilder nameBuilder = new StringBuilder(name.toLowerCase());
+        nameBuilder.setCharAt(0, Character.toUpperCase(nameBuilder.charAt(0)));
+        nameBuilder.insert(0, "add");
+
+        ParameterizedTypeName function = ParameterizedTypeName.get(ClassName.get(Function.class),
+                introspectionName, T);
+
+        String owner = ownerExplicit
+                ? "owner"
+                : "caller()";
+
+        MethodSpec.Builder builder = MethodSpec.methodBuilder(nameBuilder.toString())
+                .addModifiers(Modifier.PUBLIC)
+                .addTypeVariable(T)
+                .returns(builderName)
+                .addParameter(withTGeneric(specificCName), "property");
+
+        if (ownerExplicit) {
+            builder.addParameter(withGeneric(ClassName.get(Class.class), "?"), "owner");
+        }
+
+        return builder
+                .addParameter(function, "supplier")
+                .addStatement("return add(new $T<>(property, $T.$L, $L, supplier))", providerName, PropertyProvider.Priority.class, name, owner)
                 .build();
     }
 
