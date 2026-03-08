@@ -301,22 +301,27 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addParameter(withTGeneric(ClassName.get(Class.class)), "type")
                         .addStatement("super(name, source, scope, type)")
                         .build())
+                .addMethod(scopedGet(T))
                 .build();
     }
 
     private TypeSpec collectionProperty() {
+        TypeName collectionType = withTGeneric(ClassName.get(Collection.class));
         return TypeSpec.classBuilder(meta.name(COLLECTION))
                 .addModifiers(Modifier.FINAL)
                 .addTypeVariable(TypeVariableName.get("T"))
                 .superclass(withTGeneric(ClassName.get(CollectionProperty.class)))
-                .addSuperinterface(ParameterizedTypeName.get(specificCName, withTGeneric(ClassName.get(Collection.class))))
+                .addSuperinterface(ParameterizedTypeName.get(specificCName, collectionType))
                 .addMethod(propertySuperConstructor()
                         .addParameter(withTGeneric(ClassName.get(Class.class)), "type")
                         .addParameter(Property.FallbackBehaviour.class, "fallback")
                         .addStatement("super(name, source, scope, type, fallback)")
                         .build())
+                .addMethod(scopedGet(collectionType))
                 .build();
     }
+
+
 
     private TypeSpec mappingProperty() {
         TypeVariableName[] typeVariables = {TypeVariableName.get("K"), TypeVariableName.get("V")};
@@ -333,6 +338,16 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addParameter(Property.FallbackBehaviour.class, "fallback")
                         .addStatement("super(name, source, scope, keyType, valueType, fallback)")
                         .build())
+                .addMethod(scopedGet(mapTypeName))
+                .build();
+    }
+
+    private MethodSpec scopedGet(TypeName returnType) {
+        return MethodSpec.methodBuilder("getScoped")
+                .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(Override.class)
+                .returns(returnType)
+                .addStatement("return $T.scopedGet(this)", introspectionName)
                 .build();
     }
 

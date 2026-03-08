@@ -56,6 +56,7 @@ implements Introspection<S> {
     // body:
     // return this.new Builder(scope);
     // overridden with real Builder implementation
+    @SkeletonMethod
     public abstract B createChild(S scope);
 
     public abstract class Builder {
@@ -113,6 +114,7 @@ implements Introspection<S> {
 
         // validate()
         // return new IntrospectionImpl(scope, properties, IntrospectionImpl.this);
+        @SkeletonMethod
         protected abstract I_SELF newInstance();
 
     }

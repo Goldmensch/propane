@@ -6,7 +6,7 @@ import logic.impl.*;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ScopedTest {
+public class ScopedAccessTest {
 
     private enum Scopes implements Property.Scope {
         ROOT;
@@ -27,7 +27,7 @@ public class ScopedTest {
     @Test
     public void scoped_get() {
         TestIntrospectionImpl build = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedTest.class, _ -> "hi"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
         ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
@@ -37,9 +37,20 @@ public class ScopedTest {
     }
 
     @Test
+    public void scoped_get_on_property() {
+        TestIntrospectionImpl build = TestIntrospectionImpl.create(Scopes.ROOT)
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
+                .build();
+
+        ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
+            Assert.assertEquals("hi", Properties.HELLO_WORLD.scopedGet());
+        });
+    }
+
+    @Test
     public void scoped_access_introspection() {
         TestIntrospectionImpl build = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedTest.class, _ -> "hi"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
         ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
@@ -51,7 +62,7 @@ public class ScopedTest {
     @Test
     public void scoped_accessible() {
         TestIntrospectionImpl build = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedTest.class, _ -> "hi"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
         ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {

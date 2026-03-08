@@ -9,4 +9,9 @@ public class TestMapProperty<K, V> extends MapProperty<K, V> implements TestProp
     public TestMapProperty(String name, Source source, Scope scope, Class<K> keyType, Class<V> valueType, FallbackBehaviour fallbackBehaviour) {
         super(name, source, scope, keyType, valueType, fallbackBehaviour);
     }
+
+    @Override
+    public Map<K, V> getScoped() {
+        return TestIntrospection.scopedGet(this);
+    }
 }

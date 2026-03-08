@@ -8,4 +8,8 @@ public interface SpecificProperty<T> {
     default Property<T> generalized() {
         return (Property<T>) this;
     }
+
+    default T scopedGet() {
+        return generalized().getScoped();
+    }
 }

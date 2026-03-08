@@ -27,6 +27,7 @@ public interface Introspection<S extends Property.Scope> {
     }
 
     // overridden with real SpecificProperty implementation
+    @SkeletonMethod
     <T> T get(SpecificProperty<T> specific);
 
     S scope();

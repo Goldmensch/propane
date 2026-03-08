@@ -33,6 +33,6 @@ public sealed interface Property<T> {
         ACCUMULATE
     }
 
-//    T getScoped();
+    T getScoped();
 
 }
