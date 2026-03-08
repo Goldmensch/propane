@@ -2,23 +2,29 @@ package dev.goldmensch.propane;
 
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.SpecificProperty;
+import dev.goldmensch.propane.spec.SkeletonMethod;
+import dev.goldmensch.propane.spec.SkeletonMethodException;
 
 public interface Introspection {
 
-    //    -- written by generator
-    //    static boolean accessible() {
-    //        return IntrospectionImpl.INTROSPECTION.isBound();
-    //    }
+    @SkeletonMethod
+    static boolean accessible() {
+        // return IntrospectionImpl.INTROSPECTION.isBound();
+        throw new SkeletonMethodException();
+    }
 
-    //    -- written by generator
-    //    static Introspection accessScoped() {
-    //        return IntrospectionImpl.INTROSPECTION.get();
-    //    }
+    @SkeletonMethod
+    static Introspection accessScoped() {
+        // return IntrospectionImpl.INTROSPECTION.get();
+        throw new SkeletonMethodException();
+    }
 
-    //   -- written by generator with correct property type
-    //   static <T> T scopedGet(SpecificProperty<T> property) {
-    //    return accessScoped().get(property);
-    // }
+
+    @SkeletonMethod
+    static <T> T scopedGet(SpecificProperty<T> property) {
+        //  return accessScoped().get(property);
+        throw new SkeletonMethodException();
+    }
 
     // overridden with real SpecificProperty implementation
     <T> T get(SpecificProperty<T> specific);

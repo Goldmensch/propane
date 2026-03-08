@@ -6,34 +6,36 @@ import dev.goldmensch.propane.internal.ScopeStub;
 import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.SpecificProperty;
+import dev.goldmensch.propane.spec.SkeletonMethod;
+import dev.goldmensch.propane.spec.SkeletonMethodException;
 import org.jspecify.annotations.Nullable;
 
 import java.util.function.Function;
 
 // I've got insane with that. But it had to be typesafe. It just had to be.
-public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B>, I extends Introspection, B extends IntrospectionImpl<I_SELF, I, B>.Builder>
+public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B, S>, I extends Introspection, B extends IntrospectionImpl<I_SELF, I, B, S>.Builder, S extends Property.Scope>
 implements Introspection {
-    private final Property.Scope scope;
+    private final S scope;
     final Resolver<I> resolver;
 
     // called by Builder#newInstance
     @SuppressWarnings("unchecked")
-    protected IntrospectionImpl(Property.Scope scope, Properties<I> properties, I_SELF parent) {
+    protected IntrospectionImpl(S scope, Properties<I> properties, I_SELF parent) {
         this.scope = scope;
 
         this.resolver = parent.resolver.createChild(properties, (I) this);
     }
 
     // called by create(Scope)
-    protected IntrospectionImpl() {
-        this.scope = ScopeStub.INSTANCE;
+    protected IntrospectionImpl(S scope) {
+        this.scope = scope;
         this.resolver = Resolver.createEmpty();
     }
 
-    // --- must be added by annotation processor
-//    public static Builder create(Property.Scope scope) {
-//        return EMPTY.createChild(scope);
-//    }
+    @SkeletonMethod
+    public static IntrospectionImpl<?, ?, ?, ?>.Builder create(Property.Scope scope) {
+        throw new SkeletonMethodException();
+    }
 
     // overridden with real SpecificProperty implementation
     public <T> T get(SpecificProperty<T> specific) {
@@ -49,13 +51,13 @@ implements Introspection {
     // body:
     // return this.new Builder(scope);
     // overridden with real Builder implementation
-    public abstract B createChild(Property.Scope scope);
+    public abstract B createChild(S scope);
 
     public abstract class Builder {
         protected final Properties<I> properties;
-        protected final Property.Scope scope;
+        protected final S scope;
 
-        protected Builder(Property.Scope scope) {
+        protected Builder(S scope) {
             this.scope = scope;
             this.properties = new Properties<>(scope);
         }
@@ -66,17 +68,28 @@ implements Introspection {
             return self();
         }
 
-//        ---- added by generator
-//        public abstract <T> B addFallback(SpecificProperty<T> property, Function<I, @Nullable T> supplier);
-//
-//        public abstract <T> B addBuilder(SpecificProperty<T> property, Function<I, @Nullable T> supplier);
+        @SkeletonMethod
+        public <T> B addFallback(SpecificProperty<T> property, Function<I, @Nullable T> supplier) {
+            throw new SkeletonMethodException();
+        }
 
+        @SkeletonMethod
+        public <T> B addBuilder(SpecificProperty<T> property, Function<I, @Nullable T> supplier) {
+            throw new SkeletonMethodException();
+        }
 
-//        public abstract <T> B addFallback(SpecificProperty<T> property, Class<?> owner, Function<I, @Nullable T> supplier);
-//
-//        public abstract <T> B addBuilder(SpecificProperty<T> property, Class<?> owner, Function<I, @Nullable T> supplier);
+        @SkeletonMethod
+        public <T> B addFallback(SpecificProperty<T> property, Class<?> owner, Function<I, @Nullable T> supplier) {
+            throw new SkeletonMethodException();
+        }
+
+        @SkeletonMethod
+        public <T> B addBuilder(SpecificProperty<T> property, Class<?> owner, Function<I, @Nullable T> supplier) {
+            throw new SkeletonMethodException();
+        }
 
         public I_SELF build() {
+
             if (!Scopes.isChild(scope, IntrospectionImpl.this.scope)) {
                 throw new RuntimeException("Child scope must be equal or subscope of parent scope");
             }

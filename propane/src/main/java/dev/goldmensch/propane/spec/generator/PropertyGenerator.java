@@ -38,6 +38,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
     private ClassName introspectionImplName;
     private ClassName specificCName;
     private ClassName builderName;
+    private ClassName scopeName;
 
 
     @Override
@@ -48,6 +49,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         introspectionImplName = ClassName.get(packageName + ".internal", meta.name("IntrospectionImpl"));
         specificCName = ClassName.get(packageName, meta.name("Property"));
         builderName = ClassName.get(introspectionImplName.packageName(), introspectionImplName.simpleName(), "Builder");
+        scopeName = (ClassName) ClassName.get(meta.scopeClass);
 
         List<Supplier<TypeSpec>> root = List.of(
                 this::introspection,
@@ -129,40 +131,38 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
     private TypeSpec introspectionImpl() {
         ParameterizedTypeName parentIntrospection = ParameterizedTypeName.get(ClassName.get(IntrospectionImpl.class),
-                introspectionImplName, introspectionName, builderName);
+                introspectionImplName, introspectionName, builderName, scopeName);
 
         return TypeSpec.classBuilder(introspectionImplName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .superclass(parentIntrospection)
                 .addSuperinterface(introspectionName)
-                .addField(FieldSpec.builder(introspectionImplName, "EMPTY", Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-                        .initializer("new $T()", introspectionImplName)
-                        .build())
                 .addField(FieldSpec.builder(ParameterizedTypeName.get(ClassName.get(ScopedValue.class), introspectionImplName), "INTROSPECTION", Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
                         .initializer("$T.newInstance()", ScopedValue.class)
                         .build())
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PRIVATE)
-                        .addParameter(Property.Scope.class, "scope")
+                        .addParameter(scopeName, "scope")
                         .addParameter(ParameterizedTypeName.get(ClassName.get(Properties.class), introspectionName), "properties")
                         .addParameter(introspectionImplName, "parent")
                         .addStatement("super(scope, properties, parent)")
                         .build())
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PRIVATE)
-                        .addStatement("super()")
+                        .addParameter(scopeName, "scope")
+                        .addStatement("super(scope)")
                         .build())
                 .addMethod(MethodSpec.methodBuilder("create")
                         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                         .returns(builderName)
-                        .addParameter(Property.Scope.class, "scope")
-                        .addStatement("return EMPTY.createChild(scope)")
+                        .addParameter(scopeName, "scope")
+                        .addStatement("return new $T(scope).createChild(scope)", introspectionImplName)
                         .build())
                 .addMethod(MethodSpec.methodBuilder("createChild")
                         .addAnnotation(Override.class)
                         .addModifiers(Modifier.PUBLIC)
                         .returns(builderName)
-                        .addParameter(Property.Scope.class, "scope")
+                        .addParameter(scopeName, "scope")
                         .addStatement("return this.new $T(scope)", builderName)
                         .build())
                 .addMethod(MethodSpec.methodBuilder("get")
@@ -176,7 +176,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                         .superclass(parentIntrospection.nestedClass("Builder"))
                         .addMethod(MethodSpec.constructorBuilder()
-                                .addParameter(Property.Scope.class, "scope")
+                                .addParameter(scopeName, "scope")
                                 .addStatement("super(scope)")
                                 .build())
                         .addMethod(MethodSpec.methodBuilder("newInstance")
@@ -243,7 +243,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                             .initializer("new $T<>($S, $T.$L, $T.$L, $T.class)",
                                     singletonClassName, name,
                                     Property.Source.class, source,
-                                    meta.scopeClass, scope,
+                                    scopeName, scope,
                                     type)
                             .build();
                 }
@@ -256,7 +256,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                             .initializer("new $T<>($S, $T.$L, $T.$L, $T.class, $T.$L)",
                                     collectionClassName, name,
                                     Property.Source.class, source,
-                                    meta.scopeClass, scope,
+                                    scopeName, scope,
                                     type,
                                     Property.FallbackBehaviour.class, fallback)
                             .build();
@@ -272,7 +272,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                             .initializer("new $T<>($S, $T.$L, $T.$L, $T.class, $T.class, $T.$L)",
                                     mappingClassName, name,
                                     Property.Source.class, source,
-                                    meta.scopeClass, scope,
+                                    scopeName, scope,
                                     keyType,
                                     valueType,
                                     Property.FallbackBehaviour.class, fallback)
@@ -352,6 +352,6 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         return MethodSpec.constructorBuilder()
                 .addParameter(String.class, "name")
                 .addParameter(Property.Source.class, "source")
-                .addParameter(Property.Scope.class, "scope");
+                .addParameter(scopeName, "scope");
     }
 }

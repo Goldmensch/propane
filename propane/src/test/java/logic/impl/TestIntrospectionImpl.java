@@ -9,23 +9,21 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.function.Function;
 
-public class TestIntrospectionImpl extends IntrospectionImpl<TestIntrospectionImpl, TestIntrospection, TestIntrospectionImpl.TestBuilder> implements TestIntrospection {
+public class TestIntrospectionImpl extends IntrospectionImpl<TestIntrospectionImpl, TestIntrospection, TestIntrospectionImpl.TestBuilder, Property.Scope> implements TestIntrospection {
 
     public static final ScopedValue<TestIntrospectionImpl> INTROSPECTION = ScopedValue.newInstance();
-
-    private static final TestIntrospectionImpl EMPTY = new TestIntrospectionImpl();
 
     private TestIntrospectionImpl(Property.Scope scope, Properties<TestIntrospection> properties, TestIntrospectionImpl parent) {
         super(scope, properties, parent);
     }
 
     // called by create(Scope)
-    private TestIntrospectionImpl() {
-        super();
+    private TestIntrospectionImpl(Property.Scope scope) {
+        super(scope);
     }
 
     public static TestBuilder create(Property.Scope scope) {
-        return EMPTY.createChild(scope);
+        return new TestIntrospectionImpl(scope).createChild(scope);
     }
 
     public <T> T get(TestProperty<T> specific) {
@@ -38,7 +36,7 @@ public class TestIntrospectionImpl extends IntrospectionImpl<TestIntrospectionIm
     }
 
     // TestIntrospectionImpl.TestBuilder doesn't work, because of... java generics
-    public class TestBuilder extends IntrospectionImpl<TestIntrospectionImpl, TestIntrospection, TestBuilder>.Builder {
+    public class TestBuilder extends IntrospectionImpl<TestIntrospectionImpl, TestIntrospection, TestBuilder, Property.Scope>.Builder {
         private TestBuilder(Property.Scope scope) {
             super(scope);
         }
@@ -64,8 +62,4 @@ public class TestIntrospectionImpl extends IntrospectionImpl<TestIntrospectionIm
             return new TestIntrospectionImpl(scope, properties, TestIntrospectionImpl.this);
         }
     }
-
-
-
-
 }
