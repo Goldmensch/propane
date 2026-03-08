@@ -1,6 +1,9 @@
 package dev.goldmensch.propane.spec.processor.generator;
 
 import com.palantir.javapoet.*;
+import dev.goldmensch.propane.Introspection;
+import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.property.*;
 import dev.goldmensch.propane.spec.processor.syntax.*;
 
@@ -21,20 +24,22 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
     private static final String COLLECTION = "CollectionProperty";
     private static final String MAPPING = "MappingProperty";
 
-
-
     public PropertyGenerator(PackageElement packageName, Filer filer) {
         super(packageName, filer);
     }
 
     @Override
     List<Function<PropertyGenerator.PropertyMeta, TypeSpec>> generators(PropertyMeta meta) {
-        ClassName name = ClassName.get(packageName, meta.name("Property"));
+        ClassName providerClassName = ClassName.get(packageName, meta.name("PropertyProvider"));
+        ClassName introspectionClassName = ClassName.get(packageName, meta.name("Introspection"));
+        ClassName specificClassName = ClassName.get(packageName, meta.name("Property"));
         return List.of(
-                _ -> specificProperty(meta, name),
-                _ -> singletonProperty(meta, name),
-                _ -> collectionProperty(meta, name),
-                _ -> mappingProperty(meta, name)
+                _ -> introspection(introspectionClassName, providerClassName),
+                _ -> specificProperty(meta, specificClassName),
+                _ -> singletonProperty(meta, specificClassName),
+                _ -> collectionProperty(meta, specificClassName),
+                _ -> mappingProperty(meta, specificClassName),
+                _ -> provider(introspectionClassName, providerClassName, specificClassName)
 
         );
     }
@@ -43,6 +48,82 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         String name(String name) {
             return spec().prefix() + name;
         }
+    }
+
+    private TypeSpec provider(ClassName introspectionClassName, ClassName providerClassName, ClassName specificProperty) {
+        TypeVariableName t = TypeVariableName.get("T");
+        ParameterizedTypeName superClass = ParameterizedTypeName.get(ClassName.get(PropertyProvider.class),
+                t,
+                withTGeneric(specificProperty),
+                introspectionClassName);
+
+        ParameterizedTypeName function = ParameterizedTypeName.get(ClassName.get(Function.class),
+                introspectionClassName, t);
+
+        return TypeSpec.classBuilder(providerClassName)
+                .addModifiers(Modifier.PUBLIC)
+                .addTypeVariable(t)
+                .superclass(superClass)
+                .addMethod(MethodSpec.constructorBuilder()
+                        .addModifiers(Modifier.PUBLIC)
+                        .addParameter(withTGeneric(specificProperty), "property")
+                        .addParameter(PropertyProvider.Priority.class, "priority")
+                        .addParameter(WildcardTypeName.get(Class.class), "owner")
+                        .addParameter(function, "supplier")
+                        .addStatement("super(property, priority, owner, supplier)")
+                        .build())
+                .build();
+    }
+
+    private TypeSpec introspection(ClassName introspectionClassName, ClassName providerClassName) {
+        TypeName providerWildcard = withGeneric(providerClassName, "?");
+        ClassName builderClassName = ClassName.get(packageName, introspectionClassName.simpleName(), "Builder");
+        ParameterizedTypeName parentIntrospection = ParameterizedTypeName.get(ClassName.get(Introspection.class),
+                introspectionClassName, builderClassName, providerWildcard);
+
+        return TypeSpec.classBuilder(introspectionClassName)
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .superclass(parentIntrospection)
+                .addField(FieldSpec.builder(introspectionClassName, "EMPTY", Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+                        .initializer("new $T()", introspectionClassName)
+                        .build())
+                .addMethod(MethodSpec.constructorBuilder()
+                        .addParameter(Property.Scope.class, "scope")
+                        .addParameter(ParameterizedTypeName.get(ClassName.get(Properties.class), introspectionClassName), "properties")
+                        .addParameter(introspectionClassName, "parent")
+                        .addStatement("super(scope, properties, parent)")
+                        .build())
+                .addMethod(MethodSpec.constructorBuilder()
+                        .addStatement("super()")
+                        .build())
+                .addMethod(MethodSpec.methodBuilder("create")
+                        .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                        .returns(builderClassName)
+                        .addParameter(Property.Scope.class, "scope")
+                        .addStatement("return EMPTY.createChild(scope)")
+                        .build())
+                .addMethod(MethodSpec.methodBuilder("createChild")
+                        .addAnnotation(Override.class)
+                        .addModifiers(Modifier.PUBLIC)
+                        .returns(builderClassName)
+                        .addParameter(Property.Scope.class, "scope")
+                        .addStatement("return this.new $T(scope)", builderClassName)
+                        .build())
+                .addType(TypeSpec.classBuilder(builderClassName)
+                        .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                        .superclass(parentIntrospection.nestedClass("Builder"))
+                        .addMethod(MethodSpec.constructorBuilder()
+                                .addParameter(Property.Scope.class, "scope")
+                                .addStatement("super(scope)")
+                                .build())
+                        .addMethod(MethodSpec.methodBuilder("newInstance")
+                                .returns(introspectionClassName)
+                                .addModifiers(Modifier.PROTECTED)
+                                .addAnnotation(Override.class)
+                                .addStatement("return new $T(scope, properties, $T.this)", introspectionClassName, introspectionClassName)
+                                .build())
+                        .build())
+                .build();
     }
 
     private TypeSpec specificProperty(PropertyMeta meta, ClassName className) {

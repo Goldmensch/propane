@@ -42,6 +42,7 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
         this.scopeClass = ClassName.get(packageName, meta.prefix() + "Scope");
 
         TypeSpec.Builder builder = TypeSpec.enumBuilder(scopeClass)
+                .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(AnnotationSpec.builder(GeneratedForSpec.class)
                         .addMember("spec", "$T.class", specClass)
                         .build())
