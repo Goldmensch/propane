@@ -1,4 +1,4 @@
-package dev.goldmensch.propane.spec.processor.generator;
+package dev.goldmensch.propane.spec.generator;
 
 import com.palantir.javapoet.*;
 import dev.goldmensch.propane.property.Property;
@@ -17,7 +17,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class DslGenerator extends AbstractGenerator<SpecMeta> {
 
@@ -28,13 +30,14 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
     }
 
     @Override
-    List<Function<SpecMeta, TypeSpec>> generators(SpecMeta meta) {
-        return List.of(
-                this::generateScope,
-                this::generateSingleton,
-                _ -> generateMulti(SpecEnumeration.ANNOTATION),
-                _ -> generateMulti(SpecMapping.ANNOTATION)
+    Map<String, List<Supplier<TypeSpec>>> generators(SpecMeta meta) {
+        List<Supplier<TypeSpec>> root = List.of(
+                () -> generateScope(meta),
+                () -> generateSingleton(meta),
+                () -> generateMulti(SpecEnumeration.ANNOTATION),
+                () -> generateMulti(SpecMapping.ANNOTATION)
         );
+        return Map.of("", root);
     }
 
     private TypeSpec generateScope(SpecMeta meta) {

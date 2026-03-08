@@ -1,6 +1,6 @@
 package dev.goldmensch.propane.internal;
 
-import dev.goldmensch.propane.Introspection;
+import dev.goldmensch.propane.IntrospectionImpl;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
 import org.jspecify.annotations.Nullable;
@@ -13,7 +13,7 @@ public class ProviderExecutor {
     private static final ScopedValue<SequencedMap<Property<?>, PropertyProvider<?, ?, ?>>> STACK = ScopedValue.newInstance();
 
     @Nullable
-    <T, I extends Introspection<?, ?, ?>> T applyProvider(PropertyProvider<T, ?, I> provider, I introspection) {
+    <T, I extends IntrospectionImpl<?, ?, ?>> T applyProvider(PropertyProvider<T, ?, I> provider, I introspection) {
         SequencedMap<Property<?>, PropertyProvider<?, ?, ?>> stack = STACK.isBound()
                 ? new LinkedHashMap<>(STACK.get())
                 : new LinkedHashMap<>();

@@ -4,7 +4,9 @@ import dev.goldmensch.propane.PropertyProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import spec.bar.BarIntrospection;
+import spec.bar.internal.BarIntrospectionImpl;
 import spec.bar.BarScope;
+import spec.internal.GenTestIntrospectionImpl;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +15,7 @@ public class GenerationTest {
 
     @Test
     public void bar_implicit_prefix() {
-        BarIntrospection introspection = BarIntrospection.create(BarScope.ROOT)
+        BarIntrospection introspection = BarIntrospectionImpl.create(BarScope.ROOT)
                 .build();
 
         Assert.assertNotNull(introspection);
@@ -21,7 +23,7 @@ public class GenerationTest {
 
     @Test
     public void single_property() {
-        GenTestIntrospection build = GenTestIntrospection.create(GenTestScope.ROOT)
+        GenTestIntrospection build = GenTestIntrospectionImpl.create(GenTestScope.ROOT)
                 .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_SINGLE, PropertyProvider.Priority.FALLBACK, GenerationTest.class, _ -> "hi"))
                 .build();
 
@@ -30,7 +32,7 @@ public class GenerationTest {
 
     @Test
     public void enumeration_test() {
-        GenTestIntrospection build = GenTestIntrospection.create(GenTestScope.ROOT)
+        GenTestIntrospection build = GenTestIntrospectionImpl.create(GenTestScope.ROOT)
                 .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_ENUMERATION, PropertyProvider.Priority.FALLBACK, GenerationTest.class, _ -> List.of("hi")))
                 .build();
 
@@ -39,7 +41,7 @@ public class GenerationTest {
 
     @Test
     public void mapping_property() {
-        GenTestIntrospection build = GenTestIntrospection.create(GenTestScope.ROOT)
+        GenTestIntrospection build = GenTestIntrospectionImpl.create(GenTestScope.ROOT)
                 .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_MAPPING, PropertyProvider.Priority.FALLBACK, GenerationTest.class, _ -> Map.of("hello", "world")))
                 .build();
 

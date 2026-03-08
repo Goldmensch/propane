@@ -1,14 +1,13 @@
 package dev.goldmensch.propane.internal.exposed;
 
-import dev.goldmensch.propane.Introspection;
+import dev.goldmensch.propane.IntrospectionImpl;
 import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
-import dev.goldmensch.propane.property.SpecificProperty;
 
 import java.util.*;
 
-public class Properties<INTROSPECTION extends Introspection<?, ?, ?>> {
+public class Properties<INTROSPECTION extends IntrospectionImpl<?, ?, ?>> {
     private final Property.Scope scope;
     private final Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> providers = new HashMap<>();
 
