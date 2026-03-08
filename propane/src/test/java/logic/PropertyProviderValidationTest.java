@@ -23,15 +23,15 @@ public class PropertyProviderValidationTest {
     private final TestProperty<String> providedProperty = new TestSingleProperty<>("FOO", Property.Source.PROVIDED, Scopes.ROOT, String.class);
     @Test
     public void provided_always_fallback_priority() {
-        TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(providedProvider(PropertyProvider.Priority.FALLBACK))
                 .build(); // should work
 
-        Assert.assertThrows(RuntimeException.class, () -> TestIntrospection.create(Scopes.ROOT)
+        Assert.assertThrows(RuntimeException.class, () -> TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(providedProvider(PropertyProvider.Priority.BUILDER))
                 .build());
 
-        Assert.assertThrows(RuntimeException.class, () -> TestIntrospection.create(Scopes.ROOT)
+        Assert.assertThrows(RuntimeException.class, () -> TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(providedProvider(PropertyProvider.Priority.of(007)))
                 .build());
     }
@@ -47,11 +47,11 @@ public class PropertyProviderValidationTest {
         TestProperty<Collection<String>> override = new TestCollectionProperty<>("BAR", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
 
         // should work
-        TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(multiProvider(accumulate))
                 .build();
 
-        Assert.assertThrows(RuntimeException.class, () -> TestIntrospection.create(Scopes.ROOT)
+        Assert.assertThrows(RuntimeException.class, () -> TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(multiProvider(override))
                 .build());
     }

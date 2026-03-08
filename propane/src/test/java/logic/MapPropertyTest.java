@@ -2,7 +2,7 @@ package logic;
 
 import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.property.Property;
-import logic.impl.TestIntrospection;
+import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestMapProperty;
 import logic.impl.TestProperty;
 import logic.impl.TestPropertyProvider;
@@ -33,7 +33,7 @@ public class MapPropertyTest {
 
     @Test
     public void without_dependencies() {
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, MapPropertyTest.class, _ -> Map.of("hello", "world")))
                 .build();
 
@@ -43,7 +43,7 @@ public class MapPropertyTest {
     @Test
     public void should_always_return_same_instance() {
         AtomicReference<Map<String, Properties.TestStub>> ref = new AtomicReference<>();
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.TWO, PropertyProvider.Priority.FALLBACK, MapPropertyTest.class, _ -> {
                     ref.set(Map.of("stub", new Properties.TestStub()));
                     return ref.get();
@@ -59,7 +59,7 @@ public class MapPropertyTest {
 
     @Test
     public void should_not_accumulate_fallback() {
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.ONE, PropertyProvider.Priority.FALLBACK, MapPropertyTest.class, _ -> Map.of("hello", "fallback")))
                 .add(new TestPropertyProvider<>(Properties.ONE, PropertyProvider.Priority.of(10), MapPropertyTest.class, _ -> Map.of("hello", "world")))
                 .build();
@@ -69,7 +69,7 @@ public class MapPropertyTest {
 
     @Test
     public void should_accumulate_fallback() {
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.TWO, PropertyProvider.Priority.FALLBACK, MapPropertyTest.class, _ -> Map.of("1", new Properties.TestStub())))
                 .add(new TestPropertyProvider<>(Properties.TWO, PropertyProvider.Priority.of(10), MapPropertyTest.class, _ -> Map.of("2", new Properties.TestStub())))
                 .build();

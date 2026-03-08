@@ -1,7 +1,7 @@
 package logic;
 
 import dev.goldmensch.propane.property.Property;
-import logic.impl.TestIntrospection;
+import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
 import logic.impl.TestPropertyProvider;
 import logic.impl.TestSingleProperty;
@@ -33,7 +33,7 @@ public class DependenciesTest {
     public void one_layer_dependency() {
         Properties.TestStub testStub = new Properties.TestStub();
 
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.TEST_STUB, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, _ -> testStub))
                 .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
                     assertSame(testStub, ctx.get(Properties.TEST_STUB));
@@ -48,7 +48,7 @@ public class DependenciesTest {
     public void two_layer_dependency() {
         Properties.TestStub testStub = new Properties.TestStub();
 
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.TEST_STUB, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, _ -> testStub))
                 .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
                     assertSame(testStub, ctx.get(Properties.TEST_STUB));
@@ -66,7 +66,7 @@ public class DependenciesTest {
     @Test
     public void check_cycling_self() {
         ThrowingRunnable run = () -> {
-            TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+            TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                     .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
                         ctx.get(Properties.HELLO_WORLD);
                         return "Hello World";
@@ -83,7 +83,7 @@ public class DependenciesTest {
         Properties.TestStub testStub = new Properties.TestStub();
 
         ThrowingRunnable run = () -> {
-            TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+            TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                     .add(new TestPropertyProvider<>(Properties.TEST_STUB, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
                         ctx.get(Properties.GOODBYE);
                         return testStub;

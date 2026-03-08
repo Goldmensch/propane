@@ -1,7 +1,6 @@
 package logic;
 
 
-import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.*;
 import org.junit.Assert;
@@ -35,17 +34,17 @@ public class ChildIntrospectionTest {
 
     @Test
     public void parent_values_in_child() {
-        TestIntrospection parent = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.TWO, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> new Properties.TestStub()))
                 .build();
 
-        TestIntrospection child = parent.createChild(Scopes.ROOT).build();
+        TestIntrospectionImpl child = parent.createChild(Scopes.ROOT).build();
         Assert.assertSame(parent.get(Properties.TWO), child.get(Properties.TWO)); // must be same instance (cache is copied)
     }
 
     @Test
     public void child_values_not_in_parent() {
-        TestIntrospection parent = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
                 .build();
 
         // create child
@@ -58,11 +57,11 @@ public class ChildIntrospectionTest {
 
     @Test
     public void singleton_replace_provider_in_child() {
-        TestIntrospection parent = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.ONE, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "parent"))
                 .build();
 
-        TestIntrospection child = parent.createChild(Scopes.ROOT)
+        TestIntrospectionImpl child = parent.createChild(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.ONE, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "child"))
                 .build();
 
@@ -71,7 +70,7 @@ public class ChildIntrospectionTest {
 
     @Test
     public void singleton_always_take_last_inserted_value() {
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.ONE, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "one"))
                 .add(new TestPropertyProvider<>(Properties.ONE, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> "two"))
                 .build();
@@ -81,12 +80,12 @@ public class ChildIntrospectionTest {
 
     @Test
     public void collection_should_be_joined_and_instance_reused() {
-        TestIntrospection parent = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.COLLECTION, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> List.of(new Properties.TestStub())))
                 .build();
         Properties.TestStub parentVal = parent.get(Properties.COLLECTION).toArray(Properties.TestStub[]::new)[0];
 
-        TestIntrospection child = parent.createChild(Scopes.ROOT)
+        TestIntrospectionImpl child = parent.createChild(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.COLLECTION, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> List.of(new Properties.TestStub())))
                 .build();
 
@@ -96,11 +95,11 @@ public class ChildIntrospectionTest {
 
     @Test
     public void map_replace_provider_in_child() {
-        TestIntrospection parent = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.MAP, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> Map.of("parent", new Properties.TestStub())))
                 .build();
 
-        TestIntrospection child = parent.createChild(Scopes.ROOT)
+        TestIntrospectionImpl child = parent.createChild(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.MAP, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> Map.of("child", new Properties.TestStub())))
                 .build();
 

@@ -32,25 +32,34 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         super(packageName, filer);
     }
 
+    private PropertyMeta meta;
+    private ClassName providerName;
+    private ClassName introspectionName;
+    private ClassName introspectionImplName;
+    private ClassName specificCName;
+
+
     @Override
     Map<String, List<Supplier<TypeSpec>>> generators(PropertyMeta meta) {
-        ClassName providerClassName = ClassName.get(packageName, meta.name("PropertyProvider"));
-        ClassName introspectionName = ClassName.get(packageName, meta.name("Introspection"));
-        ClassName introspectionImplName = ClassName.get(packageName + ".internal", meta.name("IntrospectionImpl"));
-        ClassName specificClassName = ClassName.get(packageName, meta.name("Property"));
+        this.meta = meta;
+        providerName = ClassName.get(packageName, meta.name("PropertyProvider"));
+        introspectionName = ClassName.get(packageName, meta.name("Introspection"));
+        introspectionImplName = ClassName.get(packageName + ".internal", meta.name("IntrospectionImpl"));
+        specificCName = ClassName.get(packageName, meta.name("Property"));
+
         List<Supplier<TypeSpec>> root = List.of(
-                () -> introspection(introspectionName, specificClassName),
-                () -> specificProperty(meta, specificClassName),
-                () -> singletonProperty(meta, specificClassName),
-                () -> collectionProperty(meta, specificClassName),
-                () -> mappingProperty(meta, specificClassName),
-                () -> provider(introspectionImplName, providerClassName, specificClassName)
+                this::introspection,
+                this::specificProperty,
+                this::singletonProperty,
+                this::collectionProperty,
+                this::mappingProperty,
+                this::provider
         );
 
         return Map.of(
                 "", root,
                 "internal", List.of(
-                        () -> introspectionImpl(introspectionImplName, providerClassName, introspectionName, specificClassName)
+                        this::introspectionImpl
                 )
         );
     }
@@ -61,22 +70,22 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         }
     }
 
-    private TypeSpec provider(ClassName introspectionClassName, ClassName providerClassName, ClassName specificProperty) {
+    private TypeSpec provider() {
         ParameterizedTypeName superClass = ParameterizedTypeName.get(ClassName.get(PropertyProvider.class),
                 T,
-                withTGeneric(specificProperty),
-                introspectionClassName);
+                withTGeneric(specificCName),
+                introspectionName);
 
         ParameterizedTypeName function = ParameterizedTypeName.get(ClassName.get(Function.class),
-                introspectionClassName, T);
+                introspectionName, T);
 
-        return TypeSpec.classBuilder(providerClassName)
+        return TypeSpec.classBuilder(providerName)
                 .addModifiers(Modifier.PUBLIC)
                 .addTypeVariable(T)
                 .superclass(superClass)
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
-                        .addParameter(withTGeneric(specificProperty), "property")
+                        .addParameter(withTGeneric(specificCName), "property")
                         .addParameter(PropertyProvider.Priority.class, "priority")
                         .addParameter(WildcardTypeName.get(Class.class), "owner")
                         .addParameter(function, "supplier")
@@ -85,25 +94,41 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .build();
     }
 
-    private TypeSpec introspection(ClassName introspectionClassName, ClassName specificProperty) {
-        return TypeSpec.interfaceBuilder(introspectionClassName)
+    private TypeSpec introspection() {
+        return TypeSpec.interfaceBuilder(introspectionName)
                 .addSuperinterface(Introspection.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(MethodSpec.methodBuilder("get")
                         .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                        .addParameter(withTGeneric(specificProperty), "specific")
+                        .addParameter(withTGeneric(specificCName), "specific")
                         .returns(T)
                         .addTypeVariable(T)
                         .build()
                 )
+                .addMethod(MethodSpec.methodBuilder("accessible")
+                        .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                        .returns(boolean.class)
+                        .addStatement("return $T.INTROSPECTION.isBound()", introspectionImplName)
+                        .build())
+                .addMethod(MethodSpec.methodBuilder("accessScoped")
+                        .returns(introspectionName)
+                        .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                        .addStatement("return $T.INTROSPECTION.get()", introspectionImplName)
+                        .build())
+                .addMethod(MethodSpec.methodBuilder("scopedGet")
+                        .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                        .returns(T)
+                        .addTypeVariable(T)
+                        .addParameter(withTGeneric(specificCName), "property")
+                        .addStatement("return accessScoped().get(property)")
+                        .build())
                 .build();
     }
 
-    private TypeSpec introspectionImpl(ClassName introspectionImplName, ClassName providerClassName, ClassName introspectionName, ClassName specificName) {
-        TypeName providerWildcard = withGeneric(providerClassName, "?");
+    private TypeSpec introspectionImpl() {
         ClassName builderClassName = ClassName.get(introspectionImplName.packageName(), introspectionImplName.simpleName(), "Builder");
         ParameterizedTypeName parentIntrospection = ParameterizedTypeName.get(ClassName.get(IntrospectionImpl.class),
-                introspectionImplName, builderClassName, providerWildcard);
+                introspectionImplName, introspectionName, builderClassName);
 
         return TypeSpec.classBuilder(introspectionImplName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
@@ -112,13 +137,18 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .addField(FieldSpec.builder(introspectionImplName, "EMPTY", Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
                         .initializer("new $T()", introspectionImplName)
                         .build())
+                .addField(FieldSpec.builder(ParameterizedTypeName.get(ClassName.get(ScopedValue.class), introspectionImplName), "INTROSPECTION", Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+                        .initializer("$T.newInstance()", ScopedValue.class)
+                        .build())
                 .addMethod(MethodSpec.constructorBuilder()
+                        .addModifiers(Modifier.PRIVATE)
                         .addParameter(Property.Scope.class, "scope")
-                        .addParameter(ParameterizedTypeName.get(ClassName.get(Properties.class), introspectionImplName), "properties")
+                        .addParameter(ParameterizedTypeName.get(ClassName.get(Properties.class), introspectionName), "properties")
                         .addParameter(introspectionImplName, "parent")
                         .addStatement("super(scope, properties, parent)")
                         .build())
                 .addMethod(MethodSpec.constructorBuilder()
+                        .addModifiers(Modifier.PRIVATE)
                         .addStatement("super()")
                         .build())
                 .addMethod(MethodSpec.methodBuilder("create")
@@ -138,7 +168,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addTypeVariable(T)
                         .returns(T)
                         .addModifiers(Modifier.PUBLIC)
-                        .addParameter(withTGeneric(specificName), "specific")
+                        .addParameter(withTGeneric(specificCName), "specific")
                         .addStatement("return super.get(specific)")
                         .build())
                 .addType(TypeSpec.classBuilder(builderClassName)
@@ -158,12 +188,12 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .build();
     }
 
-    private TypeSpec specificProperty(PropertyMeta meta, ClassName className) {
+    private TypeSpec specificProperty() {
         ClassName singletonClassName = ClassName.get(packageName, meta.name(SINGLETON));
         ClassName collectionClassName = ClassName.get(packageName, meta.name(COLLECTION));
         ClassName mappingClassName = ClassName.get(packageName, meta.name(MAPPING));
 
-        TypeSpec.Builder builder = TypeSpec.interfaceBuilder(className)
+        TypeSpec.Builder builder = TypeSpec.interfaceBuilder(specificCName)
                 .addTypeVariable(TypeVariableName.get("T"))
                 .addSuperinterface(withTGeneric(ClassName.get(SpecificProperty.class)))
                 .addModifiers(Modifier.PUBLIC, Modifier.SEALED)
@@ -174,10 +204,10 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         for (SpecProperty property : meta.properties()) {
             FieldSpec field = switch (property) {
                 case SpecSingleton(String name, Property.Source source, String scope, TypeElement type) -> {
-                    ParameterizedTypeName fieldType = ParameterizedTypeName.get(className, ClassName.get(type));
+                    ParameterizedTypeName fieldType = ParameterizedTypeName.get(specificCName, ClassName.get(type));
 
                     yield FieldSpec.builder(fieldType, name, Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                            .initializer("new $T($S, $T.$L, $T.$L, $T.class)",
+                            .initializer("new $T<>($S, $T.$L, $T.$L, $T.class)",
                                     singletonClassName, name,
                                     Property.Source.class, source,
                                     meta.scopeClass, scope,
@@ -187,10 +217,10 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
                 case SpecEnumeration(String name, Property.Source source, String scope, TypeElement type,
                                      Property.FallbackBehaviour fallback) -> {
-                    ParameterizedTypeName fieldType = ParameterizedTypeName.get(className, ParameterizedTypeName.get(ClassName.get(Collection.class), ClassName.get(type)));
+                    ParameterizedTypeName fieldType = ParameterizedTypeName.get(specificCName, ParameterizedTypeName.get(ClassName.get(Collection.class), ClassName.get(type)));
 
                     yield FieldSpec.builder(fieldType, name, Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                            .initializer("new $T($S, $T.$L, $T.$L, $T.class, $T.$L)",
+                            .initializer("new $T<>($S, $T.$L, $T.$L, $T.class, $T.$L)",
                                     collectionClassName, name,
                                     Property.Source.class, source,
                                     meta.scopeClass, scope,
@@ -203,10 +233,10 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                                  TypeElement keyType,
                                  TypeElement valueType,
                                  Property.FallbackBehaviour fallback) -> {
-                    ParameterizedTypeName fieldType = ParameterizedTypeName.get(className, ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(keyType), ClassName.get(valueType)));
+                    ParameterizedTypeName fieldType = ParameterizedTypeName.get(specificCName, ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(keyType), ClassName.get(valueType)));
 
                     yield FieldSpec.builder(fieldType, name, Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                            .initializer("new $T($S, $T.$L, $T.$L, $T.class, $T.class, $T.$L)",
+                            .initializer("new $T<>($S, $T.$L, $T.$L, $T.class, $T.class, $T.$L)",
                                     mappingClassName, name,
                                     Property.Source.class, source,
                                     meta.scopeClass, scope,
@@ -223,12 +253,17 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         return builder.build();
     }
 
-    private TypeSpec singletonProperty(PropertyGenerator.PropertyMeta meta, ClassName specificProperty) {
+//    private MethodSpec scopedGet(TypeName returnName) {
+//        return MethodSpec.methodBuilder("get")
+//                .addParameter()
+//    }
+
+    private TypeSpec singletonProperty() {
         return TypeSpec.classBuilder(meta.name(SINGLETON))
                 .addModifiers(Modifier.FINAL)
                 .addTypeVariable(TypeVariableName.get("T"))
                 .superclass(withTGeneric(ClassName.get(SingleProperty.class)))
-                .addSuperinterface(withTGeneric(specificProperty))
+                .addSuperinterface(withTGeneric(specificCName))
                 .addMethod(propertySuperConstructor()
                         .addParameter(withTGeneric(ClassName.get(Class.class)), "type")
                         .addStatement("super(name, source, scope, type)")
@@ -236,12 +271,12 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .build();
     }
 
-    private TypeSpec collectionProperty(PropertyGenerator.PropertyMeta meta, ClassName specificProperty) {
+    private TypeSpec collectionProperty() {
         return TypeSpec.classBuilder(meta.name(COLLECTION))
                 .addModifiers(Modifier.FINAL)
                 .addTypeVariable(TypeVariableName.get("T"))
                 .superclass(withTGeneric(ClassName.get(CollectionProperty.class)))
-                .addSuperinterface(ParameterizedTypeName.get(specificProperty, withTGeneric(ClassName.get(Collection.class))))
+                .addSuperinterface(ParameterizedTypeName.get(specificCName, withTGeneric(ClassName.get(Collection.class))))
                 .addMethod(propertySuperConstructor()
                         .addParameter(withTGeneric(ClassName.get(Class.class)), "type")
                         .addParameter(Property.FallbackBehaviour.class, "fallback")
@@ -250,7 +285,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .build();
     }
 
-    private TypeSpec mappingProperty(PropertyGenerator.PropertyMeta meta, ClassName specificProperty) {
+    private TypeSpec mappingProperty() {
         TypeVariableName[] typeVariables = {TypeVariableName.get("K"), TypeVariableName.get("V")};
         ParameterizedTypeName mapTypeName = ParameterizedTypeName.get(ClassName.get(Map.class), typeVariables);
 
@@ -258,7 +293,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .addModifiers(Modifier.FINAL)
                 .addTypeVariables(List.of(typeVariables))
                 .superclass(ParameterizedTypeName.get(ClassName.get(MapProperty.class), typeVariables))
-                .addSuperinterface(ParameterizedTypeName.get(specificProperty, mapTypeName))
+                .addSuperinterface(ParameterizedTypeName.get(specificCName, mapTypeName))
                 .addMethod(propertySuperConstructor()
                         .addParameter(withGeneric(ClassName.get(Class.class), "K"), "keyType")
                         .addParameter(withGeneric(ClassName.get(Class.class), "V"), "valueType")

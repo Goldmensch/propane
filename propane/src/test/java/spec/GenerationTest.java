@@ -41,7 +41,7 @@ public class GenerationTest {
 
     @Test
     public void mapping_property() {
-        GenTestIntrospection build = GenTestIntrospectionImpl.create(GenTestScope.ROOT)
+        GenTestIntrospectionImpl build = GenTestIntrospectionImpl.create(GenTestScope.ROOT)
                 .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_MAPPING, PropertyProvider.Priority.FALLBACK, GenerationTest.class, _ -> Map.of("hello", "world")))
                 .build();
 

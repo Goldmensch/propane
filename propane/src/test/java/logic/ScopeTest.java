@@ -2,7 +2,7 @@ package logic;
 
 import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.property.Property;
-import logic.impl.TestIntrospection;
+import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
 import logic.impl.TestPropertyProvider;
 import logic.impl.TestSingleProperty;
@@ -42,7 +42,7 @@ public class ScopeTest {
     @Test
     public void priority_must_not_negative() {
         ThrowingRunnable run = () -> {
-            TestIntrospection.create(Scopes.NEGATIVE)
+            TestIntrospectionImpl.create(Scopes.NEGATIVE)
                     .add(new TestPropertyProvider<>(Properties.NEGATIVE, PropertyProvider.Priority.FALLBACK, ScopeTest.class, _ -> "negative"))
                     .build();
         };
@@ -52,7 +52,7 @@ public class ScopeTest {
 
     @Test
     public void child_TestIntrospection_same_scope() {
-        TestIntrospection parent = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
                 .build();
 
         parent.createChild(Scopes.ROOT)
@@ -61,7 +61,7 @@ public class ScopeTest {
 
     @Test
     public void child_TestIntrospection_child_scope() {
-        TestIntrospection parent = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
                 .build();
 
         parent.createChild(Scopes.CHILD)
@@ -71,7 +71,7 @@ public class ScopeTest {
     @Test
     public void child_TestIntrospection_parent_scope() {
         ThrowingRunnable run = () -> {
-            TestIntrospection parent = TestIntrospection.create(Scopes.CHILD)
+            TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.CHILD)
                     .build();
 
             parent.createChild(Scopes.ROOT)
@@ -83,14 +83,14 @@ public class ScopeTest {
 
     @Test
     public void add_value_same_scope() {
-        TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.ONE, TestPropertyProvider.Priority.FALLBACK, ScopeTest.class, _ -> "one"))
                 .build();
     }
 
     @Test
     public void add_value_parent_scope() {
-        TestIntrospection.create(Scopes.CHILD)
+        TestIntrospectionImpl.create(Scopes.CHILD)
                 .add(new TestPropertyProvider<>(Properties.ONE, TestPropertyProvider.Priority.FALLBACK, ScopeTest.class, _ -> "one"))
                 .build();
     }
@@ -98,7 +98,7 @@ public class ScopeTest {
     @Test
     public void add_value_child_scope() {
         ThrowingRunnable run = () -> {
-            TestIntrospection.create(Scopes.ROOT)
+            TestIntrospectionImpl.create(Scopes.ROOT)
                     .add(new TestPropertyProvider<>(Properties.TWO, TestPropertyProvider.Priority.FALLBACK, ScopeTest.class, _ -> "two"))
                     .build();
         };

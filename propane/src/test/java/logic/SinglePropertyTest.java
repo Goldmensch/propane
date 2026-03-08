@@ -2,7 +2,7 @@ package logic;
 
 import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.property.Property;
-import logic.impl.TestIntrospection;
+import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
 import logic.impl.TestPropertyProvider;
 import logic.impl.TestSingleProperty;
@@ -31,7 +31,7 @@ public class SinglePropertyTest {
 
     @Test
     public void without_dependencies() {
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> "Hello World"))
                 .build();
 
@@ -40,7 +40,7 @@ public class SinglePropertyTest {
 
     @Test
     public void should_always_return_same_instance() {
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.TEST_STUB, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> new Properties.TestStub()))
                 .build();
 
@@ -53,7 +53,7 @@ public class SinglePropertyTest {
 
     @Test
     public void should_not_return_fallback() {
-        TestIntrospection introspection = TestIntrospection.create(Scopes.ROOT)
+        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SinglePropertyTest.class, _ -> "Hello World (Fallback)"))
                 .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.of(10), SinglePropertyTest.class, _ -> "Hello World"))
                 .build();

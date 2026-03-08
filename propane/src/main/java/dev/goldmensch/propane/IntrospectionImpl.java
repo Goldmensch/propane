@@ -8,17 +8,17 @@ import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.SpecificProperty;
 
 // I've got insane with that. But it had to be typesafe. It just had to be.
-public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, BUILDER, PROVIDER>, BUILDER extends IntrospectionImpl<I_SELF, BUILDER, PROVIDER>.Builder, PROVIDER extends PropertyProvider<?, ?, I_SELF>>
+public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B>, I extends Introspection, B extends IntrospectionImpl<I_SELF, I, B>.Builder>
 implements Introspection {
     private final Property.Scope scope;
-    final Resolver<I_SELF> resolver;
+    final Resolver<I> resolver;
 
     // called by Builder#newInstance
     @SuppressWarnings("unchecked")
-    protected IntrospectionImpl(Property.Scope scope, Properties<I_SELF> properties, I_SELF parent) {
+    protected IntrospectionImpl(Property.Scope scope, Properties<I> properties, I_SELF parent) {
         this.scope = scope;
 
-        this.resolver = parent.resolver.createChild(properties, (I_SELF) this);
+        this.resolver = parent.resolver.createChild(properties, (I) this);
     }
 
     // called by create(Scope)
@@ -46,10 +46,10 @@ implements Introspection {
     // body:
     // return this.new Builder(scope);
     // overridden with real Builder implementation and real Builder implementation
-    public abstract BUILDER createChild(Property.Scope scope);
+    public abstract B createChild(Property.Scope scope);
 
     public abstract class Builder {
-        protected final Properties<I_SELF> properties;
+        protected final Properties<I> properties;
         protected final Property.Scope scope;
 
         protected Builder(Property.Scope scope) {
@@ -57,7 +57,8 @@ implements Introspection {
             this.properties = new Properties<>(scope);
         }
 
-        public BUILDER add(PROVIDER provider) {
+        // I guarantee only compatible providers
+        public B add(PropertyProvider<?, ?, I> provider) {
             properties.add(provider);
             return self();
         }
@@ -71,10 +72,11 @@ implements Introspection {
         }
 
         @SuppressWarnings("unchecked")
-        private BUILDER self() {
-            return (BUILDER) this;
+        private B self() {
+            return (B) this;
         }
 
+        // validate()
         // return new IntrospectionImpl(scope, properties, IntrospectionImpl.this);
         protected abstract I_SELF newInstance();
 
