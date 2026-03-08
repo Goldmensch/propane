@@ -3,6 +3,7 @@ dev.goldmensch.propane
 dev.goldmensch.propane.internal
 dev.goldmensch.propane.internal.exposed
 dev.goldmensch.propane.property
+dev.goldmensch.propane.spec
 dev.goldmensch.propane.spec.annotation
 dev.goldmensch.propane.spec.generator
 dev.goldmensch.propane.spec.processor
