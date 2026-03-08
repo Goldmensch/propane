@@ -7,16 +7,16 @@ import dev.goldmensch.propane.spec.annotation.*;
 import java.util.Collection;
 import java.util.Map;
 
-@Propane("Test")
+@Propane("GenTest")
 @Scopes("ROOT")
 public interface TestPropertySpec {
 
-    @Singleton(scope = TestScope.ROOT, source = Property.Source.BUILDER)
+    @Singleton(scope = GenTestScope.ROOT, source = Property.Source.BUILDER)
     String FOO_SINGLE();
 
-    @Mapping(scope = TestScope.ROOT, source = Property.Source.BUILDER, fallback = Property.FallbackBehaviour.ACCUMULATE)
-    Map<String, String> FOO_MAP();
+    @Mapping(scope = GenTestScope.ROOT, source = Property.Source.BUILDER, fallback = Property.FallbackBehaviour.ACCUMULATE)
+    Map<String, String> FOO_MAPPING();
 
-    @Enumeration(scope = TestScope.ROOT, source = Property.Source.BUILDER, fallback = Property.FallbackBehaviour.ACCUMULATE)
-    Collection<String> FOO_COLLECTION();
+    @Enumeration(scope = GenTestScope.ROOT, source = Property.Source.BUILDER, fallback = Property.FallbackBehaviour.ACCUMULATE)
+    Collection<String> FOO_ENUMERATION();
 }

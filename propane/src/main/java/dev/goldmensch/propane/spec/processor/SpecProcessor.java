@@ -19,8 +19,11 @@ import javax.lang.model.util.*;
 import java.util.*;
 import java.util.stream.Stream;
 
+@SuppressWarnings("NotNullFieldNotInitialized")
 @SupportedSourceVersion(SourceVersion.RELEASE_25)
 public class SpecProcessor extends AbstractProcessor {
+
+    private static final SpecMeta FINISHED = new SpecMeta("", new String[]{}, "");
 
     private final Map<Name, SpecMeta> metadata = new HashMap<>();
 
@@ -41,7 +44,7 @@ public class SpecProcessor extends AbstractProcessor {
         for (Element klass : roundEnv.getElementsAnnotatedWith(Propane.class)) {
             Name qualifiedName = ((TypeElement) klass).getQualifiedName();
             if (metadata.containsKey(qualifiedName)) {
-                continue; // already run in previous round
+                continue; // already ran in previous round
             }
             
             Scopes scopes = klass.getAnnotation(Scopes.class);
@@ -68,16 +71,17 @@ public class SpecProcessor extends AbstractProcessor {
         for (Element scopeKlass : roundEnv.getElementsAnnotatedWith(GeneratedForSpec.class)) {
             AnnotationMirror ann = getAnnotation(scopeKlass, GeneratedForSpec.class.getSimpleName()).orElseThrow();
             TypeElement spec = getValue(ann, "spec").accept(new TypeElementExtractor(), null);
-            List<? extends SpecProperty> properties = readProperties(spec);
-
-            PropertyGenerator generator = new PropertyGenerator(elements.getPackageOf(spec), processingEnv.getFiler());
             SpecMeta specMeta = metadata.get(spec.getQualifiedName());
+
+            if (specMeta == FINISHED) {
+                continue; // already ran in previous round
+            }
+
+            List<? extends SpecProperty> properties = readProperties(spec);
+            PropertyGenerator generator = new PropertyGenerator(elements.getPackageOf(spec), processingEnv.getFiler());
             generator.generate(new PropertyGenerator.PropertyMeta(specMeta, properties, scopeKlass.asType()));
 
-            messager.printNote(properties.toString());
-            messager.printNote(metadata.get(spec.getQualifiedName()).toString());
-
-
+            metadata.put(spec.getQualifiedName(), FINISHED);
         }
 
         return true;
