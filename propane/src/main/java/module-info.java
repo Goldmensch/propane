@@ -3,10 +3,9 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 module dev.goldmensch.propane {
     requires static com.palantir.javapoet;
+    requires static org.jspecify;
 
-    requires org.jspecify;
     requires java.compiler;
-    requires jdk.compiler;
 
     exports dev.goldmensch.propane;
     exports dev.goldmensch.propane.property;

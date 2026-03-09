@@ -11,7 +11,8 @@ public record SpecMapping(
         String scope,
         TypeElement keyTpe,
         TypeElement valueType,
-        Property.FallbackBehaviour fallbackBehaviour
+        Property.FallbackBehaviour fallbackBehaviour,
+        boolean internal
 ) implements SpecProperty {
     public static final String ANNOTATION = "Mapping";
 }

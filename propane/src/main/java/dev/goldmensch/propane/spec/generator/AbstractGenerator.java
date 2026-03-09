@@ -3,6 +3,7 @@ package dev.goldmensch.propane.spec.generator;
 import com.palantir.javapoet.JavaFile;
 import com.palantir.javapoet.TypeSpec;
 import dev.goldmensch.propane.spec.processor.syntax.SpecMeta;
+import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.PackageElement;
@@ -23,9 +24,11 @@ abstract class AbstractGenerator<T> {
     }
 
     public void generate(T meta) {
-        for (Map.Entry<String, List<Supplier<TypeSpec>>> generator : generators(meta).entrySet()) {
-            for (Supplier<TypeSpec> supplier : generator.getValue()) {
+        for (Map.Entry<String, List<Supplier<@Nullable TypeSpec>>> generator : generators(meta).entrySet()) {
+            for (Supplier<@Nullable TypeSpec> supplier : generator.getValue()) {
                 TypeSpec spec = supplier.get();
+                if (spec == null) continue;
+
                 String pName = generator.getKey().isEmpty()
                         ? packageName
                         : packageName + "." + generator.getKey();
@@ -39,5 +42,5 @@ abstract class AbstractGenerator<T> {
         }
     }
 
-    abstract Map<String, List<Supplier<TypeSpec>>> generators(T meta);
+    abstract Map<String, List<Supplier<@Nullable TypeSpec>>> generators(T meta);
 }

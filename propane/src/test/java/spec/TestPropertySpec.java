@@ -14,6 +14,10 @@ public interface TestPropertySpec {
     @Singleton(scope = GenTestScope.ROOT, source = Property.Source.BUILDER)
     String FOO_SINGLE();
 
+    @Internal
+    @Singleton(scope = GenTestScope.ROOT, source = Property.Source.BUILDER)
+    String FOO_INTERNAL();
+
     @Mapping(scope = GenTestScope.ROOT, source = Property.Source.BUILDER, fallback = Property.FallbackBehaviour.ACCUMULATE)
     Map<String, String> FOO_MAPPING();
 

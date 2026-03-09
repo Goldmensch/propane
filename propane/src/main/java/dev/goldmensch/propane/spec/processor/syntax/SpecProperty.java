@@ -6,4 +6,5 @@ public sealed interface SpecProperty permits SpecEnumeration, SpecMapping, SpecS
     String name();
     Property.Source source();
     String scope();
+    boolean internal();
 }

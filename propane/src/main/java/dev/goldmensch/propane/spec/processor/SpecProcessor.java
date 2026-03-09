@@ -2,6 +2,7 @@ package dev.goldmensch.propane.spec.processor;
 
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.spec.annotation.GeneratedForSpec;
+import dev.goldmensch.propane.spec.annotation.Internal;
 import dev.goldmensch.propane.spec.annotation.Propane;
 import dev.goldmensch.propane.spec.annotation.Scopes;
 import dev.goldmensch.propane.spec.generator.DslGenerator;
@@ -46,7 +47,7 @@ public class SpecProcessor extends AbstractProcessor {
             if (metadata.containsKey(qualifiedName)) {
                 continue; // already ran in previous round
             }
-            
+
             Scopes scopes = klass.getAnnotation(Scopes.class);
             Propane propane = klass.getAnnotation(Propane.class);
             if (scopes == null || propane == null) {
@@ -188,8 +189,13 @@ public class SpecProcessor extends AbstractProcessor {
                         name,
                         Property.Source.valueOf(getEnumConstant(mirror, "source")),
                         getEnumConstant(mirror, "scope"),
-                        (TypeElement) types.asElement(type)
+                        (TypeElement) types.asElement(type),
+                        isInternal(element)
                 ));
+    }
+
+    private boolean isInternal(Element element) {
+        return element.getAnnotation(Internal.class) != null;
     }
 
     private boolean isDifferentTypeErased(TypeMirror one, TypeMirror other) {
@@ -216,7 +222,8 @@ public class SpecProcessor extends AbstractProcessor {
                             Property.Source.valueOf(getEnumConstant(mirror, "source")),
                             getEnumConstant(mirror, "scope"),
                             typeArgument.getFirst(),
-                            Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback"))
+                            Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback")),
+                            isInternal(element)
                     );
                     return Optional.of(spec);
                 });
@@ -243,7 +250,8 @@ public class SpecProcessor extends AbstractProcessor {
                             getEnumConstant(mirror, "scope"),
                             typeArgument.get(0),
                             typeArgument.get(1),
-                            Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback"))
+                            Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback")),
+                            isInternal(element)
                     );
                     return Optional.of(spec);
                 });
