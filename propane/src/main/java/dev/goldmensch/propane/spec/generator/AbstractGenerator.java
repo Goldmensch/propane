@@ -32,7 +32,8 @@ abstract class AbstractGenerator<T> {
                 String pName = generator.getKey().isEmpty()
                         ? packageName
                         : packageName + "." + generator.getKey();
-                JavaFile file = JavaFile.builder(pName, spec).build();
+                JavaFile file = JavaFile.builder(pName, spec)
+                        .build();
                 try {
                     file.writeTo(filer);
                 } catch (IOException e) {

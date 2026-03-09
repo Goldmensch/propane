@@ -10,7 +10,7 @@ public record SpecEnumeration(
         String scope,
         TypeElement type,
         Property.FallbackBehaviour fallbackBehaviour,
-        boolean internal
+        Meta meta
 ) implements SpecProperty {
     public static final String ANNOTATION = "Enumeration";
 }

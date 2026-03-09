@@ -6,6 +6,7 @@ import dev.goldmensch.propane.IntrospectionImpl;
 import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.property.*;
+import dev.goldmensch.propane.spec.processor.javadoc.JavaDocReader;
 import dev.goldmensch.propane.spec.processor.syntax.*;
 import org.jspecify.annotations.Nullable;
 
@@ -14,14 +15,11 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.PropertyMeta> {
+public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.PropertyGeneratorMeta> {
 
     private static final TypeVariableName T = TypeVariableName.get("T");
 
@@ -33,7 +31,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         super(packageName, filer);
     }
 
-    private PropertyMeta meta;
+    private PropertyGeneratorMeta meta;
     private ClassName providerName;
     private ClassName introspectionName;
     private ClassName introspectionImplName;
@@ -48,7 +46,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
 
     @Override
-    Map<String, List<Supplier<@Nullable TypeSpec>>> generators(PropertyMeta meta) {
+    Map<String, List<Supplier<@Nullable TypeSpec>>> generators(PropertyGeneratorMeta meta) {
         String internalPackage = packageName + ".internal";
 
         this.meta = meta;
@@ -86,7 +84,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         );
     }
 
-    public record PropertyMeta(SpecMeta spec, List<? extends SpecProperty> properties, TypeMirror scopeClass) {
+    public record PropertyGeneratorMeta(SpecMeta spec, List<? extends SpecProperty> properties, TypeMirror scopeClass) {
         String name(String name) {
             return spec().prefix() + name;
         }
@@ -254,11 +252,11 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
         meta.properties()
                 .stream()
-                .filter(SpecProperty::internal)
+                .filter(spec -> spec.meta().internal())
                 .map(this::toField)
                 .forEach(builder::addField);
 
-        return meta.properties().stream().anyMatch(SpecProperty::internal)
+        return meta.properties().stream().anyMatch(spec -> spec.meta().internal())
                 ? builder.build()
                 : null;
     }
@@ -284,16 +282,38 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
         meta.properties()
                 .stream()
-                .filter(property -> !property.internal())
+                .filter(spec -> !spec.meta().internal())
                 .map(this::toField)
                 .forEach(builder::addField);
+        builder.addMethod(importMethod(false));
+
+        return builder.build();
+    }
+
+    private MethodSpec importMethod(boolean internal) {
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("__imported")
+                .addModifiers(Modifier.PRIVATE, Modifier.STATIC);
+
+        meta.properties()
+                .stream()
+                .map(SpecProperty::meta)
+                .filter(pMeta -> pMeta.internal() == internal)
+                .map(SpecProperty.Meta::comment)
+                .map(JavaDocReader.Comment::importedTypes)
+                .flatMap(Collection::stream)
+                .distinct()
+                .forEach(element -> builder.addStatement("$1T<$2T> $3L = $2T.class", Class.class, ClassName.get(element), "a" + element.getSimpleName()));
 
         return builder.build();
     }
 
     private FieldSpec toField(SpecProperty property) {
-        return switch (property) {
-            case SpecSingleton(String name, Property.Source source, String scope, TypeElement type, var _) -> {
+        FieldSpec.Builder builder = switch (property) {
+            case SpecSingleton(String name,
+                               Property.Source source,
+                               String scope,
+                               TypeElement type,
+                               var _) -> {
                 ParameterizedTypeName fieldType = ParameterizedTypeName.get(specificName, ClassName.get(type));
 
                 yield FieldSpec.builder(fieldType, name, Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
@@ -301,8 +321,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                                 singletonClassName, name,
                                 Property.Source.class, source,
                                 scopeName, scope,
-                                type)
-                        .build();
+                                type);
             }
 
             case SpecEnumeration(String name,
@@ -319,8 +338,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                                 Property.Source.class, source,
                                 scopeName, scope,
                                 type,
-                                Property.FallbackBehaviour.class, fallback)
-                        .build();
+                                Property.FallbackBehaviour.class, fallback);
             }
 
             case SpecMapping(String name, Property.Source source, String scope,
@@ -337,10 +355,13 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                                 scopeName, scope,
                                 keyType,
                                 valueType,
-                                Property.FallbackBehaviour.class, fallback)
-                        .build();
+                                Property.FallbackBehaviour.class, fallback);
             }
         };
+
+        builder.addJavadoc(property.meta().comment().comment());
+
+        return builder.build();
     }
 
     private TypeSpec singletonProperty() {

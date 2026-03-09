@@ -9,7 +9,7 @@ public record SpecSingleton(
         Property.Source source,
         String scope,
         TypeElement type,
-        boolean internal
+        Meta meta
 ) implements SpecProperty {
     public static final String ANNOTATION = "Singleton";
 }

@@ -6,6 +6,7 @@ module dev.goldmensch.propane {
     requires static org.jspecify;
 
     requires java.compiler;
+    requires jdk.compiler;
 
     exports dev.goldmensch.propane;
     exports dev.goldmensch.propane.property;

@@ -7,6 +7,7 @@ import dev.goldmensch.propane.spec.annotation.Propane;
 import dev.goldmensch.propane.spec.annotation.Scopes;
 import dev.goldmensch.propane.spec.generator.DslGenerator;
 import dev.goldmensch.propane.spec.generator.PropertyGenerator;
+import dev.goldmensch.propane.spec.processor.javadoc.JavaDocReader;
 import dev.goldmensch.propane.spec.processor.syntax.*;
 import dev.goldmensch.propane.spec.processor.util.TriFunction;
 import org.jspecify.annotations.Nullable;
@@ -28,6 +29,7 @@ public class SpecProcessor extends AbstractProcessor {
 
     private final Map<Name, SpecMeta> metadata = new HashMap<>();
 
+    private JavaDocReader javaDocReader;
     private Messager messager;
     private Types types;
     private Elements elements;
@@ -38,6 +40,7 @@ public class SpecProcessor extends AbstractProcessor {
         this.messager = processingEnv.getMessager();
         this.types = processingEnv.getTypeUtils();
         this.elements = processingEnv.getElementUtils();
+        this.javaDocReader = JavaDocReader.choose(processingEnv);
     }
 
     @Override
@@ -80,7 +83,7 @@ public class SpecProcessor extends AbstractProcessor {
 
             List<? extends SpecProperty> properties = readProperties(spec);
             PropertyGenerator generator = new PropertyGenerator(elements.getPackageOf(spec), processingEnv.getFiler());
-            generator.generate(new PropertyGenerator.PropertyMeta(specMeta, properties, scopeKlass.asType()));
+            generator.generate(new PropertyGenerator.PropertyGeneratorMeta(specMeta, properties, scopeKlass.asType()));
 
             metadata.put(spec.getQualifiedName(), FINISHED);
         }
@@ -190,12 +193,15 @@ public class SpecProcessor extends AbstractProcessor {
                         Property.Source.valueOf(getEnumConstant(mirror, "source")),
                         getEnumConstant(mirror, "scope"),
                         (TypeElement) types.asElement(type),
-                        isInternal(element)
+                        propertyMeta(element)
                 ));
     }
 
-    private boolean isInternal(Element element) {
-        return element.getAnnotation(Internal.class) != null;
+    private SpecProperty.Meta propertyMeta(Element element) {
+        return new SpecProperty.Meta(
+                element.getAnnotation(Internal.class) != null,
+                javaDocReader.get(element)
+        );
     }
 
     private boolean isDifferentTypeErased(TypeMirror one, TypeMirror other) {
@@ -223,7 +229,7 @@ public class SpecProcessor extends AbstractProcessor {
                             getEnumConstant(mirror, "scope"),
                             typeArgument.getFirst(),
                             Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback")),
-                            isInternal(element)
+                            propertyMeta(element)
                     );
                     return Optional.of(spec);
                 });
@@ -251,7 +257,7 @@ public class SpecProcessor extends AbstractProcessor {
                             typeArgument.get(0),
                             typeArgument.get(1),
                             Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback")),
-                            isInternal(element)
+                            propertyMeta(element)
                     );
                     return Optional.of(spec);
                 });

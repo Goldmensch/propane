@@ -2,6 +2,7 @@ package spec;
 
 
 import dev.goldmensch.propane.property.Property;
+import dev.goldmensch.propane.property.SpecificProperty;
 import dev.goldmensch.propane.spec.annotation.*;
 
 import java.util.Collection;
@@ -11,6 +12,10 @@ import java.util.Map;
 @Scopes("ROOT")
 public interface TestPropertySpec {
 
+    /// My comment [GenTestScope#ROOT], [Singleton], [spec.GenTestIntrospection], [Map.Entry]
+    /// Multiline baby!!
+    ///
+    /// @see SpecificProperty<String>
     @Singleton(scope = GenTestScope.ROOT, source = Property.Source.BUILDER)
     String FOO_SINGLE();
 

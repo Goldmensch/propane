@@ -12,7 +12,7 @@ public record SpecMapping(
         TypeElement keyTpe,
         TypeElement valueType,
         Property.FallbackBehaviour fallbackBehaviour,
-        boolean internal
+        Meta meta
 ) implements SpecProperty {
     public static final String ANNOTATION = "Mapping";
 }
