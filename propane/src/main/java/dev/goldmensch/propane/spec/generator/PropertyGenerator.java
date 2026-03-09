@@ -13,6 +13,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -172,6 +173,12 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addParameter(withTGeneric(specificCName), "specific")
                         .addStatement("return super.get(specific)")
                         .build())
+                .addMethod(MethodSpec.methodBuilder("addIntrospectionProvider")
+                        .addModifiers(Modifier.PROTECTED)
+                        .addParameter(ParameterizedTypeName.get(ClassName.get(Properties.class), introspectionName), "properties")
+                        .addStatement("properties.add(new $T<>($T.INTROSPECTION, $T.FALLBACK, $T.class, _ -> this))",
+                                providerName, specificCName, PropertyProvider.Priority.class, introspectionName)
+                        .build())
                 .addType(TypeSpec.classBuilder(builderName)
                         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                         .superclass(parentIntrospection.nestedClass("Builder"))
@@ -234,6 +241,19 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .addPermittedSubclass(collectionClassName)
                 .addPermittedSubclass(mappingClassName);
 
+        FieldSpec introspectionProperty = FieldSpec
+                .builder(
+                        ParameterizedTypeName.get(specificCName, introspectionName),
+                        "INTROSPECTION",
+                        Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+                .initializer("new $T<>($S, $T.PROVIDED, $T.$L, $T.class)",
+                        singletonClassName, "INTROSPECTION",
+                        Property.Source.class,
+                        scopeName, meta.spec.scopes()[0], // first scope is always highest priority -> Enum.ordinal
+                        introspectionName)
+                .build();
+        builder.addField(introspectionProperty);
+
         for (SpecProperty property : meta.properties()) {
             FieldSpec field = switch (property) {
                 case SpecSingleton(String name, Property.Source source, String scope, TypeElement type) -> {
@@ -286,11 +306,6 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         return builder.build();
     }
 
-//    private MethodSpec scopedGet(TypeName returnName) {
-//        return MethodSpec.methodBuilder("get")
-//                .addParameter()
-//    }
-
     private TypeSpec singletonProperty() {
         return TypeSpec.classBuilder(meta.name(SINGLETON))
                 .addModifiers(Modifier.FINAL)
@@ -301,7 +316,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addParameter(withTGeneric(ClassName.get(Class.class)), "type")
                         .addStatement("super(name, source, scope, type)")
                         .build())
-                .addMethod(scopedGet(T))
+                .addMethod(getScoped(T))
                 .build();
     }
 
@@ -317,7 +332,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addParameter(Property.FallbackBehaviour.class, "fallback")
                         .addStatement("super(name, source, scope, type, fallback)")
                         .build())
-                .addMethod(scopedGet(collectionType))
+                .addMethod(getScoped(collectionType))
                 .build();
     }
 
@@ -338,11 +353,11 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addParameter(Property.FallbackBehaviour.class, "fallback")
                         .addStatement("super(name, source, scope, keyType, valueType, fallback)")
                         .build())
-                .addMethod(scopedGet(mapTypeName))
+                .addMethod(getScoped(mapTypeName))
                 .build();
     }
 
-    private MethodSpec scopedGet(TypeName returnType) {
+    private MethodSpec getScoped(TypeName returnType) {
         return MethodSpec.methodBuilder("getScoped")
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class)

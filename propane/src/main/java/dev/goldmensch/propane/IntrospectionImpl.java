@@ -23,6 +23,7 @@ implements Introspection<S> {
     protected IntrospectionImpl(S scope, Properties<I> properties, I_SELF parent) {
         this.scope = scope;
 
+        addIntrospectionProvider(properties);
         this.resolver = parent.resolver.createChild(properties, (I) this);
     }
 
@@ -31,6 +32,9 @@ implements Introspection<S> {
         this.scope = scope;
         this.resolver = Resolver.createEmpty();
     }
+
+    @SkeletonMethod
+    protected abstract void addIntrospectionProvider(Properties<I> properties);
 
     @SkeletonMethod
     public static IntrospectionImpl<?, ?, ?, ?>.Builder create(Property.Scope scope) {
@@ -95,7 +99,6 @@ implements Introspection<S> {
         }
 
         public I_SELF build() {
-
             if (!Scopes.isChild(scope, IntrospectionImpl.this.scope)) {
                 throw new RuntimeException("Child scope must be equal or subscope of parent scope");
             }
@@ -112,7 +115,6 @@ implements Introspection<S> {
             return StackWalker.getInstance().getCallerClass();
         }
 
-        // validate()
         // return new IntrospectionImpl(scope, properties, IntrospectionImpl.this);
         @SkeletonMethod
         protected abstract I_SELF newInstance();

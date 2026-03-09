@@ -22,6 +22,11 @@ public class TestIntrospectionImpl extends IntrospectionImpl<TestIntrospectionIm
         super(scope);
     }
 
+    @Override
+    protected void addIntrospectionProvider(Properties<TestIntrospection> properties) {
+
+    }
+
     public static TestBuilder create(Property.Scope scope) {
         return new TestIntrospectionImpl(scope).createChild(scope);
     }
