@@ -1,5 +1,7 @@
 module:dev.goldmensch.propane
 dev.goldmensch.propane
+dev.goldmensch.propane.event
+dev.goldmensch.propane.event.internal
 dev.goldmensch.propane.internal
 dev.goldmensch.propane.internal.exposed
 dev.goldmensch.propane.property

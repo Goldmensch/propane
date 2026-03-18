@@ -63,7 +63,9 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
-<li><a href="#isChild(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)" tabindex="0">isChild(Property.Scope, Property.Scope)</a></li>
+<li><a href="#isSub(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)" tabindex="0">isSub(Property.Scope, Property.Scope)</a></li>
+<li><a href="#isParent(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)" tabindex="0">isParent(Property.Scope, Property.Scope)</a></li>
+<li><a href="#isSame(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)" tabindex="0">isSame(Property.Scope, Property.Scope)</a></li>
 </ol>
 </li>
 </ol>
@@ -110,8 +112,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isChild(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)" class="member-name-link">isChild</a><wbr>(<a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;one,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isParent(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)" class="member-name-link">isParent</a><wbr>(<a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;parent,
+ <a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;child)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isSame(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)" class="member-name-link">isSame</a><wbr>(<a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;one,
  <a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;other)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isSub(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)" class="member-name-link">isSub</a><wbr>(<a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;child,
+ <a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;parent)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -147,10 +157,28 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="isChild(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)">
-<h3>isChild</h3>
+<section class="detail" id="isSub(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)">
+<h3>isSub</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isChild</span><wbr><span class="parameters">(<a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;one,
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isSub</span><wbr><span class="parameters">(<a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;child,
+ <a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;parent)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isParent(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)">
+<h3>isParent</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isParent</span><wbr><span class="parameters">(<a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;parent,
+ <a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;child)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isSame(dev.goldmensch.propane.property.Property.Scope,dev.goldmensch.propane.property.Property.Scope)">
+<h3>isSame</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isSame</span><wbr><span class="parameters">(<a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;one,
  <a href="../property/Property.Scope.html" title="interface in dev.goldmensch.propane.property">Property.Scope</a>&nbsp;other)</span></div>
 </div>
 </section>
