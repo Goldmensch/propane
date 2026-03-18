@@ -1,7 +1,6 @@
 package dev.goldmensch.propane.internal.exposed;
 
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.IntrospectionImpl;
 import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.PropertyProvider;
@@ -37,7 +36,7 @@ public class Properties<INTROSPECTION extends Introspection> {
         }
 
         Property.Scope propertyScope = property.scope();
-        if (!Scopes.isChild(scope, propertyScope)) {
+        if (!Scopes.isSub(scope, propertyScope)) {
             throw new RuntimeException("scope of property (%s) must be equal or parent of current scope (%s)".formatted(propertyScope, scope));
         }
     }

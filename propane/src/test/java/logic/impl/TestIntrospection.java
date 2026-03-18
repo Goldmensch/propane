@@ -3,7 +3,7 @@ package logic.impl;
 import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.property.Property;
 
-public interface TestIntrospection extends Introspection<Property.Scope> {
+public interface TestIntrospection extends Introspection<TestIntrospection, Property.Scope> {
 
     static boolean accessible() {
         return TestIntrospectionImpl.INTROSPECTION.isBound();

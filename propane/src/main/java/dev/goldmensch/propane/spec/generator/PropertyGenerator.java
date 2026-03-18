@@ -4,6 +4,7 @@ import com.palantir.javapoet.*;
 import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.IntrospectionImpl;
 import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.Registry;
 import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.property.*;
 import dev.goldmensch.propane.spec.processor.syntax.*;
@@ -118,7 +119,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
     private TypeSpec introspection() {
         return TypeSpec.interfaceBuilder(introspectionName)
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Introspection.class), scopeName))
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Introspection.class), introspectionName, scopeName))
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(MethodSpec.methodBuilder("get")
                         .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
@@ -168,7 +169,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PRIVATE)
                         .addParameter(scopeName, "scope")
-                        .addStatement("super(scope)")
+                        .addStatement("super(new $T<>($T.of()), scope)", Registry.class, Map.class)
                         .build())
                 .addMethod(MethodSpec.methodBuilder("create")
                         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)

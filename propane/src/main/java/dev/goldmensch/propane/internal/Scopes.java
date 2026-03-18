@@ -8,7 +8,15 @@ public class Scopes {
     }
 
     // child or equal
-    public static boolean isChild(Property.Scope one, Property.Scope other) {
-        return compare(one, other) >= 0;
+    public static boolean isSub(Property.Scope child, Property.Scope parent) {
+        return compare(child, parent) >= 0;
+    }
+
+    public static boolean isParent(Property.Scope parent, Property.Scope child) {
+        return compare(parent, child) <= 0;
+    }
+
+    public static boolean isSame(Property.Scope one, Property.Scope other) {
+        return compare(one, other) == 0;
     }
 }

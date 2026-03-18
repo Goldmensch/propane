@@ -1,0 +1,48 @@
+package dev.goldmensch.propane.event.internal;
+
+import dev.goldmensch.propane.Introspection;
+import dev.goldmensch.propane.Registry;
+import dev.goldmensch.propane.event.Event;
+import dev.goldmensch.propane.event.Listener;
+import dev.goldmensch.propane.internal.Scopes;
+import dev.goldmensch.propane.property.Property;
+import org.jspecify.annotations.Nullable;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class EventBus<I extends Introspection<I, S>, S extends Property.Scope> {
+    private final Registry<S> registry;
+    private final S scope;
+    private final @Nullable EventBus<I, S> parent;
+    private final Map<Class<Event<S>>, Collection<Listener<Event<S>, S, I>>> listeners = new ConcurrentHashMap<>();
+
+    public EventBus(Registry<S> registry, S scope, @Nullable EventBus<I, S> parent) {
+        this.registry = registry;
+        this.scope = scope;
+        this.parent = parent;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void add(Listener<? extends Event<S>, S, I> listener) {
+        Class<? extends Event<S>> event = listener.event();
+        S eventScope = registry.scopeForEvent(event);
+
+        if (!Scopes.isSub(eventScope, scope)) {
+            throw new RuntimeException("scope of event listener must be child of current scope");
+        }
+
+        var list = listeners.computeIfAbsent((Class<Event<S>>) event, _ -> new LinkedList<>());
+        list.add((Listener<Event<S>, S, I>) listener);
+    }
+
+    public void publish(Event<S> event, I introspection) {
+        Collection<Listener<Event<S>, S, I>> registered = listeners.getOrDefault(event.getClass(), List.of());
+
+        if (!Scopes.isSame(event.scope(), scope)) {
+            throw new RuntimeException("event scope must be current scope");
+        }
+
+        registered.forEach(listener -> listener.accept(event, introspection));
+    }
+}

@@ -1,8 +1,10 @@
 package dev.goldmensch.propane;
 
+import dev.goldmensch.propane.event.Event;
+import dev.goldmensch.propane.event.Listener;
+import dev.goldmensch.propane.event.internal.EventBus;
 import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.internal.Resolver;
-import dev.goldmensch.propane.internal.ScopeStub;
 import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.SpecificProperty;
@@ -13,24 +15,29 @@ import org.jspecify.annotations.Nullable;
 import java.util.function.Function;
 
 // I've got insane with that. But it had to be typesafe. It just had to be.
-public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B, S>, I extends Introspection<S>, B extends IntrospectionImpl<I_SELF, I, B, S>.Builder, S extends Property.Scope>
-implements Introspection<S> {
+public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B, S>, I extends Introspection<I, S>, B extends IntrospectionImpl<I_SELF, I, B, S>.Builder, S extends Property.Scope>
+implements Introspection<I, S> {
+    final Registry<S> registry;
+    final EventBus<I, S> eventBus;
     private final S scope;
     final Resolver<I> resolver;
 
     // called by Builder#newInstance
-    @SuppressWarnings("unchecked")
     protected IntrospectionImpl(S scope, Properties<I> properties, I_SELF parent) {
+        this.registry = parent.registry;
         this.scope = scope;
 
         addIntrospectionProvider(properties);
-        this.resolver = parent.resolver.createChild(properties, (I) this);
+        this.resolver = parent.resolver.createChild(properties, self());
+        this.eventBus = new EventBus<>(this.registry, scope, parent.eventBus);
     }
 
     // called by create(Scope)
-    protected IntrospectionImpl(S scope) {
+    protected IntrospectionImpl(Registry<S> registry, S scope) {
+        this.registry = registry;
         this.scope = scope;
         this.resolver = Resolver.createEmpty();
+        this.eventBus = new EventBus<>(registry, scope, null);
     }
 
     @SkeletonMethod
@@ -45,7 +52,7 @@ implements Introspection<S> {
     public <T> T get(SpecificProperty<T> specific) {
         Property<T> property = specific.generalized();
         Property.Scope propertyScope = property.scope();
-        if (!Scopes.isChild(propertyScope, scope)) {
+        if (!Scopes.isSub(propertyScope, scope)) {
             throw new RuntimeException("scope (%s) of property (%s) isn't child of or equal to introspection scope %s".formatted(propertyScope, property.name(), scope));
         }
 
@@ -62,6 +69,21 @@ implements Introspection<S> {
     // overridden with real Builder implementation
     @SkeletonMethod
     public abstract B createChild(S scope);
+
+    @Override
+    public void subscribe(Listener<? extends Event<S>, S, I> listener) {
+        eventBus.add(listener);
+    }
+
+    public void publish(Event<S> event) {
+        eventBus.publish(event, self());
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private I self() {
+        return (I) this;
+    }
 
     public abstract class Builder {
         protected final Properties<I> properties;
@@ -99,7 +121,7 @@ implements Introspection<S> {
         }
 
         public I_SELF build() {
-            if (!Scopes.isChild(scope, IntrospectionImpl.this.scope)) {
+            if (!Scopes.isSub(scope, IntrospectionImpl.this.scope)) {
                 throw new RuntimeException("Child scope must be equal or subscope of parent scope");
             }
 
