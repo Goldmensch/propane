@@ -10,6 +10,7 @@ module dev.goldmensch.propane {
     exports dev.goldmensch.propane;
     exports dev.goldmensch.propane.property;
     exports dev.goldmensch.propane.event;
+    exports dev.goldmensch.propane.spec.annotation;
     exports dev.goldmensch.propane.internal.exposed;
 
     provides javax.annotation.processing.Processor with dev.goldmensch.propane.spec.processor.SpecProcessor;
