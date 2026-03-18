@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 
 public class DslGenerator extends AbstractGenerator<SpecMeta> {
 
-    private @Nullable ClassName scopeName;
+    private ClassName scopeName;
 
     public DslGenerator(PackageElement pkg, Filer filer) {
         super(pkg, filer);
@@ -31,6 +31,7 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
 
     @Override
     Map<String, List<Supplier<TypeSpec>>> generators(SpecMeta meta) {
+        this.scopeName = ClassName.get(packageName, meta.prefix() + "Scope");
         return Map.of("", List.of(
                     () -> generateScope(meta),
                     () -> generateSingleton(meta),
@@ -45,7 +46,6 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
 
     private TypeSpec generateScope(SpecMeta meta) {
         var specClass = ClassName.get(packageName, meta.specClass());
-        this.scopeName = ClassName.get(packageName, meta.prefix() + "Scope");
 
         TypeSpec.Builder builder = TypeSpec.enumBuilder(scopeName)
                 .addModifiers(Modifier.PUBLIC)
@@ -103,7 +103,6 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
     private TypeSpec generateEventAnnotation() {
         return TypeSpec.annotationBuilder("Event")
                 .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(dev.goldmensch.propane.spec.annotation.Event.class)
                 .addAnnotation(AnnotationSpec.builder(Retention.class)
                         .addMember("value", "$T.SOURCE", RetentionPolicy.class)
                         .build())
