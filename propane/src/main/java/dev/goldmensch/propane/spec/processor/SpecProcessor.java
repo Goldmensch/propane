@@ -1,10 +1,7 @@
 package dev.goldmensch.propane.spec.processor;
 
 import dev.goldmensch.propane.property.Property;
-import dev.goldmensch.propane.spec.annotation.GeneratedForSpec;
-import dev.goldmensch.propane.spec.annotation.Internal;
-import dev.goldmensch.propane.spec.annotation.Propane;
-import dev.goldmensch.propane.spec.annotation.Scopes;
+import dev.goldmensch.propane.spec.annotation.*;
 import dev.goldmensch.propane.spec.generator.DslGenerator;
 import dev.goldmensch.propane.spec.generator.PropertyGenerator;
 import dev.goldmensch.propane.spec.processor.syntax.*;
@@ -25,6 +22,8 @@ import java.util.stream.Stream;
 public class SpecProcessor extends AbstractProcessor {
 
     private static final SpecMeta FINISHED = new SpecMeta("", new String[]{}, "");
+
+    private final List<TypeElement> priorVisitedElements = new ArrayList<>();
 
     private final Map<Name, SpecMeta> metadata = new HashMap<>();
 
@@ -79,8 +78,10 @@ public class SpecProcessor extends AbstractProcessor {
             }
 
             List<? extends SpecProperty> properties = readProperties(spec);
+
             PropertyGenerator generator = new PropertyGenerator(elements.getPackageOf(spec), processingEnv.getFiler());
-            generator.generate(new PropertyGenerator.PropertyMeta(specMeta, properties, scopeKlass.asType()));
+            List<SpecEvent> events = searchEvents(specMeta, spec);
+            generator.generate(new PropertyGenerator.PropertyMeta(specMeta, properties, scopeKlass.asType(), events));
 
             metadata.put(spec.getQualifiedName(), FINISHED);
         }
@@ -255,6 +256,33 @@ public class SpecProcessor extends AbstractProcessor {
                     );
                     return Optional.of(spec);
                 });
+    }
+
+    class EventVisitor extends SimpleElementVisitor14<Stream<SpecEvent>, String> {
+        @Override
+        public Stream<SpecEvent> visitType(TypeElement e, String eventInterface) {
+            boolean right = e.getInterfaces()
+                    .stream()
+                    .anyMatch(mirror -> types.asElement(mirror).getSimpleName().contentEquals(eventInterface));
+
+            if (right) {
+                String scope = getEnumConstant(getAnnotation(e, "Event").orElseThrow(), "value");
+                return Stream.of(new SpecEvent(e, scope));
+            } {
+                return Stream.of();
+            }
+        }
+
+        @Override
+        public Stream<SpecEvent> visitPackage(PackageElement e, String s) {
+            return e.getEnclosedElements()
+                    .stream()
+                    .flatMap(element -> element.accept(this, s));
+        }
+    }
+
+    private List<SpecEvent> searchEvents(SpecMeta meta, TypeElement spec) {
+        return elements.getPackageOf(spec).accept(new EventVisitor(), meta.prefix() + "Event").toList();
     }
 
 

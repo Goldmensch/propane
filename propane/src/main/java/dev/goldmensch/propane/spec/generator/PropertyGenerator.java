@@ -5,6 +5,7 @@ import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.IntrospectionImpl;
 import dev.goldmensch.propane.PropertyProvider;
 import dev.goldmensch.propane.Registry;
+import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.property.*;
 import dev.goldmensch.propane.spec.processor.syntax.*;
@@ -42,6 +43,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
     private ClassName internalPropertiesName;
     private ClassName builderName;
     private ClassName scopeName;
+    private ClassName registryName;
 
     private ClassName singletonClassName;
     private ClassName collectionClassName;
@@ -61,6 +63,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         specificName = ClassName.get(packageName, meta.name("Property"));
 
         // internal
+        registryName = ClassName.get(internalPackage, "Registry");
         introspectionImplName = ClassName.get(internalPackage, meta.name("IntrospectionImpl"));
         builderName = ClassName.get(introspectionImplName.packageName(), introspectionImplName.simpleName(), "Builder");
 
@@ -69,25 +72,24 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         collectionClassName = ClassName.get(internalPackage, meta.name(COLLECTION));
         mappingClassName = ClassName.get(internalPackage, meta.name(MAPPING));
 
-        List<Supplier<TypeSpec>> root = List.of(
-                this::specificProperty,
-                this::introspection,
-                this::provider
-        );
-
         return Map.of(
-                "", root,
+                "", List.of(
+                        this::specificProperty,
+                        this::introspection,
+                        this::provider
+                ),
                 "internal", List.of(
                         this::introspectionImpl,
                         this::internalProperties,
                         this::singletonProperty,
                         this::collectionProperty,
-                        this::mappingProperty
+                        this::mappingProperty,
+                        this::registry
                 )
         );
     }
 
-    public record PropertyMeta(SpecMeta spec, List<? extends SpecProperty> properties, TypeMirror scopeClass) {
+    public record PropertyMeta(SpecMeta spec, List<? extends SpecProperty> properties, TypeMirror scopeClass, List<SpecEvent> events) {
         String name(String name) {
             return spec().prefix() + name;
         }
@@ -169,7 +171,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PRIVATE)
                         .addParameter(scopeName, "scope")
-                        .addStatement("super(new $T<>($T.of()), scope)", Registry.class, Map.class)
+                        .addStatement("super($T.INSTANCE, scope)", registryName)
                         .build())
                 .addMethod(MethodSpec.methodBuilder("create")
                         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
@@ -345,7 +347,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
     }
 
     private TypeSpec singletonProperty() {
-        return TypeSpec.classBuilder(meta.name(SINGLETON))
+        return TypeSpec.classBuilder(singletonClassName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addTypeVariable(TypeVariableName.get("T"))
                 .superclass(withTGeneric(ClassName.get(SingleProperty.class)))
@@ -361,7 +363,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
     private TypeSpec collectionProperty() {
         TypeName collectionType = withTGeneric(ClassName.get(Collection.class));
-        return TypeSpec.classBuilder(meta.name(COLLECTION))
+        return TypeSpec.classBuilder(collectionClassName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addTypeVariable(TypeVariableName.get("T"))
                 .superclass(withTGeneric(ClassName.get(CollectionProperty.class)))
@@ -382,7 +384,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         TypeVariableName[] typeVariables = {TypeVariableName.get("K"), TypeVariableName.get("V")};
         ParameterizedTypeName mapTypeName = ParameterizedTypeName.get(ClassName.get(Map.class), typeVariables);
 
-        return TypeSpec.classBuilder(meta.name(MAPPING))
+        return TypeSpec.classBuilder(mappingClassName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addTypeVariables(List.of(typeVariables))
                 .superclass(ParameterizedTypeName.get(ClassName.get(MapProperty.class), typeVariables))
@@ -395,6 +397,38 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addStatement("super(name, source, scope, keyType, valueType, fallback)")
                         .build())
                 .addMethod(getScoped(mapTypeName))
+                .build();
+    }
+
+    private TypeSpec registry() {
+        CodeBlock.Builder eventsInit = CodeBlock.builder();
+        eventsInit.add("$T.ofEntries(", Map.class);
+        for (SpecEvent event : meta.events) {
+            eventsInit.add("$T.entry($T.class, $T.$L)", Map.class, event.event(), scopeName, event.scope());
+
+            if (meta.events.getLast() != event) {
+                eventsInit.add(", ");
+            }
+        }
+        eventsInit.addStatement(")");
+
+        ParameterizedTypeName eventClassName = ParameterizedTypeName.get(ClassName.get(Class.class),
+                WildcardTypeName.subtypeOf(ParameterizedTypeName.get(ClassName.get(Event.class), scopeName)));
+        ParameterizedTypeName eventScopeMapName = ParameterizedTypeName.get(ClassName.get(Map.class),
+                eventClassName,
+                scopeName);
+        return TypeSpec.classBuilder(registryName)
+                .addModifiers(Modifier.FINAL)
+                .superclass(ParameterizedTypeName.get(ClassName.get(Registry.class), scopeName))
+                .addMethod(MethodSpec.constructorBuilder()
+                        .addStatement("super(eventScopes)")
+                        .build())
+                .addField(FieldSpec.builder(eventScopeMapName, "eventScopes", Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+                        .initializer(eventsInit.build())
+                        .build())
+                .addField(FieldSpec.builder(registryName, "INSTANCE", Modifier.STATIC, Modifier.FINAL)
+                        .initializer("new $T()", registryName)
+                        .build())
                 .build();
     }
 

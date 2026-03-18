@@ -1,6 +1,7 @@
 package spec;
 
 import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.Registry;
 import org.junit.Assert;
 import org.junit.Test;
 import spec.bar.BarIntrospection;
@@ -46,6 +47,12 @@ public class GenerationTest {
                 .build();
 
         Assert.assertEquals(Map.of("hello", "world"), build.get(GenTestProperty.FOO_MAPPING));
+    }
+
+    @Test
+    public void getEventScope() {
+        GenTestScope scope = new FooGenerationEvent().scope();
+        Assert.assertEquals(GenTestScope.ROOT, scope);
     }
 
 }

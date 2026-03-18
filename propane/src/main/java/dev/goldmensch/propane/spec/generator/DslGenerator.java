@@ -1,6 +1,7 @@
 package dev.goldmensch.propane.spec.generator;
 
 import com.palantir.javapoet.*;
+import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.spec.annotation.GeneratedForSpec;
 import dev.goldmensch.propane.spec.processor.syntax.SpecEnumeration;
@@ -18,12 +19,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class DslGenerator extends AbstractGenerator<SpecMeta> {
 
-    private @Nullable ClassName scopeClass;
+    private @Nullable ClassName scopeName;
 
     public DslGenerator(PackageElement pkg, Filer filer) {
         super(pkg, filer);
@@ -31,20 +31,23 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
 
     @Override
     Map<String, List<Supplier<TypeSpec>>> generators(SpecMeta meta) {
-        List<Supplier<TypeSpec>> root = List.of(
-                () -> generateScope(meta),
-                () -> generateSingleton(meta),
-                () -> generateMulti(SpecEnumeration.ANNOTATION),
-                () -> generateMulti(SpecMapping.ANNOTATION)
-        );
-        return Map.of("", root);
+        return Map.of("", List.of(
+                    () -> generateScope(meta),
+                    () -> generateSingleton(meta),
+                    () -> generateMulti(SpecEnumeration.ANNOTATION),
+                    () -> generateMulti(SpecMapping.ANNOTATION)
+                ),
+                "internal", List.of(
+                        this::generateEventAnnotation,
+                        () -> eventInterface(meta)
+                ));
     }
 
     private TypeSpec generateScope(SpecMeta meta) {
         var specClass = ClassName.get(packageName, meta.specClass());
-        this.scopeClass = ClassName.get(packageName, meta.prefix() + "Scope");
+        this.scopeName = ClassName.get(packageName, meta.prefix() + "Scope");
 
-        TypeSpec.Builder builder = TypeSpec.enumBuilder(scopeClass)
+        TypeSpec.Builder builder = TypeSpec.enumBuilder(scopeName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(AnnotationSpec.builder(GeneratedForSpec.class)
                         .addMember("spec", "$T.class", specClass)
@@ -79,7 +82,7 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
                         .build())
                 .addMethod(MethodSpec.methodBuilder("scope")
                         .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                        .returns(scopeClass)
+                        .returns(scopeName)
                         .build());
     }
 
@@ -94,6 +97,37 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
                         .returns(Property.FallbackBehaviour.class)
                         .build()
                 )
+                .build();
+    }
+
+    private TypeSpec generateEventAnnotation() {
+        return TypeSpec.annotationBuilder("Event")
+                .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(dev.goldmensch.propane.spec.annotation.Event.class)
+                .addAnnotation(AnnotationSpec.builder(Retention.class)
+                        .addMember("value", "$T.SOURCE", RetentionPolicy.class)
+                        .build())
+                .addAnnotation(AnnotationSpec.builder(Target.class)
+                        .addMember("value", "$T.TYPE", ElementType.class)
+                        .build())
+                .addMethod(MethodSpec.methodBuilder("value")
+                        .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                        .returns(scopeName)
+                        .build())
+                .build();
+    }
+
+    private TypeSpec eventInterface(SpecMeta meta) {
+        ClassName registry = ClassName.get(packageName + ".internal", "Registry");
+
+        return TypeSpec.interfaceBuilder(meta.prefix() + "Event")
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Event.class), scopeName))
+                .addModifiers(Modifier.PUBLIC)
+                .addMethod(MethodSpec.methodBuilder("scope")
+                        .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                        .returns(scopeName)
+                        .addStatement("return $T.INSTANCE.scopeForEvent(this.getClass())", registry)
+                        .build())
                 .build();
     }
 }
