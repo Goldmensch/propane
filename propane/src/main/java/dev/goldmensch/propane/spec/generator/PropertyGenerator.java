@@ -27,10 +27,6 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
     private static final TypeVariableName T = TypeVariableName.get("T");
 
-    private static final String SINGLETON = "SingletonProperty";
-    private static final String COLLECTION = "CollectionProperty";
-    private static final String MAPPING = "MappingProperty";
-
     public PropertyGenerator(PackageElement packageName, Filer filer) {
         super(packageName, filer);
     }
@@ -46,7 +42,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
     private ClassName registryName;
 
     private ClassName singletonClassName;
-    private ClassName collectionClassName;
+    private ClassName enumerationClassName;
     private ClassName mappingClassName;
 
 
@@ -68,9 +64,9 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         builderName = ClassName.get(introspectionImplName.packageName(), introspectionImplName.simpleName(), "Builder");
 
         internalPropertiesName = ClassName.get(internalPackage, meta.name("Internal"));
-        singletonClassName = ClassName.get(internalPackage, meta.name(SINGLETON));
-        collectionClassName = ClassName.get(internalPackage, meta.name(COLLECTION));
-        mappingClassName = ClassName.get(internalPackage, meta.name(MAPPING));
+        singletonClassName = ClassName.get(internalPackage, meta.name("SingletonProperty"));
+        enumerationClassName = ClassName.get(internalPackage, meta.name("EnumerationProperty"));
+        mappingClassName = ClassName.get(internalPackage, meta.name("MappingProperty"));
 
         return Map.of(
                 "", List.of(
@@ -82,7 +78,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         this::introspectionImpl,
                         this::internalProperties,
                         this::singletonProperty,
-                        this::collectionProperty,
+                        this::enumerationProperty,
                         this::mappingProperty,
                         this::registry
                 )
@@ -318,7 +314,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
                 yield FieldSpec.builder(fieldType, name, Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
                         .initializer("new $T<>($S, $T.$L, $T.$L, $T.class, $T.$L)",
-                                collectionClassName, name,
+                                enumerationClassName, name,
                                 Property.Source.class, source,
                                 scopeName, scope,
                                 type,
@@ -361,9 +357,9 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .build();
     }
 
-    private TypeSpec collectionProperty() {
+    private TypeSpec enumerationProperty() {
         TypeName collectionType = withTGeneric(ClassName.get(Collection.class));
-        return TypeSpec.classBuilder(collectionClassName)
+        return TypeSpec.classBuilder(enumerationClassName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addTypeVariable(TypeVariableName.get("T"))
                 .superclass(withTGeneric(ClassName.get(CollectionProperty.class)))
