@@ -12,6 +12,7 @@ import dev.goldmensch.propane.spec.SkeletonMethod;
 import dev.goldmensch.propane.spec.SkeletonMethodException;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 // I've got insane with that. But it had to be typesafe. It just had to be.
@@ -134,7 +135,7 @@ implements Introspection<I, S> {
         }
 
         protected Class<?> caller() {
-            return StackWalker.getInstance().getCallerClass();
+            return StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass();
         }
 
         // return new IntrospectionImpl(scope, properties, IntrospectionImpl.this);
