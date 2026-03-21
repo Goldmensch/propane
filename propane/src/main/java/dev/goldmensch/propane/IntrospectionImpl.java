@@ -53,7 +53,7 @@ implements Introspection<I, S> {
     public <T> T get(SpecificProperty<T> specific) {
         Property<T> property = specific.generalized();
         Property.Scope propertyScope = property.scope();
-        if (!Scopes.isSub(propertyScope, scope)) {
+        if (!Scopes.isParent(propertyScope, scope)) {
             throw new RuntimeException("scope (%s) of property (%s) isn't child of or equal to introspection scope %s".formatted(propertyScope, property.name(), scope));
         }
 
