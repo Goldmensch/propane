@@ -13,6 +13,12 @@ public class Registry<S extends Property.Scope> {
     }
 
     public S scopeForEvent(Class<? extends Event<S>> event) {
-        return eventScopes.get(event);
+        S scope = eventScopes.get(event);
+
+        if (scope == null) {
+            throw new RuntimeException("No scope found for event %s. Most likely it's falsely missing from the registry implementation.");
+        }
+
+        return scope;
     }
 }
