@@ -1,6 +1,6 @@
 package logic.impl;
 
-import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProvider;
 
 import java.util.function.Function;
 

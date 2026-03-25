@@ -1,7 +1,6 @@
 package spec;
 
-import dev.goldmensch.propane.PropertyProvider;
-import dev.goldmensch.propane.Registry;
+import dev.goldmensch.propane.property.PropertyProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import spec.bar.BarIntrospection;

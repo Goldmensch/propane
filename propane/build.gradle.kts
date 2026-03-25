@@ -12,4 +12,8 @@ dependencies {
     testAnnotationProcessor(project(":propane"))
 }
 
+tasks.withType<Javadoc>().configureEach {
+    options.overview = "src/main/javadoc/overview.md"
+}
+
 description = "A java framework for library configuration and service registration."

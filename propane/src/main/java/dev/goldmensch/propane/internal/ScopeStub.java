@@ -1,9 +1,9 @@
 package dev.goldmensch.propane.internal;
 
-import dev.goldmensch.propane.property.Property;
+import dev.goldmensch.propane.Scope;
 
 // stub used to have some value for scopes in "empty" introspections
-public class ScopeStub implements Property.Scope {
+public class ScopeStub implements Scope {
 
     public static final ScopeStub INSTANCE = new ScopeStub();
 

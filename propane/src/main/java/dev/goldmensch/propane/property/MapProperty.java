@@ -1,5 +1,7 @@
 package dev.goldmensch.propane.property;
 
+import dev.goldmensch.propane.Scope;
+
 import java.util.Map;
 import java.util.Objects;
 

@@ -1,5 +1,7 @@
 package dev.goldmensch.propane.property;
 
+import dev.goldmensch.propane.Scope;
+
 import java.util.Objects;
 
 public non-sealed abstract class SingleProperty<T> implements Property.SingleValue<T> {

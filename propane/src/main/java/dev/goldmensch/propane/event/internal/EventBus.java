@@ -2,16 +2,16 @@ package dev.goldmensch.propane.event.internal;
 
 import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.Registry;
+import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.event.Listener;
 import dev.goldmensch.propane.internal.Scopes;
-import dev.goldmensch.propane.property.Property;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EventBus<I extends Introspection<I, S>, S extends Property.Scope> {
+public class EventBus<I extends Introspection<I, S>, S extends Scope> {
     private final Registry<S> registry;
     private final S scope;
     private final @Nullable EventBus<I, S> parent;

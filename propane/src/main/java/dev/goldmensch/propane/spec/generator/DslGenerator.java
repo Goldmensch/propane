@@ -1,6 +1,7 @@
 package dev.goldmensch.propane.spec.generator;
 
 import com.palantir.javapoet.*;
+import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.spec.annotation.GeneratedForSpec;
@@ -8,7 +9,6 @@ import dev.goldmensch.propane.spec.processor.syntax.SpecEnumeration;
 import dev.goldmensch.propane.spec.processor.syntax.SpecMapping;
 import dev.goldmensch.propane.spec.processor.syntax.SpecMeta;
 import dev.goldmensch.propane.spec.processor.syntax.SpecSingleton;
-import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
@@ -52,7 +52,7 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
                 .addAnnotation(AnnotationSpec.builder(GeneratedForSpec.class)
                         .addMember("spec", "$T.class", specClass)
                         .build())
-                .addSuperinterface(Property.Scope.class);
+                .addSuperinterface(Scope.class);
 
         for (String name : meta.scopes()) {
             builder.addEnumConstant(name);

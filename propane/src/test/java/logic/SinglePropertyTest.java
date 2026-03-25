@@ -1,6 +1,7 @@
 package logic;
 
-import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.Scope;
+import dev.goldmensch.propane.property.PropertyProvider;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertSame;
 
 public class SinglePropertyTest {
 
-    private enum Scopes implements Property.Scope {
+    private enum Scopes implements Scope {
         ROOT;
 
         @Override

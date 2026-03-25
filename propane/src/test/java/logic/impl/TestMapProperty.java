@@ -1,8 +1,8 @@
 package logic.impl;
 
+import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.property.MapProperty;
 
-import java.util.Collection;
 import java.util.Map;
 
 public class TestMapProperty<K, V> extends MapProperty<K, V> implements TestProperty<Map<K, V>> {

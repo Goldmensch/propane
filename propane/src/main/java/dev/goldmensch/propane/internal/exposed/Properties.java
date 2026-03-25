@@ -1,17 +1,18 @@
 package dev.goldmensch.propane.internal.exposed;
 
 import dev.goldmensch.propane.Introspection;
+import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
-import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProvider;
 
 import java.util.*;
 
 public class Properties<INTROSPECTION extends Introspection> {
-    private final Property.Scope scope;
+    private final Scope scope;
     private final Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> providers = new HashMap<>();
 
-    public Properties(Property.Scope scope) {
+    public Properties(Scope scope) {
         this.scope = scope;
     }
 
@@ -35,7 +36,7 @@ public class Properties<INTROSPECTION extends Introspection> {
             }
         }
 
-        Property.Scope propertyScope = property.scope();
+        Scope propertyScope = property.scope();
         if (!Scopes.isSub(scope, propertyScope)) {
             throw new RuntimeException("scope of property (%s) must be equal or parent of current scope (%s)".formatted(propertyScope, scope));
         }

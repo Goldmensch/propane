@@ -1,5 +1,7 @@
 package dev.goldmensch.propane.property;
 
+import dev.goldmensch.propane.Scope;
+
 @SuppressWarnings("unused")
 public sealed interface Property<T> {
 
@@ -15,11 +17,6 @@ public sealed interface Property<T> {
         BUILDER,
 
         EXTENSION
-    }
-
-    interface Scope {
-        /// sorted lower to higher - best to be enum, could be backed by [Enum#ordinal()]
-        int priority();
     }
 
     sealed interface SingleValue<T> extends Property<T> permits SingleProperty {}

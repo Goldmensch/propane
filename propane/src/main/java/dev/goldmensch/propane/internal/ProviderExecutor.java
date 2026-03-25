@@ -1,9 +1,8 @@
 package dev.goldmensch.propane.internal;
 
 import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.IntrospectionImpl;
 import dev.goldmensch.propane.property.Property;
-import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProvider;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;

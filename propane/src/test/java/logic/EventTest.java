@@ -1,9 +1,9 @@
 package logic;
 
 import dev.goldmensch.propane.Registry;
+import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.event.Listener;
-import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospection;
 import logic.impl.TestIntrospectionImpl;
 import org.jspecify.annotations.NonNull;
@@ -15,11 +15,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class EventTest {
 
-    static Registry<Property.Scope> registry = new Registry<>(Map.of(
+    static Registry<Scope> registry = new Registry<>(Map.of(
             FooEvent.class, Scopes.ROOT
     ));
 
-    private enum Scopes implements Property.Scope {
+    private enum Scopes implements Scope {
         FIRST,
         ROOT,
         OTHER;
@@ -30,17 +30,17 @@ public class EventTest {
         }
     }
 
-    public sealed interface TestEvent extends Event<Property.Scope> permits FooEvent {
+    public sealed interface TestEvent extends Event<Scope> permits FooEvent {
     }
 
     public record FooEvent(String value) implements TestEvent {
         @Override
-        public Property.Scope scope() {
+        public Scope scope() {
             return Scopes.ROOT;
         }
     }
 
-    public interface TestListener<E extends TestEvent> extends Listener<E, Property.Scope, TestIntrospection> {
+    public interface TestListener<E extends TestEvent> extends Listener<E, Scope, TestIntrospection> {
     }
 
     private static class FooListener implements TestListener<FooEvent> {

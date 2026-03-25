@@ -1,5 +1,6 @@
 package logic;
 
+import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
@@ -12,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class DependenciesTest {
 
-    private enum Scopes implements Property.Scope {
+    private enum Scopes implements Scope {
         ROOT;
 
         @Override

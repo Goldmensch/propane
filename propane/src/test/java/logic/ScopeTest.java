@@ -1,6 +1,7 @@
 package logic;
 
-import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.Scope;
+import dev.goldmensch.propane.property.PropertyProvider;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
@@ -12,7 +13,7 @@ import org.junit.function.ThrowingRunnable;
 
 public class ScopeTest {
 
-    private enum Scopes implements Property.Scope {
+    private enum Scopes implements Scope {
         NEGATIVE(-1),
         ROOT(0),
         CHILD(1)

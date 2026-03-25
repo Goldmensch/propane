@@ -1,6 +1,6 @@
-package dev.goldmensch.propane;
+package dev.goldmensch.propane.property;
 
-import dev.goldmensch.propane.property.SpecificProperty;
+import dev.goldmensch.propane.Introspection;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Comparator;

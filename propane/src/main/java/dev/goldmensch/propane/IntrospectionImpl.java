@@ -7,16 +7,16 @@ import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.internal.Resolver;
 import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
+import dev.goldmensch.propane.property.PropertyProvider;
 import dev.goldmensch.propane.property.SpecificProperty;
 import dev.goldmensch.propane.spec.SkeletonMethod;
 import dev.goldmensch.propane.spec.SkeletonMethodException;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Optional;
 import java.util.function.Function;
 
 // I've got insane with that. But it had to be typesafe. It just had to be.
-public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B, S>, I extends Introspection<I, S>, B extends IntrospectionImpl<I_SELF, I, B, S>.Builder, S extends Property.Scope>
+public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B, S>, I extends Introspection<I, S>, B extends IntrospectionImpl<I_SELF, I, B, S>.Builder, S extends Scope>
 implements Introspection<I, S> {
     final Registry<S> registry;
     final EventBus<I, S> eventBus;
@@ -45,14 +45,14 @@ implements Introspection<I, S> {
     protected abstract void addIntrospectionProvider(Properties<I> properties);
 
     @SkeletonMethod
-    public static IntrospectionImpl<?, ?, ?, ?>.Builder create(Property.Scope scope) {
+    public static IntrospectionImpl<?, ?, ?, ?>.Builder create(Scope scope) {
         throw new SkeletonMethodException();
     }
 
     // overridden with real SpecificProperty implementation
     public <T> T get(SpecificProperty<T> specific) {
         Property<T> property = specific.generalized();
-        Property.Scope propertyScope = property.scope();
+        Scope propertyScope = property.scope();
         if (!Scopes.isParent(propertyScope, scope)) {
             throw new RuntimeException("scope (%s) of property (%s) isn't child of or equal to introspection scope %s".formatted(propertyScope, property.name(), scope));
         }

@@ -1,6 +1,7 @@
 package logic;
 
 
+import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.*;
 import org.junit.Assert;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ChildIntrospectionTest {
-    private enum Scopes implements Property.Scope {
+    private enum Scopes implements Scope {
         ROOT;
 
         @Override

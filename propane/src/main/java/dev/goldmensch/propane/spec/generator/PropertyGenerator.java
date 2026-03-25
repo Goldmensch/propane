@@ -3,7 +3,7 @@ package dev.goldmensch.propane.spec.generator;
 import com.palantir.javapoet.*;
 import dev.goldmensch.propane.Introspection;
 import dev.goldmensch.propane.IntrospectionImpl;
-import dev.goldmensch.propane.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProvider;
 import dev.goldmensch.propane.Registry;
 import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.internal.exposed.Properties;
