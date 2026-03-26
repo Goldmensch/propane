@@ -58,7 +58,10 @@ nor should it be a general application configuration framework.</p>
 <h2 id="properties-heading">Properties</h2>
 <p>A <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a> is an identifier for a certain component of a library.
 It holds information about the type of property, the java class represented by this component, the scope of a property
-and more.</p>
+and more.
+A library component could be some setting (configured via a builder), a service used by the library internals or
+a user provided implementation of an interface for example. It actually just a piece of information, that the library needs
+for its functionality.</p>
 <p>The value of a property is provided by <a href="#property-provider">property providers</a>.</p>
 <h2 id="property-provider-heading">Property Provider</h2>
 <p>The value of a <a href="#properties">property</a> is provided by one or more <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>.
