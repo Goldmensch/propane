@@ -21,7 +21,7 @@ public class PropertyProviderValidationTest {
         }
     }
 
-    private final TestProperty<String> providedProperty = new TestSingleProperty<>("FOO", Property.Source.PROVIDED, Scopes.ROOT, String.class);
+    private final TestProperty<String> providedProperty = new TestSingletonProperty<>("FOO", Property.Source.PROVIDED, Scopes.ROOT, String.class);
     @Test
     public void provided_always_fallback_priority() {
         TestIntrospectionImpl.create(Scopes.ROOT)
@@ -44,8 +44,8 @@ public class PropertyProviderValidationTest {
 
     @Test
     public void provided_multi_value_must_be_accumulate() {
-        TestProperty<Collection<String>> accumulate = new TestCollectionProperty<>("BAR", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.ACCUMULATE);
-        TestProperty<Collection<String>> override = new TestCollectionProperty<>("BAR", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
+        TestProperty<Collection<String>> accumulate = new TestEnumerationProperty<>("BAR", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.ACCUMULATE);
+        TestProperty<Collection<String>> override = new TestEnumerationProperty<>("BAR", Property.Source.PROVIDED, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
 
         // should work
         TestIntrospectionImpl.create(Scopes.ROOT)

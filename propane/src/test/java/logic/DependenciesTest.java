@@ -5,7 +5,7 @@ import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
 import logic.impl.TestPropertyProvider;
-import logic.impl.TestSingleProperty;
+import logic.impl.TestSingletonProperty;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
@@ -25,9 +25,9 @@ public class DependenciesTest {
     private static class Properties {
         private static class TestStub {}
 
-        static TestProperty<String> HELLO_WORLD = new TestSingleProperty<>("HELLO_WORLD", Property.Source.PROVIDED, Scopes.ROOT, String.class);
-        static TestProperty<Properties.TestStub> TEST_STUB = new TestSingleProperty<>("TEST_STUB", Property.Source.PROVIDED, Scopes.ROOT, Properties.TestStub.class);
-        static TestProperty<String> GOODBYE = new TestSingleProperty<>("GOODBYE", Property.Source.PROVIDED, Scopes.ROOT, String.class);
+        static TestProperty<String> HELLO_WORLD = new TestSingletonProperty<>("HELLO_WORLD", Property.Source.PROVIDED, Scopes.ROOT, String.class);
+        static TestProperty<Properties.TestStub> TEST_STUB = new TestSingletonProperty<>("TEST_STUB", Property.Source.PROVIDED, Scopes.ROOT, Properties.TestStub.class);
+        static TestProperty<String> GOODBYE = new TestSingletonProperty<>("GOODBYE", Property.Source.PROVIDED, Scopes.ROOT, String.class);
     }
 
     @Test

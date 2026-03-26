@@ -21,8 +21,8 @@ public class ScopedAccessTest {
     private class Properties {
         private record TestStub() {}
 
-        static TestProperty<String> HELLO_WORLD = new TestSingleProperty<>("HELLO_WORLD", Property.Source.EXTENSION, Scopes.ROOT, String.class);
-        static TestProperty<Properties.TestStub> TEST_STUB = new TestSingleProperty<>("TEST_STUB", Property.Source.EXTENSION, Scopes.ROOT, Properties.TestStub.class);
+        static TestProperty<String> HELLO_WORLD = new TestSingletonProperty<>("HELLO_WORLD", Property.Source.EXTENSION, Scopes.ROOT, String.class);
+        static TestProperty<Properties.TestStub> TEST_STUB = new TestSingletonProperty<>("TEST_STUB", Property.Source.EXTENSION, Scopes.ROOT, Properties.TestStub.class);
     }
 
     @Test

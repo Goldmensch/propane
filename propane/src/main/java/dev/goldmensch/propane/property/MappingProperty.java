@@ -5,7 +5,7 @@ import dev.goldmensch.propane.Scope;
 import java.util.Map;
 import java.util.Objects;
 
-public non-sealed abstract class MapProperty<K, V> implements Property.MultiValue<Map<K, V>> {
+public non-sealed abstract class MappingProperty<K, V> implements Property.MultiValue<Map<K, V>> {
     private final String name;
     private final Source source;
     private final Scope scope;
@@ -13,9 +13,9 @@ public non-sealed abstract class MapProperty<K, V> implements Property.MultiValu
     private final Class<V> valueType;
     private final FallbackBehaviour fallbackBehaviour;
 
-    public MapProperty(String name, Source source, Scope scope, Class<K> keyType,
-                       Class<V> valueType,
-                       FallbackBehaviour fallbackBehaviour) {
+    public MappingProperty(String name, Source source, Scope scope, Class<K> keyType,
+                           Class<V> valueType,
+                           FallbackBehaviour fallbackBehaviour) {
         this.name = name;
         this.source = source;
         this.scope = scope;
@@ -56,7 +56,7 @@ public non-sealed abstract class MapProperty<K, V> implements Property.MultiValu
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (MapProperty<?, ?>) obj;
+        var that = (MappingProperty<?, ?>) obj;
         return Objects.equals(this.name, that.name) &&
                 Objects.equals(this.source, that.source) &&
                 Objects.equals(this.scope, that.scope) &&
@@ -72,7 +72,7 @@ public non-sealed abstract class MapProperty<K, V> implements Property.MultiValu
 
     @Override
     public String toString() {
-        return "MapProperty[" +
+        return "MappingProperty[" +
                 "name=" + name + ", " +
                 "source=" + source + ", " +
                 "scope=" + scope + ", " +

@@ -11,7 +11,10 @@ nor should it be a general application configuration framework.
 ## Properties
 A [dev.goldmensch.propane.property.Property] is an identifier for a certain component of a library.
 It holds information about the type of property, the java class represented by this component, the scope of a property 
-and more.
+and more. 
+A library component could be some setting (configured via a builder), a service used by the library internals or
+a user provided implementation of an interface for example. It actually just a piece of information, that the library needs
+for its functionality.
 
 The value of a property is provided by [property providers](#property-provider).
 

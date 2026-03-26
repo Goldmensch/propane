@@ -9,23 +9,24 @@ import java.util.Map;
 
 import static dev.goldmensch.propane.property.Property.FallbackBehaviour.ACCUMULATE;
 import static dev.goldmensch.propane.property.Property.Source.BUILDER;
+import static dev.goldmensch.propane.property.Property.Source.PROVIDED;
 import static spec.GenTestScope.ROOT;
 
 @Propane("GenTest")
 @Scopes("ROOT")
 public interface TestPropertySpec {
 
-    @Singleton(scope = ROOT, source = BUILDER)
+    @Singleton(scope = ROOT, source = PROVIDED)
     String FOO_SINGLE();
 
     @Internal
-    @Singleton(scope = ROOT, source = BUILDER)
+    @Singleton(scope = ROOT, source = PROVIDED)
     String FOO_INTERNAL();
 
-    @Mapping(scope = ROOT, source = BUILDER, fallback = ACCUMULATE)
+    @Mapping(scope = ROOT, source = PROVIDED, fallback = ACCUMULATE)
     Map<String, String> FOO_MAPPING();
 
-    @Enumeration(scope = ROOT, source = BUILDER, fallback = ACCUMULATE)
+    @Enumeration(scope = ROOT, source = PROVIDED, fallback = ACCUMULATE)
     Collection<String> FOO_ENUMERATION();
 
 

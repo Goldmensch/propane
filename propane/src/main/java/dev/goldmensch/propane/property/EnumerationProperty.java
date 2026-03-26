@@ -5,15 +5,15 @@ import dev.goldmensch.propane.Scope;
 import java.util.Collection;
 import java.util.Objects;
 
-public non-sealed abstract class CollectionProperty<T> implements Property.MultiValue<Collection<T>> {
+public non-sealed abstract class EnumerationProperty<T> implements Property.MultiValue<Collection<T>> {
     private final String name;
     private final Source source;
     private final Scope scope;
     private final Class<T> type;
     private final FallbackBehaviour fallbackBehaviour;
 
-    public CollectionProperty(String name, Source source, Scope scope, Class<T> type,
-                              FallbackBehaviour fallbackBehaviour) {
+    public EnumerationProperty(String name, Source source, Scope scope, Class<T> type,
+                               FallbackBehaviour fallbackBehaviour) {
         this.name = name;
         this.source = source;
         this.scope = scope;
@@ -49,7 +49,7 @@ public non-sealed abstract class CollectionProperty<T> implements Property.Multi
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (CollectionProperty<?>) obj;
+        var that = (EnumerationProperty<?>) obj;
         return Objects.equals(this.name, that.name) &&
                 Objects.equals(this.source, that.source) &&
                 Objects.equals(this.scope, that.scope) &&
@@ -64,7 +64,7 @@ public non-sealed abstract class CollectionProperty<T> implements Property.Multi
 
     @Override
     public String toString() {
-        return "CollectionProperty[" +
+        return "EnumerationProperty[" +
                 "name=" + name + ", " +
                 "source=" + source + ", " +
                 "scope=" + scope + ", " +

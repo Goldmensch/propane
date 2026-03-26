@@ -6,7 +6,7 @@ import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
 import logic.impl.TestPropertyProvider;
-import logic.impl.TestSingleProperty;
+import logic.impl.TestSingletonProperty;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
@@ -33,11 +33,11 @@ public class ScopeTest {
     }
 
     private static class Properties {
-        static TestProperty<String> NEGATIVE = new TestSingleProperty<>("NEGATIVE", Property.Source.PROVIDED, ScopeTest.Scopes.NEGATIVE, String.class);
+        static TestProperty<String> NEGATIVE = new TestSingletonProperty<>("NEGATIVE", Property.Source.PROVIDED, ScopeTest.Scopes.NEGATIVE, String.class);
 
-        static TestProperty<String> ONE = new TestSingleProperty<>("ONE", Property.Source.PROVIDED, ScopeTest.Scopes.ROOT, String.class);
+        static TestProperty<String> ONE = new TestSingletonProperty<>("ONE", Property.Source.PROVIDED, ScopeTest.Scopes.ROOT, String.class);
 
-        static TestProperty<String> TWO = new TestSingleProperty<>("TWO", Property.Source.PROVIDED, ScopeTest.Scopes.CHILD, String.class);
+        static TestProperty<String> TWO = new TestSingletonProperty<>("TWO", Property.Source.PROVIDED, ScopeTest.Scopes.CHILD, String.class);
     }
 
     @Test

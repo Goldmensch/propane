@@ -25,12 +25,12 @@ public class ChildIntrospectionTest {
     private class Properties {
         private record TestStub() {}
 
-        static TestProperty<String> ONE = new TestSingleProperty<>("ONE", Property.Source.PROVIDED, Scopes.ROOT, String.class);
+        static TestProperty<String> ONE = new TestSingletonProperty<>("ONE", Property.Source.PROVIDED, Scopes.ROOT, String.class);
 
-        static TestProperty<TestStub> TWO = new TestSingleProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class);
+        static TestProperty<TestStub> TWO = new TestSingletonProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class);
 
-        static TestProperty<Collection<TestStub>> COLLECTION = new TestCollectionProperty<>("COLLECTION", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
-        static TestProperty<Map<String, TestStub>> MAP = new TestMapProperty<>("MAP", Property.Source.PROVIDED, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static TestProperty<Collection<TestStub>> COLLECTION = new TestEnumerationProperty<>("COLLECTION", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static TestProperty<Map<String, TestStub>> MAP = new TestMappingProperty<>("MAP", Property.Source.PROVIDED, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
     }
 
     @Test

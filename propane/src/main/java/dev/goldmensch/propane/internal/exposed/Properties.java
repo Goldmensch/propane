@@ -8,7 +8,7 @@ import dev.goldmensch.propane.property.PropertyProvider;
 
 import java.util.*;
 
-public class Properties<INTROSPECTION extends Introspection> {
+public class Properties<INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
     private final Scope scope;
     private final Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> providers = new HashMap<>();
 
@@ -33,6 +33,12 @@ public class Properties<INTROSPECTION extends Introspection> {
 
             if (property instanceof Property.MultiValue<?> val && val.fallbackBehaviour() != Property.FallbackBehaviour.ACCUMULATE) {
                 throw new RuntimeException("provided multi value property (collection/map) must have fallbackBehaviour set to accumulate");
+            }
+        }
+
+        if (source == Property.Source.BUILDER) {
+            if (priority != PropertyProvider.Priority.BUILDER) {
+                throw new RuntimeException("provided property provider must always be priority = builder");
             }
         }
 

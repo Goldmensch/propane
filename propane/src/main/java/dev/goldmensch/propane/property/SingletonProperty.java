@@ -4,14 +4,14 @@ import dev.goldmensch.propane.Scope;
 
 import java.util.Objects;
 
-public non-sealed abstract class SingleProperty<T> implements Property.SingleValue<T> {
+public non-sealed abstract class SingletonProperty<T> implements Property.SingleValue<T> {
     private final String name;
     private final Source source;
     private final Scope scope;
     private final Class<T> type;
 
-    public SingleProperty(String name, Source source, Scope scope,
-                          Class<T> type) {
+    public SingletonProperty(String name, Source source, Scope scope,
+                             Class<T> type) {
         this.name = name;
         this.source = source;
         this.scope = scope;
@@ -41,7 +41,7 @@ public non-sealed abstract class SingleProperty<T> implements Property.SingleVal
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (SingleProperty<?>) obj;
+        var that = (SingletonProperty<?>) obj;
         return Objects.equals(this.name, that.name) &&
                 Objects.equals(this.source, that.source) &&
                 Objects.equals(this.scope, that.scope) &&
@@ -55,7 +55,7 @@ public non-sealed abstract class SingleProperty<T> implements Property.SingleVal
 
     @Override
     public String toString() {
-        return "SingleProperty[" +
+        return "SingletonProperty[" +
                 "name=" + name + ", " +
                 "source=" + source + ", " +
                 "scope=" + scope + ", " +

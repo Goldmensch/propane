@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-public class Resolver<INTROSPECTION extends Introspection> {
+public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
     private static final ProviderExecutor executor = new ProviderExecutor();
 
     private final @Nullable INTROSPECTION introspection;
@@ -39,8 +39,7 @@ public class Resolver<INTROSPECTION extends Introspection> {
         return Collections.unmodifiableMap(newMap);
     }
 
-    @SuppressWarnings("Convert2Diamond") // Resolver<INTROSPECTION> needed by javac
-    public static <INTROSPECTION extends Introspection> Resolver<INTROSPECTION> createEmpty() {
+    public static <INTROSPECTION extends Introspection<INTROSPECTION, ?>> Resolver<INTROSPECTION> createEmpty() {
         return new Resolver<INTROSPECTION>(null, null, new Properties<>(ScopeStub.INSTANCE));
     }
 
@@ -59,16 +58,16 @@ public class Resolver<INTROSPECTION extends Introspection> {
 
         Optional<T> computed = compute(property);
         return switch (property) {
-            case SingleProperty<T> _ -> computed
+            case SingletonProperty<T> _ -> computed
                     .or(() -> parent.get(property))
                     .flatMap(t -> putInCache(property, t));
 
-            case MapProperty<?,?> _ -> computed
+            case MappingProperty<?,?> _ -> computed
                     .or(() -> parent.get(property))
                     .map(t -> Map.copyOf((Map<?, ?>) t))
                     .flatMap(t -> putInCache(property, (T) t));
 
-            case CollectionProperty<?> colP -> {
+            case EnumerationProperty<?> colP -> {
                 Collection<Object> computedList = ((Optional<Collection<Object>>) computed).orElseGet(ArrayList::new);
 
                 parent.get(property)
@@ -91,14 +90,14 @@ public class Resolver<INTROSPECTION extends Introspection> {
         List<PropertyProvider<T, ?, INTROSPECTION>> currentProviders = Helpers.castUnsafe(providers.getOrDefault(property, List.of()));
 
         Result<T> result = switch (property) {
-            case SingleProperty<T> _ -> handleOne(currentProviders);
-            case CollectionProperty<?> _ -> (Result<T>) handleMany(
+            case SingletonProperty<T> _ -> handleOne(currentProviders);
+            case EnumerationProperty<?> _ -> (Result<T>) handleMany(
                     this.<Collection<Object>>castProvider(currentProviders),
                     new ArrayList<>(),
                     List::addAll
             );
 
-            case MapProperty<?, ?> _ -> (Result<T>) handleMany(
+            case MappingProperty<?, ?> _ -> (Result<T>) handleMany(
                     this.<Map<?, ?>>castProvider(currentProviders),
                     new HashMap<>(),
                     Map::putAll
