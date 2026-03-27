@@ -37,8 +37,8 @@ public class Properties<INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
         }
 
         if (source == Property.Source.BUILDER) {
-            if (priority != PropertyProvider.Priority.BUILDER) {
-                throw new RuntimeException("provided property provider must always be priority = builder");
+            if (priority != PropertyProvider.Priority.BUILDER && priority != PropertyProvider.Priority.FALLBACK) {
+                throw new RuntimeException("builder property provider must always be priority = builder or fallback");
             }
         }
 
