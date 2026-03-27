@@ -29,8 +29,8 @@ public class EnumerationPropertyTest {
     private static class Properties {
         private record TestStub() {}
 
-        static TestProperty<Collection<String>> ONE = new TestEnumerationProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, Property.FallbackBehaviour.OVERRIDE);
-        static TestProperty<Collection<TestStub>> TWO = new TestEnumerationProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, Properties.TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static TestProperty<Collection<String>> ONE = new TestEnumerationProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, Property.FallbackStrategy.IGNORE);
+        static TestProperty<Collection<TestStub>> TWO = new TestEnumerationProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, Properties.TestStub.class, Property.FallbackStrategy.COMBINE);
     }
 
     @Test

@@ -6,8 +6,8 @@ import dev.goldmensch.propane.property.EnumerationProperty;
 import java.util.Collection;
 
 public class TestEnumerationProperty<T> extends EnumerationProperty<T> implements TestProperty<Collection<T>> {
-    public TestEnumerationProperty(String name, Source source, Scope scope, Class<T> type, FallbackBehaviour fallbackBehaviour) {
-        super(name, source, scope, type, fallbackBehaviour);
+    public TestEnumerationProperty(String name, Source source, Scope scope, Class<T> type, FallbackStrategy fallbackStrategy) {
+        super(name, source, scope, type, fallbackStrategy);
     }
 
     @Override

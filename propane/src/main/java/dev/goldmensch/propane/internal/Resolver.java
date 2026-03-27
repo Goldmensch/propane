@@ -150,7 +150,7 @@ public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
     private <T> boolean shouldSkip(Collection<PropertyProvider<T, ?, INTROSPECTION>> providers, PropertyProvider<T, ?, INTROSPECTION> provider) {
         return providers.size() > 1
                 && provider.priority() == PropertyProvider.Priority.FALLBACK
-                && ((Property.MultiValue<T>) provider.property().generalized()).fallbackBehaviour() == Property.FallbackBehaviour.OVERRIDE;
+                && ((Property.MultiValue<T>) provider.property().generalized()).fallbackBehaviour() == Property.FallbackStrategy.IGNORE;
     }
 
 

@@ -308,7 +308,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                                  Property.Source source,
                                  String scope,
                                  TypeElement type,
-                                 Property.FallbackBehaviour fallback,
+                                 Property.FallbackStrategy fallback,
                                  var _) -> {
                 ParameterizedTypeName fieldType = ParameterizedTypeName.get(specificName, ParameterizedTypeName.get(ClassName.get(Collection.class), ClassName.get(type)));
 
@@ -318,14 +318,14 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                                 Property.Source.class, source,
                                 scopeName, scope,
                                 type,
-                                Property.FallbackBehaviour.class, fallback)
+                                Property.FallbackStrategy.class, fallback)
                         .build();
             }
 
             case SpecMapping(String name, Property.Source source, String scope,
                              TypeElement keyType,
                              TypeElement valueType,
-                             Property.FallbackBehaviour fallback,
+                             Property.FallbackStrategy fallback,
                              var _) -> {
                 ParameterizedTypeName fieldType = ParameterizedTypeName.get(specificName, ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(keyType), ClassName.get(valueType)));
 
@@ -336,7 +336,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                                 scopeName, scope,
                                 keyType,
                                 valueType,
-                                Property.FallbackBehaviour.class, fallback)
+                                Property.FallbackStrategy.class, fallback)
                         .build();
             }
         };
@@ -367,7 +367,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .addMethod(propertySuperConstructor()
                         .addModifiers(Modifier.PUBLIC)
                         .addParameter(withTGeneric(ClassName.get(Class.class)), "type")
-                        .addParameter(Property.FallbackBehaviour.class, "fallback")
+                        .addParameter(Property.FallbackStrategy.class, "fallback")
                         .addStatement("super(name, source, scope, type, fallback)")
                         .build())
                 .addMethod(getScoped(collectionType))
@@ -389,7 +389,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addModifiers(Modifier.PUBLIC)
                         .addParameter(withGeneric(ClassName.get(Class.class), "K"), "keyType")
                         .addParameter(withGeneric(ClassName.get(Class.class), "V"), "valueType")
-                        .addParameter(Property.FallbackBehaviour.class, "fallback")
+                        .addParameter(Property.FallbackStrategy.class, "fallback")
                         .addStatement("super(name, source, scope, keyType, valueType, fallback)")
                         .build())
                 .addMethod(getScoped(mapTypeName))

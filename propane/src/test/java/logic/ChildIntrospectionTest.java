@@ -29,8 +29,8 @@ public class ChildIntrospectionTest {
 
         static TestProperty<TestStub> TWO = new TestSingletonProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class);
 
-        static TestProperty<Collection<TestStub>> COLLECTION = new TestEnumerationProperty<>("COLLECTION", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
-        static TestProperty<Map<String, TestStub>> MAP = new TestMappingProperty<>("MAP", Property.Source.PROVIDED, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static TestProperty<Collection<TestStub>> COLLECTION = new TestEnumerationProperty<>("COLLECTION", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class, Property.FallbackStrategy.COMBINE);
+        static TestProperty<Map<String, TestStub>> MAP = new TestMappingProperty<>("MAP", Property.Source.PROVIDED, Scopes.ROOT, String.class, TestStub.class, Property.FallbackStrategy.COMBINE);
     }
 
     @Test

@@ -223,7 +223,7 @@ public class SpecProcessor extends AbstractProcessor {
                             Property.Source.valueOf(getEnumConstant(mirror, "source")),
                             getEnumConstant(mirror, "scope"),
                             typeArgument.getFirst(),
-                            Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback")),
+                            Property.FallbackStrategy.valueOf(getEnumConstant(mirror, "fallback")),
                             isInternal(element)
                     );
                     return Optional.of(spec);
@@ -251,7 +251,7 @@ public class SpecProcessor extends AbstractProcessor {
                             getEnumConstant(mirror, "scope"),
                             typeArgument.get(0),
                             typeArgument.get(1),
-                            Property.FallbackBehaviour.valueOf(getEnumConstant(mirror, "fallback")),
+                            Property.FallbackStrategy.valueOf(getEnumConstant(mirror, "fallback")),
                             isInternal(element)
                     );
                     return Optional.of(spec);

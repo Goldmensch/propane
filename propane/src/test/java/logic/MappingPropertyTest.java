@@ -28,8 +28,8 @@ public class MappingPropertyTest {
     private static class Properties {
         private record TestStub() {}
 
-        static TestProperty<Map<String, String>> ONE = new TestMappingProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, String.class, Property.FallbackBehaviour.OVERRIDE);
-        static TestProperty<Map<String, TestStub>> TWO = new TestMappingProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, String.class, TestStub.class, Property.FallbackBehaviour.ACCUMULATE);
+        static TestProperty<Map<String, String>> ONE = new TestMappingProperty<>("ONE", Property.Source.EXTENSION, Scopes.ROOT, String.class, String.class, Property.FallbackStrategy.IGNORE);
+        static TestProperty<Map<String, TestStub>> TWO = new TestMappingProperty<>("TWO", Property.Source.EXTENSION, Scopes.ROOT, String.class, TestStub.class, Property.FallbackStrategy.COMBINE);
     }
 
     @Test

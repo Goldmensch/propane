@@ -11,17 +11,17 @@ public non-sealed abstract class MappingProperty<K, V> implements Property.Multi
     private final Scope scope;
     private final Class<K> keyType;
     private final Class<V> valueType;
-    private final FallbackBehaviour fallbackBehaviour;
+    private final FallbackStrategy fallbackStrategy;
 
     public MappingProperty(String name, Source source, Scope scope, Class<K> keyType,
                            Class<V> valueType,
-                           FallbackBehaviour fallbackBehaviour) {
+                           FallbackStrategy fallbackStrategy) {
         this.name = name;
         this.source = source;
         this.scope = scope;
         this.keyType = keyType;
         this.valueType = valueType;
-        this.fallbackBehaviour = fallbackBehaviour;
+        this.fallbackStrategy = fallbackStrategy;
     }
 
     @Override
@@ -48,8 +48,8 @@ public non-sealed abstract class MappingProperty<K, V> implements Property.Multi
     }
 
     @Override
-    public FallbackBehaviour fallbackBehaviour() {
-        return fallbackBehaviour;
+    public FallbackStrategy fallbackBehaviour() {
+        return fallbackStrategy;
     }
 
     @Override
@@ -62,12 +62,12 @@ public non-sealed abstract class MappingProperty<K, V> implements Property.Multi
                 Objects.equals(this.scope, that.scope) &&
                 Objects.equals(this.keyType, that.keyType) &&
                 Objects.equals(this.valueType, that.valueType) &&
-                Objects.equals(this.fallbackBehaviour, that.fallbackBehaviour);
+                Objects.equals(this.fallbackStrategy, that.fallbackStrategy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, source, scope, keyType, valueType, fallbackBehaviour);
+        return Objects.hash(name, source, scope, keyType, valueType, fallbackStrategy);
     }
 
     @Override
@@ -78,6 +78,6 @@ public non-sealed abstract class MappingProperty<K, V> implements Property.Multi
                 "scope=" + scope + ", " +
                 "keyType=" + keyType + ", " +
                 "valueType=" + valueType + ", " +
-                "fallbackBehaviour=" + fallbackBehaviour + ']';
+                "fallbackStrategy=" + fallbackStrategy + ']';
     }
 }

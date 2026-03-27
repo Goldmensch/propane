@@ -80,25 +80,23 @@ public sealed interface Property<T> {
     /// @param <T> the type represented by this interface
     /// @apiNote this is a marker interface
     sealed interface MultiValue<T> extends Property<T> permits EnumerationProperty, MappingProperty {
-        FallbackBehaviour fallbackBehaviour();
+        FallbackStrategy fallbackBehaviour();
     }
 
-    /// The [FallbackBehaviour] specifies how fallback values of [multi value properties][MultiValue] are
+    /// The [FallbackStrategy] specifies how fallback values of [multi value properties][MultiValue] are
     /// trod during resolution.
     ///
     /// More detailed: During resolution the values of all [PropertyProvider] of
     /// either [EnumerationProperty] or [MappingProperty] are combined (depending on the used property type).
     /// This enum defines how values with priority = [PropertyProvider.Priority#FALLBACK] are trod here.
-    ///
-    ///
-    enum FallbackBehaviour {
+    enum FallbackStrategy {
         /// Values from [PropertyProvider]s with priority set to [PropertyProvider.Priority#FALLBACK]
         /// will be ignored during resolution, if [PropertyProvider]s with other priorities are present.
-        OVERRIDE,
+        IGNORE,
 
         /// Values from [PropertyProvider]s with priority set to [PropertyProvider.Priority#FALLBACK]
         /// will be combined with the other values.
-        ACCUMULATE
+        COMBINE
     }
 
     // TODO docs (scoped access)

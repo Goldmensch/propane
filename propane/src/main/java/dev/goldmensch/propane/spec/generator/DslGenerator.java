@@ -94,7 +94,7 @@ public class DslGenerator extends AbstractGenerator<SpecMeta> {
         return annotationBuilder(name)
                 .addMethod(MethodSpec.methodBuilder("fallback")
                         .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                        .returns(Property.FallbackBehaviour.class)
+                        .returns(Property.FallbackStrategy.class)
                         .build()
                 )
                 .build();

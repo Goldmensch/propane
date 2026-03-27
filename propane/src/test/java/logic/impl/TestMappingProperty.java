@@ -6,8 +6,8 @@ import dev.goldmensch.propane.property.MappingProperty;
 import java.util.Map;
 
 public class TestMappingProperty<K, V> extends MappingProperty<K, V> implements TestProperty<Map<K, V>> {
-    public TestMappingProperty(String name, Source source, Scope scope, Class<K> keyType, Class<V> valueType, FallbackBehaviour fallbackBehaviour) {
-        super(name, source, scope, keyType, valueType, fallbackBehaviour);
+    public TestMappingProperty(String name, Source source, Scope scope, Class<K> keyType, Class<V> valueType, FallbackStrategy fallbackStrategy) {
+        super(name, source, scope, keyType, valueType, fallbackStrategy);
     }
 
     @Override

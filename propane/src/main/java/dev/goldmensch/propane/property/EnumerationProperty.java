@@ -10,15 +10,15 @@ public non-sealed abstract class EnumerationProperty<T> implements Property.Mult
     private final Source source;
     private final Scope scope;
     private final Class<T> type;
-    private final FallbackBehaviour fallbackBehaviour;
+    private final FallbackStrategy fallbackStrategy;
 
     public EnumerationProperty(String name, Source source, Scope scope, Class<T> type,
-                               FallbackBehaviour fallbackBehaviour) {
+                               FallbackStrategy fallbackStrategy) {
         this.name = name;
         this.source = source;
         this.scope = scope;
         this.type = type;
-        this.fallbackBehaviour = fallbackBehaviour;
+        this.fallbackStrategy = fallbackStrategy;
     }
 
     @Override
@@ -41,8 +41,8 @@ public non-sealed abstract class EnumerationProperty<T> implements Property.Mult
     }
 
     @Override
-    public FallbackBehaviour fallbackBehaviour() {
-        return fallbackBehaviour;
+    public FallbackStrategy fallbackBehaviour() {
+        return fallbackStrategy;
     }
 
     @Override
@@ -54,12 +54,12 @@ public non-sealed abstract class EnumerationProperty<T> implements Property.Mult
                 Objects.equals(this.source, that.source) &&
                 Objects.equals(this.scope, that.scope) &&
                 Objects.equals(this.type, that.type) &&
-                Objects.equals(this.fallbackBehaviour, that.fallbackBehaviour);
+                Objects.equals(this.fallbackStrategy, that.fallbackStrategy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, source, scope, type, fallbackBehaviour);
+        return Objects.hash(name, source, scope, type, fallbackStrategy);
     }
 
     @Override
@@ -69,6 +69,6 @@ public non-sealed abstract class EnumerationProperty<T> implements Property.Mult
                 "source=" + source + ", " +
                 "scope=" + scope + ", " +
                 "type=" + type + ", " +
-                "fallbackBehaviour=" + fallbackBehaviour + ']';
+                "fallbackStrategy=" + fallbackStrategy + ']';
     }
 }
