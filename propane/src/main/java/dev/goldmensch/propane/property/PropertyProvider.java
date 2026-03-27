@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Function;
 
-public abstract class PropertyProvider<T, PROPERTY extends SpecificProperty<T>, INTROSPECTION extends Introspection> {
+public abstract class PropertyProvider<T, PROPERTY extends SpecificProperty<T>, INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
     private final PROPERTY property;
     private final Priority priority;
     private final Class<?> owner;

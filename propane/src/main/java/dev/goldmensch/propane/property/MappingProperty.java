@@ -5,6 +5,18 @@ import dev.goldmensch.propane.Scope;
 import java.util.Map;
 import java.util.Objects;
 
+/// A [MappingProperty] represents a [Map]. It has one key type and one value type.
+///
+/// For example, think of validators that should validate request parameters based on their type.
+/// These validators can be registered via a `MappingProperty<Class, Validator>`, basically representing
+/// an `Map<Class, Validator>`.
+///
+/// If multiple [PropertyProvider]s are found for this property, all values are combined and the ones with a higher [priority][PropertyProvider#priority()]
+/// override the values of the ones with a lower priority. (think of [Map#put(Object, Object)]).
+/// For information on how fallback values are trod, visit the documentation of [Property.FallbackStrategy]
+///
+/// @param <K> the java type of the key
+/// @param <V> the java type of the value
 public non-sealed abstract class MappingProperty<K, V> implements Property.MultiValue<Map<K, V>> {
     private final String name;
     private final Source source;
@@ -13,6 +25,13 @@ public non-sealed abstract class MappingProperty<K, V> implements Property.Multi
     private final Class<V> valueType;
     private final FallbackStrategy fallbackStrategy;
 
+
+    /// @param name the [name][Property#name()] of this property
+    /// @param source the [source][Property#source()] of this property
+    /// @param scope the [scope][Property#scope()] of this property
+    /// @param keyType the [key's java type][MappingProperty#keyType()] of this property
+    /// @param valueType the [value's jvava type][MappingProperty#valueType()] of this property
+    /// @param fallbackStrategy the [fallback strategy][Property.MultiValue#fallbackBehaviour()] of this property
     public MappingProperty(String name, Source source, Scope scope, Class<K> keyType,
                            Class<V> valueType,
                            FallbackStrategy fallbackStrategy) {
@@ -24,32 +43,42 @@ public non-sealed abstract class MappingProperty<K, V> implements Property.Multi
         this.fallbackStrategy = fallbackStrategy;
     }
 
+    /// {@inheritDoc}
     @Override
     public String name() {
         return name;
     }
 
+    /// {@inheritDoc}
     @Override
     public Source source() {
         return source;
     }
 
+    /// {@inheritDoc}
     @Override
     public Scope scope() {
         return scope;
     }
 
+    /// {@inheritDoc}
+    @Override
+    public FallbackStrategy fallbackBehaviour() {
+        return fallbackStrategy;
+    }
+
+    /// the java type of the key
+    ///
+    /// @return the key's class
     public Class<K> keyType() {
         return keyType;
     }
 
+    /// the java type of the value
+    ///
+    /// @return the value's class
     public Class<V> valueType() {
         return valueType;
-    }
-
-    @Override
-    public FallbackStrategy fallbackBehaviour() {
-        return fallbackStrategy;
     }
 
     @Override

@@ -5,6 +5,13 @@ import dev.goldmensch.propane.Scope;
 import java.util.Collection;
 import java.util.Objects;
 
+/// An [EnumerationProperty] represents an [Collection]. It can hold multiple values of the same type and makes no guarantees
+/// about the order of its elements.
+///
+/// If multiple [PropertyProvider]s are found for this property, they are generally combined.
+/// For information on how fallback values are trod, visit the documentation of [Property.FallbackStrategy].
+///
+/// @param <T> the java type of the elements held by this property
 public non-sealed abstract class EnumerationProperty<T> implements Property.MultiValue<Collection<T>> {
     private final String name;
     private final Source source;
@@ -12,6 +19,11 @@ public non-sealed abstract class EnumerationProperty<T> implements Property.Mult
     private final Class<T> type;
     private final FallbackStrategy fallbackStrategy;
 
+    /// @param name the [name][Property#name()] of this property
+    /// @param source the [source][Property#source()] of this property
+    /// @param scope the [scope][Property#scope()] of this property
+    /// @param type the [type][EnumerationProperty#type()] of this property
+    /// @param fallbackStrategy the [fallback strategy][Property.MultiValue#fallbackBehaviour()] of this property
     public EnumerationProperty(String name, Source source, Scope scope, Class<T> type,
                                FallbackStrategy fallbackStrategy) {
         this.name = name;
@@ -21,28 +33,35 @@ public non-sealed abstract class EnumerationProperty<T> implements Property.Mult
         this.fallbackStrategy = fallbackStrategy;
     }
 
+    /// {@inheritDoc}
     @Override
     public String name() {
         return name;
     }
 
+    /// {@inheritDoc}
     @Override
     public Source source() {
         return source;
     }
 
+    /// {@inheritDoc}
     @Override
     public Scope scope() {
         return scope;
     }
 
-    public Class<T> type() {
-        return type;
-    }
-
+    /// {@inheritDoc}
     @Override
     public FallbackStrategy fallbackBehaviour() {
         return fallbackStrategy;
+    }
+
+    /// the java type of the elements hold by this property
+    ///
+    /// @return the element's java class
+    public Class<T> type() {
+        return type;
     }
 
     @Override
