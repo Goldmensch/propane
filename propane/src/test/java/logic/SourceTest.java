@@ -21,7 +21,7 @@ public class SourceTest {
         }
     }
 
-    private class Properties {
+    private static class Properties {
         static TestProperty<String> BUILDER_PROP = new TestSingletonProperty<>("BUILDER_PROP", Property.Source.BUILDER, Scopes.ROOT, String.class);
         static TestProperty<String> PROVIDED_PROP = new TestSingletonProperty<>("PROVIDED_PROP", Property.Source.PROVIDED, Scopes.ROOT, String.class);
         static TestProperty<String> EXTENSION_PROP = new TestSingletonProperty<>("EXTENSION_PROP", Property.Source.EXTENSION, Scopes.ROOT, String.class);
@@ -46,7 +46,7 @@ public class SourceTest {
 
     @Test
     public void provided_accept_fallback() {
-        TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
+        TestIntrospectionImpl.create(Scopes.ROOT)
                 .addFallback(Properties.PROVIDED_PROP, _ -> "bruch")
                 .build();
     }
