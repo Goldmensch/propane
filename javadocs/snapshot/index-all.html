@@ -60,11 +60,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html#accessScoped()" class="member-name-link">accessScoped()</a> - Static method in interface dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html#ACCUMULATE" class="member-name-link">ACCUMULATE</a> - Enum constant in enum class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a></dt>
-<dd>
-<div class="block">Values from <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a>
-will be combined with the other values.</div>
-</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/internal/EventBus.html#add(dev.goldmensch.propane.event.Listener)" class="member-name-link">add(Listener)</a> - Method in class dev.goldmensch.propane.event.internal.<a href="dev.goldmensch.propane/dev/goldmensch/propane/event/internal/EventBus.html" title="class in dev.goldmensch.propane.event.internal">EventBus</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.Builder.html#add(dev.goldmensch.propane.property.PropertyProvider)" class="member-name-link">add(PropertyProvider)</a> - Method in class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.Builder.html" title="class in dev.goldmensch.propane">IntrospectionImpl.Builder</a></dt>
@@ -108,6 +103,11 @@ library and user through a builder.</div>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/Helpers.html#castUnsafe(java.lang.Object)" class="member-name-link">castUnsafe(Object)</a> - Static method in class dev.goldmensch.propane.internal.<a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/Helpers.html" title="class in dev.goldmensch.propane.internal">Helpers</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html#COMBINE" class="member-name-link">COMBINE</a> - Enum constant in enum class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></dt>
+<dd>
+<div class="block">Values from <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a>
+will be combined with the other values.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.Priority.html#compareTo(dev.goldmensch.propane.property.PropertyProvider.Priority)" class="member-name-link">compareTo(PropertyProvider.Priority)</a> - Method in class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.Priority.html" title="class in dev.goldmensch.propane.property">PropertyProvider.Priority</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html#create(dev.goldmensch.propane.Scope)" class="member-name-link">create(Scope)</a> - Static method in class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a></dt>
@@ -158,7 +158,7 @@ library and user through a builder.</div>
 <dl class="index">
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/EnumerationProperty.html" class="type-name-link" title="class in dev.goldmensch.propane.property">EnumerationProperty&lt;T&gt;</a> - Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/package-summary.html">dev.goldmensch.propane.property</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/EnumerationProperty.html#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackBehaviour)" class="member-name-link">EnumerationProperty(String, Property.Source, Scope, Class, Property.FallbackBehaviour)</a> - Constructor for class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/EnumerationProperty.html" title="class in dev.goldmensch.propane.property">EnumerationProperty</a></dt>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/EnumerationProperty.html#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackStrategy)" class="member-name-link">EnumerationProperty(String, Property.Source, Scope, Class, Property.FallbackStrategy)</a> - Constructor for class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/EnumerationProperty.html" title="class in dev.goldmensch.propane.property">EnumerationProperty</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/EnumerationProperty.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/EnumerationProperty.html" title="class in dev.goldmensch.propane.property">EnumerationProperty</a></dt>
 <dd>&nbsp;</dd>
@@ -221,13 +221,13 @@ library and user through a builder.</div>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.MultiValue.html#fallbackBehaviour()" class="member-name-link">fallbackBehaviour()</a> - Method in interface dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEnumeration.html#fallbackBehaviour()" class="member-name-link">fallbackBehaviour()</a> - Method in record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEnumeration.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecEnumeration</a></dt>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEnumeration.html#fallbackStrategy()" class="member-name-link">fallbackStrategy()</a> - Method in record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEnumeration.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecEnumeration</a></dt>
 <dd>
-<div class="block">Returns the value of the <code>fallbackBehaviour</code> record component.</div>
+<div class="block">Returns the value of the <code>fallbackStrategy</code> record component.</div>
 </dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMapping.html#fallbackBehaviour()" class="member-name-link">fallbackBehaviour()</a> - Method in record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMapping.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecMapping</a></dt>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMapping.html#fallbackStrategy()" class="member-name-link">fallbackStrategy()</a> - Method in record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMapping.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecMapping</a></dt>
 <dd>
-<div class="block">Returns the value of the <code>fallbackBehaviour</code> record component.</div>
+<div class="block">Returns the value of the <code>fallbackStrategy</code> record component.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:G">G</h2>
@@ -292,6 +292,11 @@ library and user through a builder.</div>
 </dl>
 <h2 class="title" id="I:I">I</h2>
 <dl class="index">
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html#IGNORE" class="member-name-link">IGNORE</a> - Enum constant in enum class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></dt>
+<dd>
+<div class="block">Values from <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a>
+will be ignored during resolution, if <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with other priorities are present.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/SpecProcessor.html#init(javax.annotation.processing.ProcessingEnvironment)" class="member-name-link">init(ProcessingEnvironment)</a> - Method in class dev.goldmensch.propane.spec.processor.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/SpecProcessor.html" title="class in dev.goldmensch.propane.spec.processor">SpecProcessor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/ScopeStub.html#INSTANCE" class="member-name-link">INSTANCE</a> - Static variable in class dev.goldmensch.propane.internal.<a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/ScopeStub.html" title="class in dev.goldmensch.propane.internal">ScopeStub</a></dt>
@@ -347,7 +352,7 @@ library and user through a builder.</div>
 <dl class="index">
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/MappingProperty.html" class="type-name-link" title="class in dev.goldmensch.propane.property">MappingProperty&lt;K,<wbr>V&gt;</a> - Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/package-summary.html">dev.goldmensch.propane.property</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/MappingProperty.html#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackBehaviour)" class="member-name-link">MappingProperty(String, Property.Source, Scope, Class, Class, Property.FallbackBehaviour)</a> - Constructor for class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/MappingProperty.html" title="class in dev.goldmensch.propane.property">MappingProperty</a></dt>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/MappingProperty.html#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackStrategy)" class="member-name-link">MappingProperty(String, Property.Source, Scope, Class, Class, Property.FallbackStrategy)</a> - Constructor for class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/MappingProperty.html" title="class in dev.goldmensch.propane.property">MappingProperty</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:N">N</h2>
@@ -383,11 +388,6 @@ library and user through a builder.</div>
 <dl class="index">
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.Priority.html#of(int)" class="member-name-link">of(int)</a> - Static method in class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.Priority.html" title="class in dev.goldmensch.propane.property">PropertyProvider.Priority</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html#OVERRIDE" class="member-name-link">OVERRIDE</a> - Enum constant in enum class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a></dt>
-<dd>
-<div class="block">Values from <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a>
-will be ignored during resolution, if <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with other priorities are present.</div>
-</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html#owner()" class="member-name-link">owner()</a> - Method in class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property">PropertyProvider</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -429,9 +429,9 @@ will be ignored during resolution, if <a href="dev.goldmensch.propane/dev/goldme
 <dd>
 <div class="block">A <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a> is an identifier for a certain component of a library.</div>
 </dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html" class="type-name-link" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a> - Enum Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/package-summary.html">dev.goldmensch.propane.property</a></dt>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html" class="type-name-link" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a> - Enum Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/package-summary.html">dev.goldmensch.propane.property</a></dt>
 <dd>
-<div class="block">The <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackBehaviour</code></a> specifies how fallback values of <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">multi value properties</a> are
+<div class="block">The <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a> specifies how fallback values of <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">multi value properties</a> are
 trod during resolution.</div>
 </dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.MultiValue.html" class="type-name-link" title="interface in dev.goldmensch.propane.property">Property.MultiValue&lt;T&gt;</a> - Interface in <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/package-summary.html">dev.goldmensch.propane.property</a></dt>
@@ -596,7 +596,7 @@ by the library itself.</div>
 </dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEnumeration.html" class="type-name-link" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecEnumeration</a> - Record Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/package-summary.html">dev.goldmensch.propane.spec.processor.syntax</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEnumeration.html#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,java.lang.String,javax.lang.model.element.TypeElement,dev.goldmensch.propane.property.Property.FallbackBehaviour,boolean)" class="member-name-link">SpecEnumeration(String, Property.Source, String, TypeElement, Property.FallbackBehaviour, boolean)</a> - Constructor for record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEnumeration.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecEnumeration</a></dt>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEnumeration.html#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,java.lang.String,javax.lang.model.element.TypeElement,dev.goldmensch.propane.property.Property.FallbackStrategy,boolean)" class="member-name-link">SpecEnumeration(String, Property.Source, String, TypeElement, Property.FallbackStrategy, boolean)</a> - Constructor for record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEnumeration.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecEnumeration</a></dt>
 <dd>
 <div class="block">Creates an instance of a <code>SpecEnumeration</code> record class.</div>
 </dd>
@@ -610,7 +610,7 @@ by the library itself.</div>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMapping.html" class="type-name-link" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecMapping</a> - Record Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/package-summary.html">dev.goldmensch.propane.spec.processor.syntax</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMapping.html#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,java.lang.String,javax.lang.model.element.TypeElement,javax.lang.model.element.TypeElement,dev.goldmensch.propane.property.Property.FallbackBehaviour,boolean)" class="member-name-link">SpecMapping(String, Property.Source, String, TypeElement, TypeElement, Property.FallbackBehaviour, boolean)</a> - Constructor for record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMapping.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecMapping</a></dt>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMapping.html#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,java.lang.String,javax.lang.model.element.TypeElement,javax.lang.model.element.TypeElement,dev.goldmensch.propane.property.Property.FallbackStrategy,boolean)" class="member-name-link">SpecMapping(String, Property.Source, String, TypeElement, TypeElement, Property.FallbackStrategy, boolean)</a> - Constructor for record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMapping.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecMapping</a></dt>
 <dd>
 <div class="block">Creates an instance of a <code>SpecMapping</code> record class.</div>
 </dd>
@@ -694,7 +694,7 @@ by the library itself.</div>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/annotation/Scopes.html#value()" class="member-name-link">value()</a> - Element in annotation interface dev.goldmensch.propane.spec.annotation.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/annotation/Scopes.html" title="annotation interface in dev.goldmensch.propane.spec.annotation">Scopes</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a></dt>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></dt>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </dd>
@@ -702,7 +702,7 @@ by the library itself.</div>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </dd>
-<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html#values()" class="member-name-link">values()</a> - Static method in enum class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a></dt>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html#values()" class="member-name-link">values()</a> - Static method in enum class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></dt>
 <dd>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>

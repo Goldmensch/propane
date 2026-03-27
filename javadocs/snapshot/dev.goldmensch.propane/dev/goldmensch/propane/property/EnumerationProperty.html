@@ -59,7 +59,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
-<li><a href="#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackBehaviour)" tabindex="0">EnumerationProperty(String, Property.Source, Scope, Class, Property.FallbackBehaviour)</a></li>
+<li><a href="#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackStrategy)" tabindex="0">EnumerationProperty(String, Property.Source, Scope, Class, Property.FallbackStrategy)</a></li>
 </ol>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
@@ -104,7 +104,7 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <h2>Nested Class Summary</h2>
 <div class="inherited-list">
 <h3 id="nested-classes-inherited-from-class-dev.goldmensch.propane.property.Property">Nested classes/interfaces inherited from interface&nbsp;<a href="Property.html#nested-class-summary" title="interface in dev.goldmensch.propane.property">Property</a></h3>
-<code><a href="Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a>, <a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a>&lt;T&gt;, <a href="Property.SingleValue.html" title="interface in dev.goldmensch.propane.property">Property.SingleValue</a>&lt;T&gt;, <a href="Property.Source.html" title="enum class in dev.goldmensch.propane.property">Property.Source</a></code></div>
+<code><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a>, <a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a>&lt;T&gt;, <a href="Property.SingleValue.html" title="interface in dev.goldmensch.propane.property">Property.SingleValue</a>&lt;T&gt;, <a href="Property.Source.html" title="enum class in dev.goldmensch.propane.property">Property.Source</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -115,11 +115,11 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackBehaviour)" class="member-name-link">EnumerationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackStrategy)" class="member-name-link">EnumerationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="Property.Source.html" title="enum class in dev.goldmensch.propane.property">Property.Source</a>&nbsp;source,
  <a href="../Scope.html" title="interface in dev.goldmensch.propane">Scope</a>&nbsp;scope,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="#type-param-T" title="type parameter in EnumerationProperty">T</a>&gt;&nbsp;type,
- <a href="Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a>&nbsp;fallbackBehaviour)</code></div>
+ <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a>&nbsp;fallbackStrategy)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -138,7 +138,7 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;obj)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fallbackBehaviour()" class="member-name-link">fallbackBehaviour</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
@@ -186,14 +186,14 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackBehaviour)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class,dev.goldmensch.propane.property.Property.FallbackStrategy)">
 <h3>EnumerationProperty</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EnumerationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="Property.Source.html" title="enum class in dev.goldmensch.propane.property">Property.Source</a>&nbsp;source,
  <a href="../Scope.html" title="interface in dev.goldmensch.propane">Scope</a>&nbsp;scope,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="#type-param-T" title="type parameter in EnumerationProperty">T</a>&gt;&nbsp;type,
- <a href="Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a>&nbsp;fallbackBehaviour)</span></div>
+ <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a>&nbsp;fallbackStrategy)</span></div>
 </div>
 </section>
 </li>
@@ -273,7 +273,7 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <section class="detail" id="fallbackBehaviour()">
 <h3>fallbackBehaviour</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a></span>&nbsp;<span class="element-name">fallbackBehaviour</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></span>&nbsp;<span class="element-name">fallbackBehaviour</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Property.MultiValue.html#fallbackBehaviour()">fallbackBehaviour</a></code>&nbsp;in interface&nbsp;<code><a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a>&lt;<a href="#type-param-T" title="type parameter in EnumerationProperty">T</a>&gt;</code></dd>
