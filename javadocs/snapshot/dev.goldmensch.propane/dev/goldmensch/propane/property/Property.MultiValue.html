@@ -67,9 +67,13 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<h1 title="Interface Property.MultiValue" class="title">Interface Property.MultiValue&lt;<span id="type-param-T">T</span>&gt;</h1>
+<h1 title="Interface Property.MultiValue" class="title">Interface Property.MultiValue&lt;T&gt;</h1>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><span id="type-param-T"><code>T</code> - the type represented by this interface</span></dd>
+</dl>
 <dl class="notes">
 <dt>All Superinterfaces:</dt>
 <dd><code><a href="Property.html" title="interface in dev.goldmensch.propane.property">Property</a>&lt;T&gt;</code></dd>
@@ -87,6 +91,13 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public static sealed interface </span><span class="element-name type-name-label">Property.MultiValue&lt;T&gt;</span><span class="extends-implements">
 extends <a href="Property.html" title="interface in dev.goldmensch.propane.property">Property</a>&lt;T&gt;</span>
 <span class="permits">permits <a href="EnumerationProperty.html" title="class in dev.goldmensch.propane.property">EnumerationProperty</a>&lt;T&gt;, <a href="MappingProperty.html" title="class in dev.goldmensch.propane.property">MappingProperty</a>&lt;K,<wbr>V&gt;</span></div>
+<div class="block">A <a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property"><code>Property.MultiValue</code></a> can hold multiple objects.
+It does not guarantee any sort of specific data structure, thus the final implementation is
+determined by the individual implementations of this interface.</div>
+<dl class="notes">
+<dt>API Note:</dt>
+<dd>this is a marker interface</dd>
+</dl>
 </div>
 </section>
 <section class="summary">

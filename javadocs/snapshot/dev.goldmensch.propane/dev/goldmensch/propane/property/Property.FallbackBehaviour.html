@@ -95,6 +95,12 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public static enum </span><span class="element-name type-name-label">Property.FallbackBehaviour</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a>&gt;</span></div>
+<div class="block"><p>The <a href="Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackBehaviour</code></a> specifies how fallback values of <a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">multi value properties</a> are
+trod during resolution.</p>
+<p>More detailed: During resolution the values of all <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> of
+either <a href="EnumerationProperty.html" title="class in dev.goldmensch.propane.property"><code>EnumerationProperty</code></a> or <a href="MappingProperty.html" title="class in dev.goldmensch.propane.property"><code>MappingProperty</code></a> are combined (depending on the used property type).
+This enum defines how values with priority = <a href="PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a> are trod here.</p>
+</div>
 </div>
 </section>
 <section class="summary">
@@ -117,9 +123,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ACCUMULATE" class="member-name-link">ACCUMULATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Values from <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to <a href="PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a>
+will be combined with the other values.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OVERRIDE" class="member-name-link">OVERRIDE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Values from <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to <a href="PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a>
+will be ignored during resolution, if <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with other priorities are present.</div>
+</div>
 </div>
 </section>
 </li>
@@ -170,6 +182,8 @@ the order they are declared.</div>
 <h3>OVERRIDE</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a></span>&nbsp;<span class="element-name">OVERRIDE</span></div>
+<div class="block">Values from <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to <a href="PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a>
+will be ignored during resolution, if <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with other priorities are present.</div>
 </div>
 </section>
 </li>
@@ -178,6 +192,8 @@ the order they are declared.</div>
 <h3>ACCUMULATE</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="Property.FallbackBehaviour.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackBehaviour</a></span>&nbsp;<span class="element-name">ACCUMULATE</span></div>
+<div class="block">Values from <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to <a href="PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a>
+will be combined with the other values.</div>
 </div>
 </section>
 </li>
