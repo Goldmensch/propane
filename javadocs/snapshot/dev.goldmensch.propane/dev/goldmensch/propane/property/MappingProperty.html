@@ -67,9 +67,9 @@ loadScripts(document, 'script');</script>
 <li><a href="#name()" tabindex="0">name()</a></li>
 <li><a href="#source()" tabindex="0">source()</a></li>
 <li><a href="#scope()" tabindex="0">scope()</a></li>
+<li><a href="#fallbackBehaviour()" tabindex="0">fallbackBehaviour()</a></li>
 <li><a href="#keyType()" tabindex="0">keyType()</a></li>
 <li><a href="#valueType()" tabindex="0">valueType()</a></li>
-<li><a href="#fallbackBehaviour()" tabindex="0">fallbackBehaviour()</a></li>
 <li><a href="#equals(java.lang.Object)" tabindex="0">equals(Object)</a></li>
 <li><a href="#hashCode()" tabindex="0">hashCode()</a></li>
 <li><a href="#toString()" tabindex="0">toString()</a></li>
@@ -80,12 +80,17 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<h1 title="Class MappingProperty" class="title">Class MappingProperty&lt;<span id="type-param-K">K</span>,<wbr><span id="type-param-V">V</span>&gt;</h1>
+<h1 title="Class MappingProperty" class="title">Class MappingProperty&lt;K,<wbr>V&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance">dev.goldmensch.propane.property.MappingProperty&lt;K,<wbr>V&gt;</div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><span id="type-param-K"><code>K</code> - the java type of the key</span></dd>
+<dd><span id="type-param-V"><code>V</code> - the java type of the value</span></dd>
+</dl>
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="Property.html" title="interface in dev.goldmensch.propane.property">Property</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;K,<wbr>V&gt;&gt;, <a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;K,<wbr>V&gt;&gt;</code></dd>
@@ -95,6 +100,14 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public abstract non-sealed class </span><span class="element-name type-name-label">MappingProperty&lt;K,<wbr>V&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;K,<wbr>V&gt;&gt;</span></div>
+<div class="block"><p>A <a href="MappingProperty.html" title="class in dev.goldmensch.propane.property"><code>MappingProperty</code></a> represents a <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link"><code>Map</code></a>. It has one key type and one value type.</p>
+<p>For example, think of validators that should validate request parameters based on their type.
+These validators can be registered via a <code>MappingProperty&lt;Class, Validator&gt;</code>, basically representing
+an <code>Map&lt;Class, Validator&gt;</code>.</p>
+<p>If multiple <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s are found for this property, all values are combined and the ones with a higher <a href="PropertyProvider.html#priority()">priority</a>
+override the values of the ones with a lower priority. (think of <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html#put(K,V)" title="class or interface in java.util" class="external-link"><code>Map.put(Object, Object)</code></a>).
+For information on how fallback values are trod, visit the documentation of <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a></p>
+</div>
 </div>
 </section>
 <section class="summary">
@@ -142,13 +155,18 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fallbackBehaviour()" class="member-name-link">fallbackBehaviour</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">the <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a> used determine how to tread <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to
+<a href="PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a></div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a><wbr>&lt;<a href="#type-param-K" title="type parameter in MappingProperty">K</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keyType()" class="member-name-link">keyType</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">the java type of the key</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#name()" class="member-name-link">name</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -169,7 +187,9 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a><wbr>&lt;<a href="#type-param-V" title="type parameter in MappingProperty">V</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#valueType()" class="member-name-link">valueType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">the java type of the value</div>
+</div>
 </div>
 </div>
 </div>
@@ -200,6 +220,15 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="#type-param-K" title="type parameter in MappingProperty">K</a>&gt;&nbsp;keyType,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="#type-param-V" title="type parameter in MappingProperty">V</a>&gt;&nbsp;valueType,
  <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a>&nbsp;fallbackStrategy)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>name</code> - the <a href="Property.html#name()">name</a> of this property</dd>
+<dd><code>source</code> - the <a href="Property.html#source()">source</a> of this property</dd>
+<dd><code>scope</code> - the <a href="Property.html#scope()">scope</a> of this property</dd>
+<dd><code>keyType</code> - the <a href="#keyType()">key's java type</a> of this property</dd>
+<dd><code>valueType</code> - the <a href="#valueType()">value's jvava type</a> of this property</dd>
+<dd><code>fallbackStrategy</code> - the <a href="Property.MultiValue.html#fallbackBehaviour()">fallback strategy</a> of this property</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -216,7 +245,6 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <h3>name</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">name</span>()</div>
-<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="Property.html#name()">Property</a></code></span></div>
 <div class="block"><p>The name of this property.</p>
 <p>Its only purpose is to allow the differentiation of properties in logs or debug sessions.</p>
 </div>
@@ -234,7 +262,6 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <h3>source</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Property.Source.html" title="enum class in dev.goldmensch.propane.property">Property.Source</a></span>&nbsp;<span class="element-name">source</span>()</div>
-<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="Property.html#source()">Property</a></code></span></div>
 <div class="block">The <a href="Property.Source.html" title="enum class in dev.goldmensch.propane.property"><code>Property.Source</code></a> of this property.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -250,7 +277,6 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <h3>scope</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../Scope.html" title="interface in dev.goldmensch.propane">Scope</a></span>&nbsp;<span class="element-name">scope</span>()</div>
-<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="Property.html#scope()">Property</a></code></span></div>
 <div class="block">The <a href="../Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> that this property is bound to.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -268,10 +294,31 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 </section>
 </li>
 <li>
+<section class="detail" id="fallbackBehaviour()">
+<h3>fallbackBehaviour</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></span>&nbsp;<span class="element-name">fallbackBehaviour</span>()</div>
+<div class="block">the <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a> used determine how to tread <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to
+<a href="PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="Property.MultiValue.html#fallbackBehaviour()">fallbackBehaviour</a></code>&nbsp;in interface&nbsp;<code><a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a>&lt;<a href="#type-param-K" title="type parameter in MappingProperty">K</a>&gt;</code></dd>
+<dt>Returns:</dt>
+<dd>the used <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="keyType()">
 <h3>keyType</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="#type-param-K" title="type parameter in MappingProperty">K</a>&gt;</span>&nbsp;<span class="element-name">keyType</span>()</div>
+<div class="block">the java type of the key</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the key's class</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -280,17 +327,10 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <h3>valueType</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="#type-param-V" title="type parameter in MappingProperty">V</a>&gt;</span>&nbsp;<span class="element-name">valueType</span>()</div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="fallbackBehaviour()">
-<h3>fallbackBehaviour</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></span>&nbsp;<span class="element-name">fallbackBehaviour</span>()</div>
+<div class="block">the java type of the value</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="Property.MultiValue.html#fallbackBehaviour()">fallbackBehaviour</a></code>&nbsp;in interface&nbsp;<code><a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a>&lt;<a href="#type-param-K" title="type parameter in MappingProperty">K</a>&gt;</code></dd>
+<dt>Returns:</dt>
+<dd>the value's class</dd>
 </dl>
 </div>
 </section>
