@@ -78,16 +78,47 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<h1 title="Class PropertyProvider" class="title">Class PropertyProvider&lt;<span id="type-param-T">T</span>, <span id="type-param-PROPERTY">PROPERTY extends <a href="SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;</span>, <span id="type-param-INTROSPECTION">INTROSPECTION extends <a href="../Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;INTROSPECTION, ?&gt;</span>&gt;</h1>
+<h1 title="Class PropertyProvider" class="title">Class PropertyProvider&lt;T, PROPERTY extends <a href="SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;, INTROSPECTION extends <a href="../Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;INTROSPECTION, ?&gt;&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance">dev.goldmensch.propane.property.PropertyProvider&lt;T, PROPERTY, INTROSPECTION&gt;</div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><span id="type-param-T"><code>T</code> - the type returned by the supplier</span></dd>
+<dd><span id="type-param-PROPERTY"><code>PROPERTY</code> - the subtype of <a href="SpecificProperty.html" title="interface in dev.goldmensch.propane.property"><code>SpecificProperty</code></a> this provider is bound to</span></dd>
+<dd><span id="type-param-INTROSPECTION"><code>INTROSPECTION</code> - the subtype of <a href="../Introspection.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> this provider is bound to</span></dd>
+</dl>
 <hr>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">PropertyProvider&lt;T, PROPERTY extends <a href="SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;, INTROSPECTION extends <a href="../Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;INTROSPECTION, ?&gt;&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block"><p>A <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> supplies the values for a property.
+Each <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> is bound to <em>one</em> property for which it can provide values.</p>
+<p>Based on the <a href="Property.Source.html" title="enum class in dev.goldmensch.propane.property"><code>Property.Source</code></a> of the property, property providers can be registered via different ways. Visit the documentation
+of <a href="Property.Source.html" title="enum class in dev.goldmensch.propane.property"><code>Property.Source</code></a> for more information on that matter.</p>
+<p>The possibly <a href="#supplier()">returned</a> types vary based on the type of the property:</p>
+<ul>
+<li>for <a href="SingletonProperty.html" title="class in dev.goldmensch.propane.property"><code>SingletonProperty</code></a>, a provider can &quot;return&quot; one instance</li>
+<li>for <a href="EnumerationProperty.html" title="class in dev.goldmensch.propane.property"><code>EnumerationProperty</code></a>, a provider can &quot;return&quot; an instance of <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link"><code>Collection</code></a></li>
+<li>for <a href="MappingProperty.html" title="class in dev.goldmensch.propane.property"><code>MappingProperty</code></a>, a provider can &quot;return&quot; an instance of <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link"><code>Map</code></a></li>
+</ul>
+<p>The values are &quot;provided&quot; by the <a href="#supplier()">supplier</a>, which is called during resolution.
+The supplier must be threadsafe and side effect free, as it could be called multiple times during resolution simultaneously.
+Although that, only one value is stored finally (using a &quot;check-then-act&quot; pattern).</p>
+<p>Furthermore, each <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> has a <a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane.property">priority</a> stating which providers take
+precedence over others. For more information on that, visit the documentation of <a href="SingletonProperty.html" title="class in dev.goldmensch.propane.property"><code>SingletonProperty</code></a>, <a href="EnumerationProperty.html" title="class in dev.goldmensch.propane.property"><code>EnumerationProperty</code></a>
+and <a href="MappingProperty.html" title="class in dev.goldmensch.propane.property"><code>MappingProperty</code></a>.</p>
+<p>For debugging purpose, <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s store their &quot;owner&quot;, which is the class or &quot;logical unit&quot;
+(for example the library providing an extension for some property), that can be used to identify an <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>
+during runtime.</p>
+<h3 id="dependencies-on-other-properties-heading">Dependencies on other properties</h3>
+<p>The <a href="#supplier()">supplier</a> allows access to the <a href="../Introspection.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> instance used to resolve this
+property. This can be used to retrieve the values of other properties needed by this <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>, thus creating
+a dependency on that other property.</p>
+<p>Propane checks for cycling dependencies during runtime and will provide all needed information to identify the cycle.</p>
+</div>
 </div>
 </section>
 <section class="summary">
@@ -103,7 +134,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="PropertyProvider.Priority.html" class="type-name-link" title="class in dev.goldmensch.propane.property">PropertyProvider.Priority</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">A <a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider.Priority</code></a> specifies with <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s take precedence over others.</div>
+</div>
 </div>
 </section>
 </li>
@@ -151,7 +184,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a><wbr>&lt;<a href="#type-param-INTROSPECTION" title="type parameter in PropertyProvider">INTROSPECTION</a>, @Nullable <a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#supplier()" class="member-name-link">supplier</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This supplier returns the value(s) of this <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -180,6 +215,15 @@ loadScripts(document, 'script');</script>
  <a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane.property">PropertyProvider.Priority</a>&nbsp;priority,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;owner,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="#type-param-INTROSPECTION" title="type parameter in PropertyProvider">INTROSPECTION</a>, @Nullable <a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;&nbsp;supplier)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>property</code> - the <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a> this <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> is providing values for</dd>
+<dd><code>priority</code> - te <a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider.Priority</code></a> of this provider</dd>
+<dd><code>owner</code> - the owner <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link"><code>Class</code></a> of this provider</dd>
+<dd><code>supplier</code> - the <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> returning the value of this provider.
+It takes the <a href="../Introspection.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> instance used to resolve this property as argument, allowing dependencies on
+other properties.</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -196,6 +240,10 @@ loadScripts(document, 'script');</script>
 <h3>property</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="#type-param-PROPERTY" title="type parameter in PropertyProvider">PROPERTY</a></span>&nbsp;<span class="element-name">property</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a> this <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> if providing values for</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -204,6 +252,10 @@ loadScripts(document, 'script');</script>
 <h3>priority</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane.property">PropertyProvider.Priority</a></span>&nbsp;<span class="element-name">priority</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the <a href="PropertyProvider.Priority.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider.Priority</code></a> of this property provider</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -212,6 +264,10 @@ loadScripts(document, 'script');</script>
 <h3>owner</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;</span>&nbsp;<span class="element-name">owner</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the owner <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link"><code>Class</code></a> of this property provider</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -220,6 +276,16 @@ loadScripts(document, 'script');</script>
 <h3>supplier</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="#type-param-INTROSPECTION" title="type parameter in PropertyProvider">INTROSPECTION</a>, @Nullable <a href="#type-param-T" title="type parameter in PropertyProvider">T</a>&gt;</span>&nbsp;<span class="element-name">supplier</span>()</div>
+<div class="block"><p>This supplier returns the value(s) of this <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>.
+It takes the <a href="../Introspection.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> instance used to resolve this property as an argument, allowing
+for dependencies on other properties.</p>
+<p>The supplier may be called multiple times during property resolution, for more information
+visit the class Javadoc.</p>
+</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> returning the value of this provider</dd>
+</dl>
 </div>
 </section>
 </li>
