@@ -72,6 +72,22 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">SpecificProperty&lt;T&gt;</span></div>
+<div class="block"><p>Propane generates a custom API for each library using it. Part of this custom API layer
+is an own &quot;property type&quot; called the libraries specific property type.</p>
+<p>This interface is the foundation of this specific property type, which is nothing more than a
+wrapper around this, like:</p>
+<pre><code class="language-java">public interface JDACProperty&lt;T&gt; extends SpecificProperty&lt;T&gt; {
+    ...
+}
+</code></pre>
+<p>If you're working with propane or a library using propane, you will mostly see and use the libraries specific property type (like <code>JDACProperty</code>).</p>
+<h3 id="getting-the-real-property-heading">Getting the &quot;real&quot; property</h3>
+<p>This interface doesn't extend <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>, thus enabling <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a> to be sealed and allows the java compiler to check
+pattern exhaustiveness, which makes working with it easy.</p>
+<p>A libraries specific property type must only be implemented by its specific <a href="MappingProperty.html" title="class in dev.goldmensch.propane.property"><code>MappingProperty</code></a>, <a href="SingletonProperty.html" title="class in dev.goldmensch.propane.property"><code>SingletonProperty</code></a> and
+<a href="EnumerationProperty.html" title="class in dev.goldmensch.propane.property"><code>EnumerationProperty</code></a>, which themselves implement <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>. Therefore, a libraries specific property type can always be safely
+cast to <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>.</p>
+</div>
 </div>
 </section>
 <section class="summary">
@@ -89,7 +105,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="Property.html" title="interface in dev.goldmensch.propane.property">Property</a><wbr>&lt;<a href="#type-param-T" title="type parameter in SpecificProperty">T</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#generalized()" class="member-name-link">generalized</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Casts this specific property type to <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="#type-param-T" title="type parameter in SpecificProperty">T</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#scopedGet()" class="member-name-link">scopedGet</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
@@ -112,6 +130,12 @@ loadScripts(document, 'script');</script>
 <h3>generalized</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="Property.html" title="interface in dev.goldmensch.propane.property">Property</a>&lt;<a href="#type-param-T" title="type parameter in SpecificProperty">T</a>&gt;</span>&nbsp;<span class="element-name">generalized</span>()</div>
+<div class="block">Casts this specific property type to <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>.
+This cast method is safe as guaranteed by the spec.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>this as a <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a></dd>
+</dl>
 </div>
 </section>
 </li>
