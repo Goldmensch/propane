@@ -53,7 +53,11 @@ loadScripts(document, 'script');</script>
 <div class="toc-header">Contents</div>
 <ol class="toc-list" tabindex="-1">
 <li><a href="#" tabindex="0">Description</a></li>
-<li><a href="#related-package-summary" tabindex="0">Related Packages</a></li>
+<li><a href="#related-package-summary" tabindex="0">Related Packages</a>
+<ol class="toc-list">
+<li><a href="#concept-of-scopes-heading" tabindex="0">Concept of Scopes</a></li>
+</ol>
+</li>
 <li><a href="#class-summary" tabindex="0">Classes and Interfaces</a></li>
 </ol>
 <button class="hide-sidebar"><span>Hide sidebar&nbsp;</span><img src="../../../../resource-files/left.svg" alt="Hide sidebar"></button><button class="show-sidebar"><img src="../../../../resource-files/right.svg" alt="Show sidebar"><span>&nbsp;Show sidebar</span></button></nav>
@@ -86,7 +90,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab1" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab1', 2)" class="table-tab">Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab1" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab1', 2)" class="table-tab">Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab6" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab6', 2)" class="table-tab">Annotation Interfaces</button></div>
 <div id="class-summary.tabpanel" role="tabpanel" aria-labelledby="class-summary-tab0">
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
@@ -98,9 +102,19 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a>&lt;I_SELF extends <a href="IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a>&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;, I extends <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;I,<wbr>S&gt;, B extends <a href="IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a>&lt;I_SELF,<wbr>I,<wbr>B,<wbr>S&gt;.<a href="IntrospectionImpl.Builder.html" title="class in dev.goldmensch.propane">Builder</a>, S extends <a href="Scope.html" title="interface in dev.goldmensch.propane">Scope</a>&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="Registry.html" title="class in dev.goldmensch.propane">Registry</a>&lt;S extends <a href="Scope.html" title="interface in dev.goldmensch.propane">Scope</a>&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">The <a href="Registry.html" title="class in dev.goldmensch.propane"><code>Registry</code></a> is used to store metadata gathered during compile-time.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="Scope.html" title="interface in dev.goldmensch.propane">Scope</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="block"><h2 id="concept-of-scopes-heading">Concept of Scopes</h2>
+<p>Commonly a library is structured in certain scopes.</p>
+</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab6"><a href="Skeleton.html" title="annotation interface in dev.goldmensch.propane">Skeleton</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab6">
+<div class="block">Classes annotated with this annotation are called &quot;skeleton classes&quot;.</div>
+</div>
 </div>
 </div>
 </div>

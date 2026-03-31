@@ -57,9 +57,13 @@ loadScripts(document, 'script');</script>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html#accept(E,I)" class="member-name-link">accept(E, I)</a> - Method in interface dev.goldmensch.propane.event.<a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html" title="interface in dev.goldmensch.propane.event">Listener</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html#accessible()" class="member-name-link">accessible()</a> - Static method in interface dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">TODO: docs (scoped access)</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html#accessScoped()" class="member-name-link">accessScoped()</a> - Static method in interface dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">TODO: docs (scoped access)</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/internal/EventBus.html#add(dev.goldmensch.propane.event.Listener)" class="member-name-link">add(Listener)</a> - Method in class dev.goldmensch.propane.event.internal.<a href="dev.goldmensch.propane/dev/goldmensch/propane/event/internal/EventBus.html" title="class in dev.goldmensch.propane.event.internal">EventBus</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.Builder.html#add(dev.goldmensch.propane.property.PropertyProvider)" class="member-name-link">add(PropertyProvider)</a> - Method in class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.Builder.html" title="class in dev.goldmensch.propane">IntrospectionImpl.Builder</a></dt>
@@ -264,7 +268,10 @@ values.</div>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/Resolver.html#get(dev.goldmensch.propane.property.Property)" class="member-name-link">get(Property)</a> - Method in class dev.goldmensch.propane.internal.<a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html#get(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">get(SpecificProperty)</a> - Method in interface dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Returns the value for the requested property by either retrieving it from the cache
+or computing it according to the <a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html" title="interface in dev.goldmensch.propane">class' documentation</a>.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html#get(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">get(SpecificProperty)</a> - Method in class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.html#getScoped()" class="member-name-link">getScoped()</a> - Method in interface dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/Property.html" title="interface in dev.goldmensch.propane.property">Property</a></dt>
@@ -442,7 +449,7 @@ will be ignored during resolution, if <a href="dev.goldmensch.propane/dev/goldme
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Scope.html#priority()" class="member-name-link">priority()</a> - Method in interface dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Scope.html" title="interface in dev.goldmensch.propane">Scope</a></dt>
 <dd>
-<div class="block">sorted lower to higher - best to be enum, could be backed by <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link"><code>Enum.ordinal()</code></a></div>
+<div class="block">The priority of scope determines its order relative to other scopes.</div>
 </dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/SpecProcessor.html#process(java.util.Set,javax.annotation.processing.RoundEnvironment)" class="member-name-link">process(Set, RoundEnvironment)</a> - Method in class dev.goldmensch.propane.spec.processor.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/SpecProcessor.html" title="class in dev.goldmensch.propane.spec.processor">SpecProcessor</a></dt>
 <dd>&nbsp;</dd>
@@ -521,7 +528,9 @@ by the library itself.</div>
 <h2 class="title" id="I:R">R</h2>
 <dl class="index">
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Registry.html" class="type-name-link" title="class in dev.goldmensch.propane">Registry&lt;S&gt;</a> - Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/package-summary.html">dev.goldmensch.propane</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">The <a href="dev.goldmensch.propane/dev/goldmensch/propane/Registry.html" title="class in dev.goldmensch.propane"><code>Registry</code></a> is used to store metadata gathered during compile-time.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Registry.html#%3Cinit%3E(java.util.Map)" class="member-name-link">Registry(Map)</a> - Constructor for class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Registry.html" title="class in dev.goldmensch.propane">Registry</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/Resolver.html" class="type-name-link" title="class in dev.goldmensch.propane.internal">Resolver&lt;INTROSPECTION&gt;</a> - Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/package-summary.html">dev.goldmensch.propane.internal</a></dt>
@@ -534,7 +543,9 @@ by the library itself.</div>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Event.html#scope()" class="member-name-link">scope()</a> - Method in interface dev.goldmensch.propane.event.<a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Event.html" title="interface in dev.goldmensch.propane.event">Event</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html#scope()" class="member-name-link">scope()</a> - Method in interface dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Returns the <a href="dev.goldmensch.propane/dev/goldmensch/propane/Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> this introspection instance is bound to.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html#scope()" class="member-name-link">scope()</a> - Method in class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/EnumerationProperty.html#scope()" class="member-name-link">scope()</a> - Method in class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/EnumerationProperty.html" title="class in dev.goldmensch.propane.property">EnumerationProperty</a></dt>
@@ -572,7 +583,11 @@ by the library itself.</div>
 <div class="block">Returns the value of the <code>scope</code> record component.</div>
 </dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Scope.html" class="type-name-link" title="interface in dev.goldmensch.propane">Scope</a> - Interface in <a href="dev.goldmensch.propane/dev/goldmensch/propane/package-summary.html">dev.goldmensch.propane</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block"><h2 id="concept-of-scopes-heading">Concept of Scopes</h2>
+<p>Commonly a library is structured in certain scopes.</p>
+</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/generator/PropertyGenerator.PropertyMeta.html#scopeClass()" class="member-name-link">scopeClass()</a> - Method in record class dev.goldmensch.propane.spec.generator.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/generator/PropertyGenerator.PropertyMeta.html" title="class in dev.goldmensch.propane.spec.generator">PropertyGenerator.PropertyMeta</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>scopeClass</code> record component.</div>
@@ -582,7 +597,9 @@ by the library itself.</div>
 <div class="block">Shortcut for <code>generalized().getScope()</code></div>
 </dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html#scopedGet(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">scopedGet(SpecificProperty)</a> - Static method in interface dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">TODO: docs (scoped access)</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Registry.html#scopeForEvent(java.lang.Class)" class="member-name-link">scopeForEvent(Class)</a> - Method in class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Registry.html" title="class in dev.goldmensch.propane">Registry</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMeta.html#scopes()" class="member-name-link">scopes()</a> - Method in record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecMeta.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecMeta</a></dt>
@@ -603,6 +620,10 @@ by the library itself.</div>
 </dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/SingletonProperty.html#%3Cinit%3E(java.lang.String,dev.goldmensch.propane.property.Property.Source,dev.goldmensch.propane.Scope,java.lang.Class)" class="member-name-link">SingletonProperty(String, Property.Source, Scope, Class)</a> - Constructor for class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/SingletonProperty.html" title="class in dev.goldmensch.propane.property">SingletonProperty</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Skeleton.html" class="type-name-link" title="annotation interface in dev.goldmensch.propane">Skeleton</a> - Annotation Interface in <a href="dev.goldmensch.propane/dev/goldmensch/propane/package-summary.html">dev.goldmensch.propane</a></dt>
+<dd>
+<div class="block">Classes annotated with this annotation are called &quot;skeleton classes&quot;.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/SkeletonMethod.html" class="type-name-link" title="annotation interface in dev.goldmensch.propane.spec">SkeletonMethod</a> - Annotation Interface in <a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/package-summary.html">dev.goldmensch.propane.spec</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/SkeletonMethodException.html" class="type-name-link" title="class in dev.goldmensch.propane.spec">SkeletonMethodException</a> - Exception Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/package-summary.html">dev.goldmensch.propane.spec</a></dt>
@@ -692,7 +713,9 @@ by the library itself.</div>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html#subscribe(dev.goldmensch.propane.event.Listener)" class="member-name-link">subscribe(Listener)</a> - Method in class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html#subscribe(dev.goldmensch.propane.event.Listener)" class="member-name-link">subscribe(Listener)</a> - Method in interface dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Subscribes to an <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Event.html" title="interface in dev.goldmensch.propane.event">event</a> with the given <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html" title="interface in dev.goldmensch.propane.event"><code>Listener</code></a>.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html#supplier()" class="member-name-link">supplier()</a> - Method in class dev.goldmensch.propane.property.<a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property">PropertyProvider</a></dt>
 <dd>
 <div class="block">This supplier returns the value(s) of this <a href="dev.goldmensch.propane/dev/goldmensch/propane/property/PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>.</div>

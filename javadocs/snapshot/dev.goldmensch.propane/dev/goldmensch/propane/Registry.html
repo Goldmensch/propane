@@ -81,6 +81,11 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Registry&lt;S extends <a href="Scope.html" title="interface in dev.goldmensch.propane">Scope</a>&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block"><p>The <a href="Registry.html" title="class in dev.goldmensch.propane"><code>Registry</code></a> is used to store metadata gathered during compile-time.</p>
+<p>For example, it maps event <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link"><code>Class</code></a>es to their <a href="Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a>s.</p>
+<p>The instance of <a href="Registry.html" title="class in dev.goldmensch.propane"><code>Registry</code></a> must always be accessible by a <code>static final</code> singleton
+and its data must be constant during runtime.</p>
+</div>
 </div>
 </section>
 <section class="summary">

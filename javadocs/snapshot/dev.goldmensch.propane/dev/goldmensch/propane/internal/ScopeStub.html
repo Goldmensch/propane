@@ -119,7 +119,7 @@ implements <a href="../Scope.html" title="interface in dev.goldmensch.propane">S
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#priority()" class="member-name-link">priority</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">sorted lower to higher - best to be enum, could be backed by <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link"><code>Enum.ordinal()</code></a></div>
+<div class="block">The priority of scope determines its order relative to other scopes.</div>
 </div>
 </div>
 </div>
@@ -160,10 +160,14 @@ implements <a href="../Scope.html" title="interface in dev.goldmensch.propane">S
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">priority</span>()</div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../Scope.html#priority()">Scope</a></code></span></div>
-<div class="block">sorted lower to higher - best to be enum, could be backed by <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link"><code>Enum.ordinal()</code></a></div>
+<div class="block">The priority of scope determines its order relative to other scopes.
+Scopes with a higher priority are children, thus inherits all properties
+of scopes with a lower priority.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../Scope.html#priority()">priority</a></code>&nbsp;in interface&nbsp;<code><a href="../Scope.html" title="interface in dev.goldmensch.propane">Scope</a></code></dd>
+<dt>Returns:</dt>
+<dd>the scopes' priority</dd>
 </dl>
 </div>
 </section>

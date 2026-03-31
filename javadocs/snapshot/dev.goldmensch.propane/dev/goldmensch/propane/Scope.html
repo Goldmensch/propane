@@ -53,7 +53,16 @@ loadScripts(document, 'script');</script>
 <nav role="navigation" class="toc" aria-label="Table of contents">
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
-<li><a href="#" tabindex="0">Description</a></li>
+<li><a href="#" tabindex="0">Description</a>
+<ol class="toc-list">
+<li><a href="#concept-of-scopes-heading" tabindex="0">Concept of Scopes</a>
+<ol class="toc-list">
+<li><a href="#ordering-heading" tabindex="0">Ordering</a></li>
+<li><a href="#scopes-as-enums-heading" tabindex="0">Scopes as Enums</a></li>
+</ol>
+</li>
+</ol>
+</li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
@@ -75,6 +84,37 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Scope</span></div>
+<div class="block"><h2 id="concept-of-scopes-heading">Concept of Scopes</h2>
+<p>Commonly a library is structured in certain scopes.
+Each <a href="Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> represents a stage in the libraries lifetime (runtime).
+Scopes life in a hierarchy, where a scope inherits all properties of its parents.</p>
+<p>For example, a library can consist of 3 stages/scopes:</p>
+<ol>
+<li>CONFIGURATION → the library is fully configured</li>
+<li>INITIALIZED   → the library is fully initialized/the framework is started</li>
+<li>REQUEST       → the library got a user request and is computing it</li>
+</ol>
+<p>If you are in scope INITIALIZED, you can access all properties of CONFIGURATION too.</p>
+<p>If you are in scope REQUEST, you can access all properties of CONFIGURATION and INITIALIZED too.</p>
+<h3 id="ordering-heading">Ordering</h3>
+<p>Scopes are ordered by their <a href="#priority()">priority</a>. A higher priority means, that the scope
+is a child, thus inherits all properties, of scopes with a lower priority.</p>
+<h3 id="scopes-as-enums-heading">Scopes as Enums</h3>
+<p>In most cases, the scopes of a library are predefined and can be conveniently be modeled as a
+<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link"><code>Enum</code></a> where the enums' <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link">ordinal</a> is the scopes' <a href="#priority()">priority</a>.
+That means, that the order of this enum will be very important and must be trodden carefully.</p>
+<pre><code class="language-java">enum FooScope implements Scope {
+    CONFIGURATION,
+    INITIALIZED,
+    REQUEST;
+
+    @Override
+    public int priority() {
+        this.ordinal();
+    }
+}
+</code></pre>
+</div>
 </div>
 </section>
 <section class="summary">
@@ -93,7 +133,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#priority()" class="member-name-link">priority</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">sorted lower to higher - best to be enum, could be backed by <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link"><code>Enum.ordinal()</code></a></div>
+<div class="block">The priority of scope determines its order relative to other scopes.</div>
 </div>
 </div>
 </div>
@@ -114,7 +154,13 @@ loadScripts(document, 'script');</script>
 <h3>priority</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">priority</span>()</div>
-<div class="block">sorted lower to higher - best to be enum, could be backed by <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link"><code>Enum.ordinal()</code></a></div>
+<div class="block">The priority of scope determines its order relative to other scopes.
+Scopes with a higher priority are children, thus inherits all properties
+of scopes with a lower priority.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the scopes' priority</dd>
+</dl>
 </div>
 </section>
 </li>

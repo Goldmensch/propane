@@ -156,16 +156,23 @@ implements <a href="Introspection.html" title="interface in dev.goldmensch.propa
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;T</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">get</a><wbr>(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;specific)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the value for the requested property by either retrieving it from the cache
+or computing it according to the <a href="Introspection.html" title="interface in dev.goldmensch.propane">class' documentation</a>.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publish(dev.goldmensch.propane.event.Event)" class="member-name-link">publish</a><wbr>(<a href="event/Event.html" title="interface in dev.goldmensch.propane.event">Event</a>&lt;<a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scope()" class="member-name-link">scope</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the <a href="Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> this introspection instance is bound to.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#subscribe(dev.goldmensch.propane.event.Listener)" class="member-name-link">subscribe</a><wbr>(<a href="event/Listener.html" title="interface in dev.goldmensch.propane.event">Listener</a>&lt;? extends <a href="event/Event.html" title="interface in dev.goldmensch.propane.event">Event</a>&lt;<a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;, <a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>, <a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>&gt;&nbsp;listener)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Subscribes to an <a href="event/Event.html" title="interface in dev.goldmensch.propane.event">event</a> with the given <a href="event/Listener.html" title="interface in dev.goldmensch.propane.event"><code>Listener</code></a>.</div>
+</div>
 </div>
 </div>
 </div>
@@ -231,9 +238,22 @@ implements <a href="Introspection.html" title="interface in dev.goldmensch.propa
 <h3>get</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">get</span><wbr><span class="parameters">(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;specific)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="Introspection.html#get(dev.goldmensch.propane.property.SpecificProperty)">Introspection</a></code></span></div>
+<div class="block">Returns the value for the requested property by either retrieving it from the cache
+or computing it according to the <a href="Introspection.html" title="interface in dev.goldmensch.propane">class' documentation</a>.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Introspection.html#get(dev.goldmensch.propane.property.SpecificProperty)">get</a></code>&nbsp;in interface&nbsp;<code><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a> extends <a href="IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a>,<wbr><a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>,<wbr><a href="#type-param-B" title="type parameter in IntrospectionImpl">B</a>,<wbr><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;, <a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a> extends <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;<a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>,<wbr><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>specific</code> - the requested property</dd>
+<dt>Returns:</dt>
+<dd>the value of the requested property</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list-long">
+<li><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspections' class documentation</a></li>
+</ul>
+</dd>
 </dl>
 </div>
 </section>
@@ -243,9 +263,13 @@ implements <a href="Introspection.html" title="interface in dev.goldmensch.propa
 <h3>scope</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a></span>&nbsp;<span class="element-name">scope</span>()</div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="Introspection.html#scope()">Introspection</a></code></span></div>
+<div class="block">Returns the <a href="Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> this introspection instance is bound to.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Introspection.html#scope()">scope</a></code>&nbsp;in interface&nbsp;<code><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a> extends <a href="IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a>,<wbr><a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>,<wbr><a href="#type-param-B" title="type parameter in IntrospectionImpl">B</a>,<wbr><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;, <a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a> extends <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;<a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>,<wbr><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;&gt;</code></dd>
+<dt>Returns:</dt>
+<dd>the <a href="Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> of this introspection instance</dd>
 </dl>
 </div>
 </section>
@@ -263,9 +287,21 @@ implements <a href="Introspection.html" title="interface in dev.goldmensch.propa
 <h3>subscribe</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">subscribe</span><wbr><span class="parameters">(<a href="event/Listener.html" title="interface in dev.goldmensch.propane.event">Listener</a>&lt;? extends <a href="event/Event.html" title="interface in dev.goldmensch.propane.event">Event</a>&lt;<a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;, <a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>, <a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>&gt;&nbsp;listener)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="Introspection.html#subscribe(dev.goldmensch.propane.event.Listener)">Introspection</a></code></span></div>
+<div class="block">Subscribes to an <a href="event/Event.html" title="interface in dev.goldmensch.propane.event">event</a> with the given <a href="event/Listener.html" title="interface in dev.goldmensch.propane.event"><code>Listener</code></a>.
+The provided listener will be stored in this instance, thus be available for the lifetime
+of this introspection instance.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Introspection.html#subscribe(dev.goldmensch.propane.event.Listener)">subscribe</a></code>&nbsp;in interface&nbsp;<code><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a> extends <a href="IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a>&lt;<a href="#type-param-I_SELF" title="type parameter in IntrospectionImpl">I_SELF</a>,<wbr><a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>,<wbr><a href="#type-param-B" title="type parameter in IntrospectionImpl">B</a>,<wbr><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;, <a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a> extends <a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a>&lt;<a href="#type-param-I" title="type parameter in IntrospectionImpl">I</a>,<wbr><a href="#type-param-S" title="type parameter in IntrospectionImpl">S</a>&gt;&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>listener</code> - the <a href="event/Listener.html" title="interface in dev.goldmensch.propane.event"><code>Listener</code></a> to be registered</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list-long">
+<li><a href="Introspection.html" title="interface in dev.goldmensch.propane">Introspections' class documentation</a></li>
+</ul>
+</dd>
 </dl>
 </div>
 </section>

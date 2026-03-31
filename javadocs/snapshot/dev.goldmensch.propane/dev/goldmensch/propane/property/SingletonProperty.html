@@ -99,8 +99,25 @@ loadScripts(document, 'script');</script>
 implements <a href="Property.SingleValue.html" title="interface in dev.goldmensch.propane.property">Property.SingleValue</a>&lt;T&gt;</span></div>
 <div class="block"><p>A <a href="SingletonProperty.html" title="class in dev.goldmensch.propane.property"><code>SingletonProperty</code></a> can only hold one instance. It is the most common type of property and
 is used for services and most configuration options, like simple booleans or strings.</p>
-<p>If multiple <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s for this property are found, the one with the highest <a href="PropertyProvider.html#priority()"><code>PropertyProvider.priority()</code></a>
+<p>If multiple <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s for this property are found at the same introspection instance, the one with the highest <a href="PropertyProvider.html#priority()"><code>PropertyProvider.priority()</code></a>
 is used. If multiple providers with the same priority share the highest rank, the latest registered one is used.</p>
+<p>If you have multiple <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s registered at different introspection instances, that are related to each other
+(the one is child of the other), the above applies for each introspection instance itself. The final value is the value
+of the nearst parent.</p>
+<p>For example, take a look here (simplified API):</p>
+<pre><code class="language-java">Introspection A = IntrospectionImpl.create(Scopes.ROOT)
+    .addBuilder(Property.SINGLETON, _ -&gt; &quot;Value A Builder&quot;) // builder has higher priority than fallback
+    .addFallback(Property.SINGLETON, _ -&gt; &quot;Value A Fallback&quot;)
+    .build();
+
+A.get(Property.SINGLETON) // returns &quot;Value A Builder&quot;
+
+Introspection B = A.createChild(Scopes.ROOT)
+    .addFallback(Property.SINGLETON, _ -&gt; &quot;Value B&quot;)
+    .build();
+
+B.get(Property.SINGLETON) // returns &quot;Value B&quot;
+</code></pre>
 </div>
 </div>
 </section>
