@@ -104,9 +104,27 @@ implements <a href="Property.MultiValue.html" title="interface in dev.goldmensch
 <p>For example, think of validators that should validate request parameters based on their type.
 These validators can be registered via a <code>MappingProperty&lt;Class, Validator&gt;</code>, basically representing
 an <code>Map&lt;Class, Validator&gt;</code>.</p>
-<p>If multiple <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s are found for this property, all values are combined and the ones with a higher <a href="PropertyProvider.html#priority()">priority</a>
-override the values of the ones with a lower priority. (think of <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html#put(K,V)" title="class or interface in java.util" class="external-link"><code>Map.put(Object, Object)</code></a>).
-For information on how fallback values are trod, visit the documentation of <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a></p>
+<p>If multiple <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s are registered for this property at the same introspection instance, all values are combined and the ones
+from a provider with a higher <a href="PropertyProvider.html#priority()">priority</a>
+override the values of the ones from provider with a lower priority. (think of <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html#put(K,V)" title="class or interface in java.util" class="external-link"><code>Map.put(Object, Object)</code></a>).
+For information on how fallback values are trod, visit the documentation of <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a>.</p>
+<p>If you have multiple <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s registered at different introspection instances, that are related to each other
+(the one is child of the other), the above applies for each introspection instance itself. The final value is then computed
+by combining all values under the rule that values from a child override the parents' ones.</p>
+<p>For example, take a look here (simplified API):</p>
+<pre><code class="language-java">Introspection A = IntrospectionImpl.create(Scopes.ROOT)
+    .addBuilder(Property.MAPPING, _ -&gt; Map.of(&quot;foo&quot;, &quot;Value A Builder&quot;)) // builder has higher priority than fallback
+    .addFallback(Property.MAPPING, _ -&gt; Map.of(&quot;foo&quot;, &quot;Value A Fallback&quot;))
+    .build();
+
+A.get(Property.MAPPING).get(&quot;foo&quot;) // returns &quot;Value A Builder&quot;
+
+Introspection B = A.createChild(Scopes.ROOT)
+    .addFallback(Property.MAPPING, _ -&gt; Map.of(&quot;foo&quot;, &quot;Value B&quot;))
+    .build();
+
+B.get(Property.MAPPING).get(&quot;foo&quot;) // returns &quot;Value B&quot;
+</code></pre>
 </div>
 </div>
 </section>
@@ -226,7 +244,7 @@ For information on how fallback values are trod, visit the documentation of <a h
 <dd><code>source</code> - the <a href="Property.html#source()">source</a> of this property</dd>
 <dd><code>scope</code> - the <a href="Property.html#scope()">scope</a> of this property</dd>
 <dd><code>keyType</code> - the <a href="#keyType()">key's java type</a> of this property</dd>
-<dd><code>valueType</code> - the <a href="#valueType()">value's jvava type</a> of this property</dd>
+<dd><code>valueType</code> - the <a href="#valueType()">value's java type</a> of this property</dd>
 <dd><code>fallbackStrategy</code> - the <a href="Property.MultiValue.html#fallbackBehaviour()">fallback strategy</a> of this property</dd>
 </dl>
 </div>
