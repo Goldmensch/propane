@@ -1,6 +1,7 @@
 package dev.goldmensch.propane.property;
 
 import dev.goldmensch.propane.Scope;
+import dev.goldmensch.propane.Skeleton;
 
 import java.util.Collection;
 import java.util.Objects;

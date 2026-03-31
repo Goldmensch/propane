@@ -16,6 +16,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.function.Function;
 
 // I've got insane with that. But it had to be typesafe. It just had to be.
+@Skeleton
 public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B, S>, I extends Introspection<I, S>, B extends IntrospectionImpl<I_SELF, I, B, S>.Builder, S extends Scope>
 implements Introspection<I, S> {
     final Registry<S> registry;
