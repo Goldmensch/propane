@@ -34,6 +34,10 @@ public interface SpecificProperty<T> {
         return (Property<T>) this;
     }
 
+    /// Shortcut for `generalized().getScope()`
+    ///
+    /// @see Property#getScoped()
+    /// @return the value for this property based on the current scope
     default T scopedGet() {
         return generalized().getScoped();
     }

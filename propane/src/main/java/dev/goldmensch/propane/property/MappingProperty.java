@@ -11,9 +11,30 @@ import java.util.Objects;
 /// These validators can be registered via a `MappingProperty<Class, Validator>`, basically representing
 /// an `Map<Class, Validator>`.
 ///
-/// If multiple [PropertyProvider]s are found for this property, all values are combined and the ones with a higher [priority][PropertyProvider#priority()]
-/// override the values of the ones with a lower priority. (think of [Map#put(Object, Object)]).
-/// For information on how fallback values are trod, visit the documentation of [Property.FallbackStrategy]
+/// If multiple [PropertyProvider]s are registered for this property at the same introspection instance, all values are combined and the ones
+/// from a provider with a higher [priority][PropertyProvider#priority()]
+/// override the values of the ones from provider with a lower priority. (think of [Map#put(Object, Object)]).
+/// For information on how fallback values are trod, visit the documentation of [Property.FallbackStrategy].
+///
+/// If you have multiple [PropertyProvider]s registered at different introspection instances, that are related to each other
+/// (the one is child of the other), the above applies for each introspection instance itself. The final value is then computed
+/// by combining all values under the rule that values from a child override the parents' ones.
+///
+/// For example, take a look here (simplified API):
+/// ```java
+/// Introspection A = IntrospectionImpl.create(Scopes.ROOT)
+///     .addBuilder(Property.MAPPING, _ -> Map.of("foo", "Value A Builder")) // builder has higher priority than fallback
+///     .addFallback(Property.MAPPING, _ -> Map.of("foo", "Value A Fallback"))
+///     .build();
+///
+/// A.get(Property.MAPPING).get("foo") // returns "Value A Builder"
+///
+/// Introspection B = A.createChild(Scopes.ROOT)
+///     .addFallback(Property.MAPPING, _ -> Map.of("foo", "Value B"))
+///     .build();
+///
+/// B.get(Property.MAPPING).get("foo") // returns "Value B"
+/// ```
 ///
 /// @param <K> the java type of the key
 /// @param <V> the java type of the value
@@ -30,7 +51,7 @@ public non-sealed abstract class MappingProperty<K, V> implements Property.Multi
     /// @param source the [source][Property#source()] of this property
     /// @param scope the [scope][Property#scope()] of this property
     /// @param keyType the [key's java type][MappingProperty#keyType()] of this property
-    /// @param valueType the [value's jvava type][MappingProperty#valueType()] of this property
+    /// @param valueType the [value's java type][MappingProperty#valueType()] of this property
     /// @param fallbackStrategy the [fallback strategy][Property.MultiValue#fallbackBehaviour()] of this property
     public MappingProperty(String name, Source source, Scope scope, Class<K> keyType,
                            Class<V> valueType,

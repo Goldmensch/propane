@@ -30,11 +30,11 @@ public class ChildIntrospectionTest {
         static TestProperty<TestStub> TWO = new TestSingletonProperty<>("TWO", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class);
 
         static TestProperty<Collection<TestStub>> COLLECTION = new TestEnumerationProperty<>("COLLECTION", Property.Source.PROVIDED, Scopes.ROOT, TestStub.class, Property.FallbackStrategy.COMBINE);
-        static TestProperty<Map<String, TestStub>> MAP = new TestMappingProperty<>("MAP", Property.Source.PROVIDED, Scopes.ROOT, String.class, TestStub.class, Property.FallbackStrategy.COMBINE);
+        static TestProperty<Map<String, String>> MAP = new TestMappingProperty<>("MAP", Property.Source.PROVIDED, Scopes.ROOT, String.class, String.class, Property.FallbackStrategy.COMBINE);
     }
 
     @Test
-    public void parent_values_in_child() {
+    public void singleton_parent_values_in_child() {
         TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
                 .add(new TestPropertyProvider<>(Properties.TWO, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> new Properties.TestStub()))
                 .build();
@@ -42,6 +42,27 @@ public class ChildIntrospectionTest {
         TestIntrospectionImpl child = parent.createChild(Scopes.ROOT).build();
         Assert.assertSame(parent.get(Properties.TWO), child.get(Properties.TWO)); // must be same instance (cache is copied)
     }
+
+    @Test
+    public void collection_parent_values_in_child() {
+        TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
+                .add(new TestPropertyProvider<>(Properties.COLLECTION, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> List.of(new Properties.TestStub())))
+                .build();
+
+        TestIntrospectionImpl child = parent.createChild(Scopes.ROOT).build();
+        Assert.assertSame(parent.get(Properties.COLLECTION).toArray()[0], child.get(Properties.COLLECTION).toArray()[0]); // must be same instance (cache is copied)
+    }
+
+    @Test
+    public void mapping_parent_values_in_child() {
+        TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
+                .add(new TestPropertyProvider<>(Properties.MAP, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> Map.of("test", "foo")))
+                .build();
+
+        TestIntrospectionImpl child = parent.createChild(Scopes.ROOT).build();
+        Assert.assertSame(parent.get(Properties.MAP).get("test"), child.get(Properties.MAP).get("test")); // must be same instance (cache is copied)
+    }
+
 
     @Test
     public void child_values_not_in_parent() {
@@ -95,16 +116,19 @@ public class ChildIntrospectionTest {
     }
 
     @Test
-    public void map_replace_provider_in_child() {
+    public void map_replace_key_in_child() {
         TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.MAP, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> Map.of("parent", new Properties.TestStub())))
+                .add(new TestPropertyProvider<>(Properties.MAP, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> Map.of(
+                        "foo", "parent",
+                        "bar", "parent"
+                )))
                 .build();
 
         TestIntrospectionImpl child = parent.createChild(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.MAP, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> Map.of("child", new Properties.TestStub())))
+                .add(new TestPropertyProvider<>(Properties.MAP, TestPropertyProvider.Priority.FALLBACK, ChildIntrospectionTest.class, _ -> Map.of("foo", "child")))
                 .build();
 
-        Assert.assertEquals(Map.of("child", new Properties.TestStub()), child.get(Properties.MAP)); // must be same instance (cache is copied)
+        Assert.assertEquals(Map.of("foo", "child", "bar", "parent"), child.get(Properties.MAP)); // must be same instance (cache is copied)
     }
 
 }

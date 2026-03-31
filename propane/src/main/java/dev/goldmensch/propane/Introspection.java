@@ -6,6 +6,10 @@ import dev.goldmensch.propane.property.SpecificProperty;
 import dev.goldmensch.propane.spec.SkeletonMethod;
 import dev.goldmensch.propane.spec.SkeletonMethodException;
 
+/// The [Introspection] type is the central element of Propane.
+/// Its purpose is to expose the property and event system to the user.
+///
+/// Each Introspection instance is bound to a
 public interface Introspection<SELF extends Introspection<SELF, S>, S extends Scope> {
 
     @SkeletonMethod

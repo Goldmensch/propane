@@ -62,16 +62,20 @@ public class Resolver<INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
                     .or(() -> parent.get(property))
                     .flatMap(t -> putInCache(property, t));
 
-            case MappingProperty<?,?> _ -> computed
-                    .or(() -> parent.get(property))
-                    .map(t -> Map.copyOf((Map<?, ?>) t))
-                    .flatMap(t -> putInCache(property, (T) t));
+            case MappingProperty<?, ?> mapP -> {
+                Map<Object, Object> computedMap = ((Optional<Map<Object, Object>>) computed).orElseThrow(); // handleMany never returns optional empty
+
+                parent.get(mapP)
+                        .ifPresent(t -> t.forEach(computedMap::putIfAbsent));
+
+                yield putInCache(mapP, (T) Map.copyOf(computedMap));
+            }
 
             case EnumerationProperty<?> colP -> {
-                Collection<Object> computedList = ((Optional<Collection<Object>>) computed).orElseGet(ArrayList::new);
+                Collection<Object> computedList = ((Optional<Collection<Object>>) computed).orElseThrow(); // handleMany never returns optional empty
 
-                parent.get(property)
-                        .ifPresent(t -> computedList.addAll((Collection<Object>) t));
+                parent.get(colP)
+                        .ifPresent(computedList::addAll);
 
                 yield putInCache(colP, (T) List.copyOf(computedList));
             }
