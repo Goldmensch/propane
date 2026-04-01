@@ -16,13 +16,13 @@ import java.util.concurrent.atomic.AtomicReference;
 public class EventTest {
 
     static Registry<Scope> registry = new Registry<>(Map.of(
-            FooEvent.class, Scopes.ROOT
+            FooEvent.class, Scopes.SECOND
     ));
 
     private enum Scopes implements Scope {
         FIRST,
-        ROOT,
-        OTHER;
+        SECOND,
+        THIRD;
 
         @Override
         public int priority() {
@@ -36,7 +36,7 @@ public class EventTest {
     public record FooEvent(String value) implements TestEvent {
         @Override
         public Scope scope() {
-            return Scopes.ROOT;
+            return Scopes.SECOND;
         }
     }
 
@@ -59,7 +59,7 @@ public class EventTest {
     @Test
     public void register() {
         ScopedValue.where(TestIntrospectionImpl.TEST_REGISTRY, registry).run(() -> {
-            TestIntrospection introspection = TestIntrospectionImpl.create(Scopes.ROOT)
+            TestIntrospection introspection = TestIntrospectionImpl.create(Scopes.SECOND)
                     .build();
 
             introspection.subscribe(new FooListener());
@@ -79,7 +79,7 @@ public class EventTest {
     @Test
     public void register_wrong_scope() {
         ScopedValue.where(TestIntrospectionImpl.TEST_REGISTRY, registry).run(() -> {
-            TestIntrospection introspection = TestIntrospectionImpl.create(Scopes.OTHER)
+            TestIntrospection introspection = TestIntrospectionImpl.create(Scopes.THIRD)
                     .build();
 
             Assert.assertThrows(RuntimeException.class, () -> introspection.subscribe(new FooListener()));
@@ -88,9 +88,9 @@ public class EventTest {
     }
 
     @Test
-    public void publish() {
+    public void publish_lister_on_same_introspection() {
         ScopedValue.where(TestIntrospectionImpl.TEST_REGISTRY, registry).run(() -> {
-            TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
+            TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.SECOND)
                     .build();
 
 
@@ -99,6 +99,25 @@ public class EventTest {
 
             FooEvent event = new FooEvent("");
             introspection.publish(event);
+
+            Assert.assertEquals(event, executed.get());
+        });
+    }
+
+    @Test
+    public void publish_listener_on_parent_introspection() {
+        ScopedValue.where(TestIntrospectionImpl.TEST_REGISTRY, registry).run(() -> {
+            TestIntrospectionImpl parent = TestIntrospectionImpl.create(Scopes.FIRST)
+                    .build();
+
+            TestIntrospectionImpl child = parent.createChild(Scopes.SECOND)
+                    .build();
+
+            AtomicReference<FooEvent> executed = new AtomicReference<>();
+            parent.subscribe(Listener.create(FooEvent.class, (e, _) -> executed.set(e)));
+
+            FooEvent event = new FooEvent("");
+            child.publish(event);
 
             Assert.assertEquals(event, executed.get());
         });

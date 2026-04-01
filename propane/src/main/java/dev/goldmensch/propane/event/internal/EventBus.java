@@ -37,12 +37,20 @@ public class EventBus<I extends Introspection<I, S>, S extends Scope> {
     }
 
     public void publish(Event<S> event, I introspection) {
-        Collection<Listener<Event<S>, S, I>> registered = listeners.getOrDefault(event.getClass(), List.of());
-
         if (!Scopes.isSame(event.scope(), scope)) {
             throw new RuntimeException("event scope must be current scope");
         }
 
-        registered.forEach(listener -> listener.accept(event, introspection));
+        call(event, introspection);
+    }
+
+    private void call(Event<S> event, I introspection) {
+        for (Listener<Event<S>, S, I> listener : listeners.getOrDefault(event.getClass(), List.of())) {
+            listener.accept(event, introspection);
+        }
+
+        if (parent != null) {
+            parent.call(event, introspection);
+        }
     }
 }
