@@ -55,7 +55,9 @@ loadScripts(document, 'script');</script>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/util/TriFunction.html#accept(A,B,C)" class="member-name-link">accept(A, B, C)</a> - Method in interface dev.goldmensch.propane.spec.processor.util.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/util/TriFunction.html" title="interface in dev.goldmensch.propane.spec.processor.util">TriFunction</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html#accept(E,I)" class="member-name-link">accept(E, I)</a> - Method in interface dev.goldmensch.propane.event.<a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html" title="interface in dev.goldmensch.propane.event">Listener</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Will be called if a <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html#event()">matching</a> event occurs.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html#accessible()" class="member-name-link">accessible()</a> - Static method in interface dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/Introspection.html" title="interface in dev.goldmensch.propane">Introspection</a></dt>
 <dd>
 <div class="block">TODO: docs (scoped access)</div>
@@ -122,7 +124,9 @@ will be combined with the other values.</div>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html#create(dev.goldmensch.propane.Scope)" class="member-name-link">create(Scope)</a> - Static method in class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html#create(java.lang.Class,java.util.function.BiConsumer)" class="member-name-link">create(Class, BiConsumer)</a> - Static method in interface dev.goldmensch.propane.event.<a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html" title="interface in dev.goldmensch.propane.event">Listener</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Creates an <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html" title="interface in dev.goldmensch.propane.event"><code>Listener</code></a> based on the passed <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Event.html" title="interface in dev.goldmensch.propane.event"><code>Event</code></a> and <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/BiConsumer.html" title="class or interface in java.util.function" class="external-link"><code>BiConsumer</code></a> that will be called as <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html#accept(E,I)"><code>Listener.accept(Event, Introspection)</code></a>.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/Resolver.html#createChild(dev.goldmensch.propane.internal.exposed.Properties,INTROSPECTION)" class="member-name-link">createChild(Properties, INTROSPECTION)</a> - Method in class dev.goldmensch.propane.internal.<a href="dev.goldmensch.propane/dev/goldmensch/propane/internal/Resolver.html" title="class in dev.goldmensch.propane.internal">Resolver</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html#createChild(S)" class="member-name-link">createChild(S)</a> - Method in class dev.goldmensch.propane.<a href="dev.goldmensch.propane/dev/goldmensch/propane/IntrospectionImpl.html" title="class in dev.goldmensch.propane">IntrospectionImpl</a></dt>
@@ -204,13 +208,17 @@ will be combined with the other values.</div>
 <div class="block">Indicates whether some other object is "equal to" this one.</div>
 </dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html#event()" class="member-name-link">event()</a> - Method in interface dev.goldmensch.propane.event.<a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html" title="interface in dev.goldmensch.propane.event">Listener</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies the event, this Listener should be called for.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEvent.html#event()" class="member-name-link">event()</a> - Method in record class dev.goldmensch.propane.spec.processor.syntax.<a href="dev.goldmensch.propane/dev/goldmensch/propane/spec/processor/syntax/SpecEvent.html" title="class in dev.goldmensch.propane.spec.processor.syntax">SpecEvent</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>event</code> record component.</div>
 </dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Event.html" class="type-name-link" title="interface in dev.goldmensch.propane.event">Event&lt;S&gt;</a> - Interface in <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/package-summary.html">dev.goldmensch.propane.event</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">An Event in general, is an occurrence of something during a libraries runtime.</div>
+</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/internal/EventBus.html" class="type-name-link" title="class in dev.goldmensch.propane.event.internal">EventBus&lt;I,<wbr>S&gt;</a> - Class in <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/internal/package-summary.html">dev.goldmensch.propane.event.internal</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/internal/EventBus.html#%3Cinit%3E(dev.goldmensch.propane.Registry,S,dev.goldmensch.propane.event.internal.EventBus)" class="member-name-link">EventBus(Registry, S, EventBus)</a> - Constructor for class dev.goldmensch.propane.event.internal.<a href="dev.goldmensch.propane/dev/goldmensch/propane/event/internal/EventBus.html" title="class in dev.goldmensch.propane.event.internal">EventBus</a></dt>
@@ -378,7 +386,9 @@ will be ignored during resolution, if <a href="dev.goldmensch.propane/dev/goldme
 <h2 class="title" id="I:L">L</h2>
 <dl class="index">
 <dt><a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html" class="type-name-link" title="interface in dev.goldmensch.propane.event">Listener&lt;E,<wbr>S,<wbr>I&gt;</a> - Interface in <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/package-summary.html">dev.goldmensch.propane.event</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">A <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html" title="interface in dev.goldmensch.propane.event"><code>Listener</code></a> listens to the occurrence of a <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Listener.html#event()">certain</a> <a href="dev.goldmensch.propane/dev/goldmensch/propane/event/Event.html" title="interface in dev.goldmensch.propane.event"><code>Event</code></a>.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:M">M</h2>
 <dl class="index">

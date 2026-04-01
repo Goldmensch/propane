@@ -71,6 +71,23 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Event&lt;S extends <a href="../Scope.html" title="interface in dev.goldmensch.propane">Scope</a>&gt;</span></div>
+<div class="block"><p>An Event in general, is an occurrence of something during a libraries runtime.
+For example, this can be a request or a certain action taking place.</p>
+<p>In Propane each <a href="Event.html" title="interface in dev.goldmensch.propane.event"><code>Event</code></a> is bound to the <a href="../Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> in which it occurs.
+An event can only be fired from a <a href="../Introspection.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> instance with exactly the <a href="#scope()">scope</a>
+of the that event.</p>
+<p>For example, if we have an <a href="Event.html" title="interface in dev.goldmensch.propane.event"><code>Event</code></a> of scope <code>Scopes.CONFIGURATION</code>,
+we can only use <a href="../IntrospectionImpl.html#publish(dev.goldmensch.propane.event.Event)"><code>IntrospectionImpl.publish(Event)</code></a> if <a href="../IntrospectionImpl.html#scope()"><code>IntrospectionImpl.scope()</code></a> returns
+<code>Scopes.CONFIGURATION</code> too.</p>
+</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="Listener.html" title="interface in dev.goldmensch.propane.event"><code>Listener</code></a></li>
+</ul>
+</dd>
+</dl>
 </div>
 </section>
 <section class="summary">
