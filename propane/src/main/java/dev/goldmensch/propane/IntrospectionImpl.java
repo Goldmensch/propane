@@ -69,7 +69,7 @@ implements Introspection<I, S> {
     /// Creates an instance of this [IntrospectionImpl] with the given [Scope] set.
     ///
     /// @param scope the [Scope] of the to be created [IntrospectionImpl]
-    /// @return the [Builder] of the new [IntrospectionImpl]
+    /// @return the [IntrospectionImpl.Builder] of the new [IntrospectionImpl]
     @SkeletonMethod
     public static IntrospectionImpl<?, ?, ?, ?>.Builder create(Scope scope) {
         throw new SkeletonMethodException();
