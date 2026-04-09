@@ -95,7 +95,11 @@ extra class that is kept internal for differentiation.</p>
 <li><a href="EnumerationProperty.html" title="class in dev.goldmensch.propane.property"><code>EnumerationProperty</code></a> for values consisting of multiple instances (reference to <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link"><code>Collection</code></a>)</li>
 <li><a href="MappingProperty.html" title="class in dev.goldmensch.propane.property"><code>MappingProperty</code></a> for values representing a mapping between keys and values (reference to <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link"><code>Map</code></a>)</li>
 </ul>
-<p>Beside their purpose, each type hold a slightly different set of information.</p>
+<p>Beside their purpose, each type hold a slightly different set of information, but they share some common
+values:
+- a unique <a href="#name()">name</a>
+- a <a href="../Scope.html" title="interface in dev.goldmensch.propane">scope</a> to which this property is bound
+- a <a href="Property.Source.html" title="enum class in dev.goldmensch.propane.property">source</a>, from which the values of this property can be retrieved.</p>
 </div>
 </div>
 </section>
@@ -198,7 +202,8 @@ can be &quot;registered&quot;.</div>
 <h3>scope</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="return-type"><a href="../Scope.html" title="interface in dev.goldmensch.propane">Scope</a></span>&nbsp;<span class="element-name">scope</span>()</div>
-<div class="block">The <a href="../Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> that this property is bound to.</div>
+<div class="block">The <a href="../Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> that this property is bound to. A property has a value set for
+its scope and any child of it.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the properties scope</dd>
