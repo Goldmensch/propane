@@ -15,6 +15,27 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.function.Function;
 
+/// Propane differentiates its API into two 2 sides:
+///
+/// - the one accessible by the user of the library that is using propane
+/// - the one only accessible by the library using propane, so to speak the "internal" API
+///
+/// [IntrospectionImpl] is this second, internal side of [Introspection]. Here a library can
+/// register [PropertyProvider] and create child instances of other [IntrospectionImpl].
+/// Therefore, you should read the documentation of [Introspection] first.
+///
+/// The first step of creating [IntrospectionImpl] is by calling [IntrospectionImpl#create(Scope)]
+/// with the "root" scope passed. In most cases, this is the [Scope] with the lowest [priority][Scope#priority()].
+/// Looking at the example in [Scope], this would be `Scopes.CONFIGURATION`.
+///
+/// For any child scope, you create a child [Introspection] instance by calling [#createChild(Scope)] on the parent one
+/// with the new scope passed. This child instance will have all property valus of the parent scope and its own property values.
+/// For furhrter information, take a look at the documentation of [Introspection] and [Scope].
+///
+/// Beside properties, this class is also used to [publish][#publish(Event)] [Event]s. Such events, must have the _same_ [Scope]
+/// as the [introspection instance][#scope()]. The published events are then passed to the parent of this class and so on.
+///
+///
 // I've got insane with that. But it had to be typesafe. It just had to be.
 @Skeleton
 public abstract class IntrospectionImpl<I_SELF extends IntrospectionImpl<I_SELF, I, B, S>, I extends Introspection<I, S>, B extends IntrospectionImpl<I_SELF, I, B, S>.Builder, S extends Scope>
@@ -45,11 +66,16 @@ implements Introspection<I, S> {
     @SkeletonMethod
     protected abstract void addIntrospectionProvider(Properties<I> properties);
 
+    /// Creates an instance of this [IntrospectionImpl] with the given [Scope] set.
+    ///
+    /// @param scope the [Scope] of the to be created [IntrospectionImpl]
+    /// @return the [Builder] of the new [IntrospectionImpl]
     @SkeletonMethod
     public static IntrospectionImpl<?, ?, ?, ?>.Builder create(Scope scope) {
         throw new SkeletonMethodException();
     }
 
+    /// {@inheritDoc}
     // overridden with real SpecificProperty implementation
     public <T> T get(SpecificProperty<T> specific) {
         Property<T> property = specific.generalized();
@@ -61,22 +87,35 @@ implements Introspection<I, S> {
         return resolver.get(property).orElseThrow();
     }
 
+    /// {@inheritDoc}
     @Override
     public S scope() {
         return scope;
     }
 
+    /// Creates a child introspection instance with the given scope, that must be a child of scope that this introspection instance
+    /// is bound to.
+    ///
+    /// @param scope the [Scope] of the child instance
+    /// @return a builder to create the introspection instance
     // body:
     // return this.new Builder(scope);
     // overridden with real Builder implementation
     @SkeletonMethod
     public abstract B createChild(S scope);
 
+    /// {@inheritDoc}
     @Override
     public void subscribe(Listener<? extends Event<S>, S, I> listener) {
         eventBus.add(listener);
     }
 
+    /// Publishes the given event to this introspection and its parents.
+    ///
+    /// All listeners registered on this introspection instance or any parent instance, that are listening
+    /// for the type of this event will be called.
+    ///
+    /// @param event the [Event] to be published
     public void publish(Event<S> event) {
         eventBus.publish(event, self());
     }
@@ -87,6 +126,8 @@ implements Introspection<I, S> {
         return (I) this;
     }
 
+    /// The builder used to create instances of [Introspection].
+    @Skeleton
     public abstract class Builder {
         protected final Properties<I> properties;
         protected final S scope;
@@ -96,32 +137,71 @@ implements Introspection<I, S> {
             this.properties = new Properties<>(scope);
         }
 
-        // I guarantee only compatible providers
+        /// Adds the given [PropertyProvider] to this introspection instance.
+        ///
+        /// @param provider the [PropertyProvider] to add
+        /// @return this builder instance
         public B add(PropertyProvider<?, ?, I> provider) {
             properties.add(provider);
             return self();
         }
 
+        /// Adds an [PropertyProvider] with given [Property] and [supplier][PropertyProvider#supplier()].
+        ///
+        /// [PropertyProvider#priority()] will be set to [PropertyProvider.Priority#FALLBACK]
+        /// [PropertyProvider#owner()] will be the caller of this method, see [StackWalker#getCallerClass()].
+        ///
+        /// @param property the property the values are provided for
+        /// @param supplier the supplier providing the values
+        /// @return this builder instance
         @SkeletonMethod
         public <T> B addFallback(SpecificProperty<T> property, Function<I, @Nullable T> supplier) {
             throw new SkeletonMethodException();
         }
 
+        /// Adds an [PropertyProvider] with given [Property] and [supplier][PropertyProvider#supplier()].
+        ///
+        /// [PropertyProvider#priority()] will be set to [PropertyProvider.Priority#BUILDER]
+        /// [PropertyProvider#owner()] will be the caller of this method, see [StackWalker#getCallerClass()].
+        ///
+        /// @param property the property the values are provided for
+        /// @param supplier the supplier providing the values
+        /// @return this builder instance
         @SkeletonMethod
         public <T> B addBuilder(SpecificProperty<T> property, Function<I, @Nullable T> supplier) {
             throw new SkeletonMethodException();
         }
 
+        /// Adds an [PropertyProvider] with given [Property], [supplier][PropertyProvider#supplier()]
+        /// and [owner][PropertyProvider#owner()]
+        ///
+        /// [PropertyProvider#priority()] will be set to [PropertyProvider.Priority#FALLBACK]
+        ///
+        /// @param property the property the values are provided for
+        /// @param supplier the supplier providing the values
+        /// @return this builder instance
         @SkeletonMethod
         public <T> B addFallback(SpecificProperty<T> property, Class<?> owner, Function<I, @Nullable T> supplier) {
             throw new SkeletonMethodException();
         }
 
+        /// Adds an [PropertyProvider] with given [Property], [supplier][PropertyProvider#supplier()]
+        /// and [owner][PropertyProvider#owner()]
+        ///
+        /// [PropertyProvider#priority()] will be set to [PropertyProvider.Priority#BUILDER]
+        ///
+        /// @param property the property the values are provided for
+        /// @param supplier the supplier providing the values
+        /// @return this builder instance
         @SkeletonMethod
         public <T> B addBuilder(SpecificProperty<T> property, Class<?> owner, Function<I, @Nullable T> supplier) {
             throw new SkeletonMethodException();
         }
 
+        /// Creates a new [Introspection] instance with the scope of this builder and
+        /// the registered providers.
+        ///
+        /// @return the newly created [Introspection] instance
         public I_SELF build() {
             if (!Scopes.isSub(scope, IntrospectionImpl.this.scope)) {
                 throw new RuntimeException("Child scope must be equal or subscope of parent scope");
