@@ -21,7 +21,11 @@ import java.util.function.Function;
 /// - [EnumerationProperty] for values consisting of multiple instances (reference to [Collection])
 /// - [MappingProperty] for values representing a mapping between keys and values (reference to [Map])
 ///
-/// Beside their purpose, each type hold a slightly different set of information.
+/// Beside their purpose, each type hold a slightly different set of information, but they share some common
+/// values:
+///     - a unique [name][#name()]
+///     - a [scope][Scope] to which this property is bound
+///     - a [source][Source], from which the values of this property can be retrieved.
 @SuppressWarnings("unused")
 public sealed interface Property<T> {
 
@@ -32,7 +36,8 @@ public sealed interface Property<T> {
     /// @return the properties name
     String name();
 
-    /// The [Scope] that this property is bound to.
+    /// The [Scope] that this property is bound to. A property has a value set for
+    /// its scope and any child of it.
     ///
     /// @return the properties scope
     /// @see Scope how scopes restrict access to properties

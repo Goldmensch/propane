@@ -20,7 +20,7 @@ import dev.goldmensch.propane.spec.SkeletonMethodException;
 /// that are combines with its own. For more information, visit the section [below](#properties)
 ///
 /// ## Properties
-/// An instance of [Introspection] can hold [PropertyProvider]s for all properties
+/// An instance of [Introspection] can hold [PropertyProvider]s for all [properties][Property]
 /// accessible by its [Scope]. An introspection instance
 /// will first compute its own value using the providers registered at it and possibly combine it with the
 /// values from the introspection instances' parent(s). For more information on how this is done, visit the documentation of
@@ -52,7 +52,6 @@ import dev.goldmensch.propane.spec.SkeletonMethodException;
 /// publish BarEvent in B -> "Bar fired" printed
 ///
 /// ```
-///
 @Skeleton
 public interface Introspection<SELF extends Introspection<SELF, S>, S extends Scope> {
 
