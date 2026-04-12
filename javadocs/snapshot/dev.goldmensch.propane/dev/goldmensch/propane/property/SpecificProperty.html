@@ -72,7 +72,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">SpecificProperty&lt;T&gt;</span></div>
-<div class="block"><p>Propane generates a custom API for each library using it. Part of this custom API layer
+<div class="block"><h3 id="specific-custom-api-per-library-heading">Specific (custom) API per library</h3>
+<p>Propane generates a custom &quot;specific&quot; API for each library using it. Part of this custom API layer
 is an own &quot;property type&quot; called the libraries specific property type.</p>
 <p>This interface is the foundation of this specific property type, which is nothing more than a
 wrapper around this, like:</p>
@@ -80,12 +81,14 @@ wrapper around this, like:</p>
     ...
 }
 </code></pre>
-<p>If you're working with propane or a library using propane, you will mostly see and use the libraries specific property type (like <code>JDACProperty</code>).</p>
+<p>If you're working with propane or a library using propane, you will mostly see and use the libraries specific property type (like <code>JDACProperty</code>, <code>JDACIntrospection</code> etc.).
+Types, that have their &quot;specific&quot; version generated, are marked by the <a href="../Skeleton.html" title="annotation interface in dev.goldmensch.propane"><code>@Skeleton</code></a> annotations. These types shouldn't be used
+directly but their specific version like <code>JDACProperty</code>.</p>
 <h3 id="getting-the-real-property-heading">Getting the &quot;real&quot; property</h3>
 <p>This interface doesn't extend <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>, thus enabling <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a> to be sealed and allows the java compiler to check
 pattern exhaustiveness, which makes working with it easy.</p>
-<p>A libraries specific property type must only be implemented by its specific <a href="MappingProperty.html" title="class in dev.goldmensch.propane.property"><code>MappingProperty</code></a>, <a href="SingletonProperty.html" title="class in dev.goldmensch.propane.property"><code>SingletonProperty</code></a> and
-<a href="EnumerationProperty.html" title="class in dev.goldmensch.propane.property"><code>EnumerationProperty</code></a>, which themselves implement <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>. Therefore, a libraries specific property type can always be safely
+<p>A libraries specific property type must only be implemented by its specific <a href="MappingPropertySkeleton.html" title="class in dev.goldmensch.propane.property"><code>MappingPropertySkeleton</code></a>, <a href="SingletonPropertySkeleton.html" title="class in dev.goldmensch.propane.property"><code>SingletonPropertySkeleton</code></a> and
+<a href="EnumerationPropertySkeleton.html" title="class in dev.goldmensch.propane.property"><code>EnumerationPropertySkeleton</code></a>, which themselves implement <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>. Therefore, a libraries specific property type can always be safely
 cast to <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>.</p>
 </div>
 </div>

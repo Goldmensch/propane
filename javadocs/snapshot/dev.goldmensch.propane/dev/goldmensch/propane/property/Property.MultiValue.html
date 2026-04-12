@@ -80,7 +80,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="EnumerationProperty.html" title="class in dev.goldmensch.propane.property">EnumerationProperty</a>, <a href="MappingProperty.html" title="class in dev.goldmensch.propane.property">MappingProperty</a></code></dd>
+<dd><code><a href="EnumerationPropertySkeleton.html" title="class in dev.goldmensch.propane.property">EnumerationPropertySkeleton</a>, <a href="MappingPropertySkeleton.html" title="class in dev.goldmensch.propane.property">MappingPropertySkeleton</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Enclosing interface:</dt>
@@ -90,7 +90,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public static sealed interface </span><span class="element-name type-name-label">Property.MultiValue&lt;T&gt;</span><span class="extends-implements">
 extends <a href="Property.html" title="interface in dev.goldmensch.propane.property">Property</a>&lt;T&gt;</span>
-<span class="permits">permits <a href="EnumerationProperty.html" title="class in dev.goldmensch.propane.property">EnumerationProperty</a>&lt;T&gt;, <a href="MappingProperty.html" title="class in dev.goldmensch.propane.property">MappingProperty</a>&lt;K,<wbr>V&gt;</span></div>
+<span class="permits">permits <a href="EnumerationPropertySkeleton.html" title="class in dev.goldmensch.propane.property">EnumerationPropertySkeleton</a>&lt;T&gt;, <a href="MappingPropertySkeleton.html" title="class in dev.goldmensch.propane.property">MappingPropertySkeleton</a>&lt;K,<wbr>V&gt;</span></div>
 <div class="block">A <a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property"><code>Property.MultiValue</code></a> can hold multiple objects.
 It does not guarantee any sort of specific data structure, thus the final implementation is
 determined by the individual implementations of this interface.</div>
@@ -125,8 +125,8 @@ determined by the individual implementations of this interface.</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#fallbackBehaviour()" class="member-name-link">fallbackBehaviour</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">the <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a> used determine how to tread <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to
-<a href="PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a></div>
+<div class="block">the <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a> used determine how to tread <a href="PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to
+<a href="PropertyProviderSkeleton.Priority.html#FALLBACK"><code>PropertyProviderSkeleton.Priority.FALLBACK</code></a></div>
 </div>
 </div>
 </div>
@@ -150,8 +150,8 @@ determined by the individual implementations of this interface.</div>
 <h3>fallbackBehaviour</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="return-type"><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></span>&nbsp;<span class="element-name">fallbackBehaviour</span>()</div>
-<div class="block">the <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a> used determine how to tread <a href="PropertyProvider.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to
-<a href="PropertyProvider.Priority.html#FALLBACK"><code>PropertyProvider.Priority.FALLBACK</code></a></div>
+<div class="block">the <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a> used determine how to tread <a href="PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to
+<a href="PropertyProviderSkeleton.Priority.html#FALLBACK"><code>PropertyProviderSkeleton.Priority.FALLBACK</code></a></div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the used <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a></dd>
