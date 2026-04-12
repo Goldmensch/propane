@@ -54,12 +54,11 @@ loadScripts(document, 'script');</script>
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
 <li><a href="#" tabindex="0">Description</a></li>
-<li><a href="#nested-class-summary" tabindex="0">Nested Class Summary</a></li>
 <li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
-<li><a href="#%3Cinit%3E(PROPERTY,dev.goldmensch.propane.property.PropertyProviderSkeleton.Priority,java.lang.Class,java.util.function.Function)" tabindex="0">PropertyProviderSkeleton(PROPERTY, PropertyProviderSkeleton.Priority, Class, Function)</a></li>
+<li><a href="#%3Cinit%3E(PROPERTY,dev.goldmensch.propane.property.Priority,java.lang.Class,java.util.function.Function)" tabindex="0">PropertyProviderSkeleton(PROPERTY, Priority, Class, Function)</a></li>
 </ol>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
@@ -107,7 +106,7 @@ of <a href="Property.Source.html" title="enum class in dev.goldmensch.propane.pr
 <p>The values are &quot;provided&quot; by the <a href="#supplier()">supplier</a>, which is called during resolution.
 The supplier must be threadsafe and side effect free, as it could be called multiple times during resolution simultaneously.
 Although that, only one value is stored finally (using a &quot;check-then-act&quot; pattern).</p>
-<p>Furthermore, each <a href="PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProviderSkeleton</code></a> has a <a href="PropertyProviderSkeleton.Priority.html" title="class in dev.goldmensch.propane.property">priority</a> stating which providers take
+<p>Furthermore, each <a href="PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProviderSkeleton</code></a> has a <a href="Priority.html" title="class in dev.goldmensch.propane.property">priority</a> stating which providers take
 precedence over others. For more information on that, visit the documentation of <a href="SingletonPropertySkeleton.html" title="class in dev.goldmensch.propane.property"><code>SingletonPropertySkeleton</code></a>, <a href="EnumerationPropertySkeleton.html" title="class in dev.goldmensch.propane.property"><code>EnumerationPropertySkeleton</code></a>
 and <a href="MappingPropertySkeleton.html" title="class in dev.goldmensch.propane.property"><code>MappingPropertySkeleton</code></a>.</p>
 <p>For debugging purpose, <a href="PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProviderSkeleton</code></a>s store their &quot;owner&quot;, which is the class or &quot;logical unit&quot;
@@ -131,23 +130,6 @@ a dependency on that other property.</p>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- ======== NESTED CLASS SUMMARY ======== -->
-<li>
-<section class="nested-class-summary" id="nested-class-summary">
-<h2>Nested Class Summary</h2>
-<div class="caption"><span>Nested Classes</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Class</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="PropertyProviderSkeleton.Priority.html" class="type-name-link" title="class in dev.goldmensch.propane.property">PropertyProviderSkeleton.Priority</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">A <a href="PropertyProviderSkeleton.Priority.html" title="class in dev.goldmensch.propane.property"><code>PropertyProviderSkeleton.Priority</code></a> specifies with <a href="PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProviderSkeleton</code></a>s take precedence over others.</div>
-</div>
-</div>
-</section>
-</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -156,8 +138,8 @@ a dependency on that other property.</p>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(PROPERTY,dev.goldmensch.propane.property.PropertyProviderSkeleton.Priority,java.lang.Class,java.util.function.Function)" class="member-name-link">PropertyProviderSkeleton</a><wbr>(<a href="#type-param-PROPERTY" title="type parameter in PropertyProviderSkeleton">PROPERTY</a>&nbsp;property,
- <a href="PropertyProviderSkeleton.Priority.html" title="class in dev.goldmensch.propane.property">PropertyProviderSkeleton.Priority</a>&nbsp;priority,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(PROPERTY,dev.goldmensch.propane.property.Priority,java.lang.Class,java.util.function.Function)" class="member-name-link">PropertyProviderSkeleton</a><wbr>(<a href="#type-param-PROPERTY" title="type parameter in PropertyProviderSkeleton">PROPERTY</a>&nbsp;property,
+ <a href="Priority.html" title="class in dev.goldmensch.propane.property">Priority</a>&nbsp;priority,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;owner,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="#type-param-INTROSPECTION" title="type parameter in PropertyProviderSkeleton">INTROSPECTION</a>, @Nullable <a href="#type-param-T" title="type parameter in PropertyProviderSkeleton">T</a>&gt;&nbsp;supplier)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -184,7 +166,7 @@ a dependency on that other property.</p>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a><wbr>&lt;?&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#owner()" class="member-name-link">owner</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PropertyProviderSkeleton.Priority.html" title="class in dev.goldmensch.propane.property">PropertyProviderSkeleton.Priority</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Priority.html" title="class in dev.goldmensch.propane.property">Priority</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#priority()" class="member-name-link">priority</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#type-param-PROPERTY" title="type parameter in PropertyProviderSkeleton">PROPERTY</a></code></div>
@@ -216,17 +198,17 @@ a dependency on that other property.</p>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(PROPERTY,dev.goldmensch.propane.property.PropertyProviderSkeleton.Priority,java.lang.Class,java.util.function.Function)">
-<h3 id="&lt;init&gt;(dev.goldmensch.propane.property.SpecificProperty,dev.goldmensch.propane.property.PropertyProviderSkeleton.Priority,java.lang.Class,java.util.function.Function)">PropertyProviderSkeleton</h3>
+<section class="detail" id="&lt;init&gt;(PROPERTY,dev.goldmensch.propane.property.Priority,java.lang.Class,java.util.function.Function)">
+<h3 id="&lt;init&gt;(dev.goldmensch.propane.property.SpecificProperty,dev.goldmensch.propane.property.Priority,java.lang.Class,java.util.function.Function)">PropertyProviderSkeleton</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PropertyProviderSkeleton</span><wbr><span class="parameters">(<a href="#type-param-PROPERTY" title="type parameter in PropertyProviderSkeleton">PROPERTY</a>&nbsp;property,
- <a href="PropertyProviderSkeleton.Priority.html" title="class in dev.goldmensch.propane.property">PropertyProviderSkeleton.Priority</a>&nbsp;priority,
+ <a href="Priority.html" title="class in dev.goldmensch.propane.property">Priority</a>&nbsp;priority,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;owner,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="#type-param-INTROSPECTION" title="type parameter in PropertyProviderSkeleton">INTROSPECTION</a>, @Nullable <a href="#type-param-T" title="type parameter in PropertyProviderSkeleton">T</a>&gt;&nbsp;supplier)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>property</code> - the <a href="Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a> this <a href="PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProviderSkeleton</code></a> is providing values for</dd>
-<dd><code>priority</code> - te <a href="PropertyProviderSkeleton.Priority.html" title="class in dev.goldmensch.propane.property"><code>PropertyProviderSkeleton.Priority</code></a> of this provider</dd>
+<dd><code>priority</code> - te <a href="Priority.html" title="class in dev.goldmensch.propane.property"><code>Priority</code></a> of this provider</dd>
 <dd><code>owner</code> - the owner <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link"><code>Class</code></a> of this provider</dd>
 <dd><code>supplier</code> - the <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> returning the value of this provider.
 It takes the <a href="../IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane"><code>IntrospectionSkeleton</code></a> instance used to resolve this property as argument, allowing dependencies on
@@ -259,10 +241,10 @@ other properties.</dd>
 <section class="detail" id="priority()">
 <h3>priority</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PropertyProviderSkeleton.Priority.html" title="class in dev.goldmensch.propane.property">PropertyProviderSkeleton.Priority</a></span>&nbsp;<span class="element-name">priority</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Priority.html" title="class in dev.goldmensch.propane.property">Priority</a></span>&nbsp;<span class="element-name">priority</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>the <a href="PropertyProviderSkeleton.Priority.html" title="class in dev.goldmensch.propane.property"><code>PropertyProviderSkeleton.Priority</code></a> of this property provider</dd>
+<dd>the <a href="Priority.html" title="class in dev.goldmensch.propane.property"><code>Priority</code></a> of this property provider</dd>
 </dl>
 </div>
 </section>

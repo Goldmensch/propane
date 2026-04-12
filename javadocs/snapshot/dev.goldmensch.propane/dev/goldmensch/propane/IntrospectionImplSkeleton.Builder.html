@@ -161,7 +161,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><p>Adds an <a href="property/PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> with given <a href="property/Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>, <a href="property/PropertyProviderSkeleton.html#supplier()">supplier</a>
 and <a href="property/PropertyProviderSkeleton.html#owner()">owner</a></p>
-<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/PropertyProviderSkeleton.Priority.html#BUILDER"><code>PropertyProviderSkeleton.Priority.BUILDER</code></a></p>
+<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/Priority.html#BUILDER"><code>Priority.BUILDER</code></a></p>
 </div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="IntrospectionImplSkeleton.html#type-param-B" title="type parameter in IntrospectionImplSkeleton">B</a></code></div>
@@ -177,7 +177,7 @@ and <a href="property/PropertyProviderSkeleton.html#owner()">owner</a></p>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><p>Adds an <a href="property/PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> with given <a href="property/Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>, <a href="property/PropertyProviderSkeleton.html#supplier()">supplier</a>
 and <a href="property/PropertyProviderSkeleton.html#owner()">owner</a></p>
-<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/PropertyProviderSkeleton.Priority.html#FALLBACK"><code>PropertyProviderSkeleton.Priority.FALLBACK</code></a></p>
+<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/Priority.html#FALLBACK"><code>Priority.FALLBACK</code></a></p>
 </div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="IntrospectionImplSkeleton.html#type-param-B" title="type parameter in IntrospectionImplSkeleton">B</a></code></div>
@@ -277,7 +277,7 @@ the registered providers.</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="IntrospectionImplSkeleton.html#type-param-B" title="type parameter in IntrospectionImplSkeleton">B</a></span>&nbsp;<span class="element-name">addFallback</span><wbr><span class="parameters">(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;property,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="IntrospectionImplSkeleton.html#type-param-I" title="type parameter in IntrospectionImplSkeleton">I</a>, @Nullable T&gt;&nbsp;supplier)</span></div>
 <div class="block"><p>Adds an <a href="property/PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> with given <a href="property/Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a> and <a href="property/PropertyProviderSkeleton.html#supplier()">supplier</a>.</p>
-<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/PropertyProviderSkeleton.Priority.html#FALLBACK"><code>PropertyProviderSkeleton.Priority.FALLBACK</code></a>
+<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/Priority.html#FALLBACK"><code>Priority.FALLBACK</code></a>
 <a href="property/PropertyProviderSkeleton.html#owner()"><code>PropertyProviderSkeleton.owner()</code></a> will be the caller of this method, see <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/StackWalker.html#getCallerClass()" title="class or interface in java.lang" class="external-link"><code>StackWalker.getCallerClass()</code></a>.</p>
 </div>
 <dl class="notes">
@@ -297,7 +297,7 @@ the registered providers.</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="IntrospectionImplSkeleton.html#type-param-B" title="type parameter in IntrospectionImplSkeleton">B</a></span>&nbsp;<span class="element-name">addBuilder</span><wbr><span class="parameters">(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;property,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="IntrospectionImplSkeleton.html#type-param-I" title="type parameter in IntrospectionImplSkeleton">I</a>, @Nullable T&gt;&nbsp;supplier)</span></div>
 <div class="block"><p>Adds an <a href="property/PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> with given <a href="property/Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a> and <a href="property/PropertyProviderSkeleton.html#supplier()">supplier</a>.</p>
-<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/PropertyProviderSkeleton.Priority.html#BUILDER"><code>PropertyProviderSkeleton.Priority.BUILDER</code></a>
+<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/Priority.html#BUILDER"><code>Priority.BUILDER</code></a>
 <a href="property/PropertyProviderSkeleton.html#owner()"><code>PropertyProviderSkeleton.owner()</code></a> will be the caller of this method, see <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/StackWalker.html#getCallerClass()" title="class or interface in java.lang" class="external-link"><code>StackWalker.getCallerClass()</code></a>.</p>
 </div>
 <dl class="notes">
@@ -319,7 +319,7 @@ the registered providers.</div>
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="IntrospectionImplSkeleton.html#type-param-I" title="type parameter in IntrospectionImplSkeleton">I</a>, @Nullable T&gt;&nbsp;supplier)</span></div>
 <div class="block"><p>Adds an <a href="property/PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> with given <a href="property/Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>, <a href="property/PropertyProviderSkeleton.html#supplier()">supplier</a>
 and <a href="property/PropertyProviderSkeleton.html#owner()">owner</a></p>
-<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/PropertyProviderSkeleton.Priority.html#FALLBACK"><code>PropertyProviderSkeleton.Priority.FALLBACK</code></a></p>
+<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/Priority.html#FALLBACK"><code>Priority.FALLBACK</code></a></p>
 </div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -340,7 +340,7 @@ and <a href="property/PropertyProviderSkeleton.html#owner()">owner</a></p>
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="IntrospectionImplSkeleton.html#type-param-I" title="type parameter in IntrospectionImplSkeleton">I</a>, @Nullable T&gt;&nbsp;supplier)</span></div>
 <div class="block"><p>Adds an <a href="property/PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a> with given <a href="property/Property.html" title="interface in dev.goldmensch.propane.property"><code>Property</code></a>, <a href="property/PropertyProviderSkeleton.html#supplier()">supplier</a>
 and <a href="property/PropertyProviderSkeleton.html#owner()">owner</a></p>
-<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/PropertyProviderSkeleton.Priority.html#BUILDER"><code>PropertyProviderSkeleton.Priority.BUILDER</code></a></p>
+<p><a href="property/PropertyProviderSkeleton.html#priority()"><code>PropertyProviderSkeleton.priority()</code></a> will be set to <a href="property/Priority.html#BUILDER"><code>Priority.BUILDER</code></a></p>
 </div>
 <dl class="notes">
 <dt>Parameters:</dt>
