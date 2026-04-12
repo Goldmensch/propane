@@ -7,6 +7,8 @@ import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import dev.goldmensch.propane.spec.SkeletonMethod;
 import dev.goldmensch.propane.spec.SkeletonMethodException;
 
+import java.util.NoSuchElementException;
+
 
 /// The [`Introspection`][IntrospectionSkeleton] type is the central element of Propane.
 /// Its purpose is to expose the property and event system to the user.
@@ -26,7 +28,57 @@ import dev.goldmensch.propane.spec.SkeletonMethodException;
 /// After [computing][PropertyProviderSkeleton#supplier()] a value, it will be cached for the lifetime of that introspection instance.
 /// Accessing such an instance is threadsafe, and it is guaranteed to always return the same instance.
 ///
-/// TODO: docs (scoped access)
+/// ### Scopes access
+/// Beside using [#get(SpecificProperty)] directly on an introspection instance, you can sometimes utilize
+/// Java's [ScopedValue] API to get a properties value. For that to work, the [`Introspection`][IntrospectionSkeleton] class
+/// features multiple static methods like [#scopedGet(SpecificProperty)]. Methods using this scopes system, are always
+/// prefixed with "scoped".
+///
+/// For further understanding, it is helpful to know how the [ScopedValue] API works.
+/// In short: The [ScopedValue] API allows data to be available in a "context" whether only by field.
+/// A context is for example the callchain in which you are, take following example:
+///
+/// ```java
+/// static ScopedValue<MyIntrospection> VAL = ScopedValue.newInstance();
+///
+/// void one() {
+///     inner();
+/// }
+///
+/// void two() {
+///     MyIntrospection introspection = VAL.get();
+///     // the call above will fail
+/// }
+///
+/// void inner() {
+///     MyIntrospection introspection = VAL.get();
+///     // use the introspection.instance()
+/// }
+///
+/// void main() {
+///     MyIntrospection introspection = MyIntrospectionImpl.create(...)
+///                                         ...
+///                                         .build();
+///
+///     // calls "one" with the ScopedValue "VAL" set to the introspection variable
+///     ScopedValue.where(VAL, introspection).run(() -> one());
+///
+///     two();
+/// }
+/// ```
+///
+/// The value for "VAL" is set for all method calls inside the lambda of `run(() -> one())`. This means
+/// that it's accessible inside "one", "inner" and any subsequent method call, but not inside `two` because
+/// it is called outside of `run()`.
+///
+///
+/// The [`Introspection`][IntrospectionSkeleton] and [`IntrospectionImpl`][IntrospectionImplSkeleton] classes
+/// implement the above logic natively, covering up the underlying [ScopedValue]. Instead of [ScopedValue#get()]
+/// you can use [`MyIntrospection#getScoped(MY_PROPERTY)`][IntrospectionSkeleton#scopedGet(SpecificProperty)].
+///
+/// Please note, that the availability of scoped access to introspection instances vary widely and is different for
+/// places inside the callchain. Each library decide whether and how to support them, so please take a look at the libraries
+/// documentation on where you can use it and where not.
 ///
 /// ## Listeners
 /// A [Listener] registered on an [`Introspection`][IntrospectionSkeleton] instance is stored for the lifetime of this
@@ -53,14 +105,21 @@ import dev.goldmensch.propane.spec.SkeletonMethodException;
 @Skeleton
 public interface IntrospectionSkeleton<SELF extends IntrospectionSkeleton<SELF, S>, S extends Scope> {
 
-    /// TODO: docs (scoped access)
+    /// Whether scoped access to the introspection instance (by calling `scopedGet`)
+    /// is possible.
+    ///
+    /// @return whether scoped access is possible
     @SkeletonMethod
     static boolean accessible() {
         // return IntrospectionImplSkeleton.INTROSPECTION.isBound();
         throw new SkeletonMethodException();
     }
 
-    /// TODO: docs (scoped access)
+    /// Returns the introspection instance set via [ScopedValue] if set, else throws
+    /// [NoSuchElementException].
+    ///
+    /// @return the introspection instance of this scope
+    /// @see ScopedValue#get()
     @SkeletonMethod
     static IntrospectionSkeleton<?, ?> accessScoped() {
         // return IntrospectionImplSkeleton.INTROSPECTION.get();
@@ -68,7 +127,11 @@ public interface IntrospectionSkeleton<SELF extends IntrospectionSkeleton<SELF, 
     }
 
 
-    /// TODO: docs (scoped access)
+    /// Shorthand for `accessScoped().get(property)`. Throws [NoSuchElementException]
+    /// if [#accessible()] returns `false`.
+    ///
+    /// @param property the property to get
+    /// @return the value for the property
     @SkeletonMethod
     static <T> T scopedGet(SpecificProperty<T> property) {
         //  return accessScoped().get(property);

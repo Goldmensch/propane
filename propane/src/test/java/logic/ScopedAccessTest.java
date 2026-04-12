@@ -31,7 +31,7 @@ public class ScopedAccessTest {
                 .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
-        ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
+        build.scoped().run(() -> {
             String s = TestIntrospection.scopedGet(Properties.HELLO_WORLD);
             Assert.assertEquals("hi", s);
         });
@@ -43,7 +43,7 @@ public class ScopedAccessTest {
                 .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
-        ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
+        build.scoped().run(() -> {
             Assert.assertEquals("hi", Properties.HELLO_WORLD.scopedGet());
         });
     }
@@ -54,7 +54,7 @@ public class ScopedAccessTest {
                 .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
-        ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
+        build.scoped().run(() -> {
             TestIntrospection introspection = TestIntrospection.accessScoped();
             Assert.assertEquals(build, introspection);
         });
@@ -66,7 +66,7 @@ public class ScopedAccessTest {
                 .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
-        ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
+        build.scoped().run(() -> {
             boolean val = TestIntrospection.accessible();
             Assert.assertTrue(val);
         });

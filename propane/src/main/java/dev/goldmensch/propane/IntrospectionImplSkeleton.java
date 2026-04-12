@@ -122,6 +122,26 @@ implements IntrospectionSkeleton<I, S> {
         eventBus.publish(event, self());
     }
 
+    /// Returns an [ScopedValue.Carrier] with the introspection instance set. So you can use
+    /// [ScopedValue.Carrier#call(ScopedValue.CallableOp)] and friends to make this instance available
+    /// in the scope.
+    ///
+    ///
+    /// ```java
+    /// void foo() {
+    ///     // returns the value of MY_PROPERTY
+    ///     MyIntrospection.scopedGet(MY_PROPERTY);
+    /// }
+    ///
+    /// MyIntrospection introspection = ...
+    ///
+    /// introspection.scoped().run(() -> foo());
+    /// ```
+    ///
+    /// @see IntrospectionSkeleton the Javadocs about 'Scopes access'
+    @SkeletonMethod
+    public abstract ScopedValue.Carrier scoped();
+
 
     @SuppressWarnings("unchecked")
     private I self() {

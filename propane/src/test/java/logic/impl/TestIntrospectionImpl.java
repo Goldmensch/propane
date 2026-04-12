@@ -29,12 +29,18 @@ public class TestIntrospectionImpl extends IntrospectionImplSkeleton<TestIntrosp
 
     }
 
+
     public static TestBuilder create(Scope scope) {
         return new TestIntrospectionImpl(scope).createChild(scope);
     }
 
     public <T> T get(TestProperty<T> specific) {
         return super.get(specific);
+    }
+
+    @Override
+    public ScopedValue.Carrier scoped() {
+        return ScopedValue.where(INTROSPECTION, this);
     }
 
     @Override

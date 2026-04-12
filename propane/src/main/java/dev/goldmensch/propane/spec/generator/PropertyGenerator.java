@@ -195,6 +195,11 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addStatement("properties.add(new $T<>($T.INTROSPECTION, $T.FALLBACK, $T.class, _ -> this))",
                                 providerName, specificName, Priority.class, introspectionName)
                         .build())
+                .addMethod(MethodSpec.methodBuilder("scoped")
+                        .addModifiers(Modifier.PUBLIC)
+                        .returns(ScopedValue.Carrier.class)
+                        .addStatement("return $T.where(INTROSPECTION, this)", ScopedValue.class)
+                        .build())
                 .addType(TypeSpec.classBuilder(builderName)
                         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                         .superclass(parentIntrospection.nestedClass("Builder"))
