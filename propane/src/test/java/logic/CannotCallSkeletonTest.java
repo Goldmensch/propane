@@ -1,6 +1,6 @@
 package logic;
 
-import dev.goldmensch.propane.IntrospectionImpl;
+import dev.goldmensch.propane.IntrospectionImplSkeleton;
 import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.spec.SkeletonMethodException;
 import org.junit.Assert;
@@ -18,6 +18,6 @@ public class CannotCallSkeletonTest {
             }
         };
 
-        Assert.assertThrows(SkeletonMethodException.class, () -> IntrospectionImpl.create(scope));
+        Assert.assertThrows(SkeletonMethodException.class, () -> IntrospectionImplSkeleton.create(scope));
     }
 }

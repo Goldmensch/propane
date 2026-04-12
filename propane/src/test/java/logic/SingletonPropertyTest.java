@@ -1,7 +1,7 @@
 package logic;
 
 import dev.goldmensch.propane.Scope;
-import dev.goldmensch.propane.property.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
@@ -33,7 +33,7 @@ public class SingletonPropertyTest {
     @Test
     public void without_dependencies() {
         TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SingletonPropertyTest.class, _ -> "Hello World"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProviderSkeleton.Priority.FALLBACK, SingletonPropertyTest.class, _ -> "Hello World"))
                 .build();
 
         assertEquals("Hello World", introspection.get(Properties.HELLO_WORLD));
@@ -42,7 +42,7 @@ public class SingletonPropertyTest {
     @Test
     public void should_always_return_same_instance() {
         TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.TEST_STUB, PropertyProvider.Priority.FALLBACK, SingletonPropertyTest.class, _ -> new Properties.TestStub()))
+                .add(new TestPropertyProvider<>(Properties.TEST_STUB, PropertyProviderSkeleton.Priority.FALLBACK, SingletonPropertyTest.class, _ -> new Properties.TestStub()))
                 .build();
 
         Properties.TestStub expected = introspection.get(Properties.TEST_STUB); // generate value for "expected"
@@ -55,8 +55,8 @@ public class SingletonPropertyTest {
     @Test
     public void should_not_return_fallback() {
         TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, SingletonPropertyTest.class, _ -> "Hello World (Fallback)"))
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.of(10), SingletonPropertyTest.class, _ -> "Hello World"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProviderSkeleton.Priority.FALLBACK, SingletonPropertyTest.class, _ -> "Hello World (Fallback)"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProviderSkeleton.Priority.of(10), SingletonPropertyTest.class, _ -> "Hello World"))
                 .build();
 
         assertEquals("Hello World", introspection.get(Properties.HELLO_WORLD));

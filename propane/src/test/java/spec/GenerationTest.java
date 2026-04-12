@@ -1,6 +1,6 @@
 package spec;
 
-import dev.goldmensch.propane.property.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import org.junit.Assert;
 import org.junit.Test;
 import spec.bar.BarIntrospection;
@@ -24,7 +24,7 @@ public class GenerationTest {
     @Test
     public void single_property() {
         GenTestIntrospection build = GenTestIntrospectionImpl.create(GenTestScope.ROOT)
-                .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_SINGLE, PropertyProvider.Priority.FALLBACK, GenerationTest.class, _ -> "hi"))
+                .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_SINGLE, PropertyProviderSkeleton.Priority.FALLBACK, GenerationTest.class, _ -> "hi"))
                 .build();
 
         Assert.assertEquals("hi", build.get(GenTestProperty.FOO_SINGLE));
@@ -33,7 +33,7 @@ public class GenerationTest {
     @Test
     public void enumeration_test() {
         GenTestIntrospection build = GenTestIntrospectionImpl.create(GenTestScope.ROOT)
-                .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_ENUMERATION, PropertyProvider.Priority.FALLBACK, GenerationTest.class, _ -> List.of("hi")))
+                .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_ENUMERATION, PropertyProviderSkeleton.Priority.FALLBACK, GenerationTest.class, _ -> List.of("hi")))
                 .build();
 
         Assert.assertEquals(List.of("hi"), build.get(GenTestProperty.FOO_ENUMERATION));
@@ -42,7 +42,7 @@ public class GenerationTest {
     @Test
     public void mapping_property() {
         GenTestIntrospectionImpl build = GenTestIntrospectionImpl.create(GenTestScope.ROOT)
-                .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_MAPPING, PropertyProvider.Priority.FALLBACK, GenerationTest.class, _ -> Map.of("hello", "world")))
+                .add(new GenTestPropertyProvider<>(GenTestProperty.FOO_MAPPING, PropertyProviderSkeleton.Priority.FALLBACK, GenerationTest.class, _ -> Map.of("hello", "world")))
                 .build();
 
         Assert.assertEquals(Map.of("hello", "world"), build.get(GenTestProperty.FOO_MAPPING));

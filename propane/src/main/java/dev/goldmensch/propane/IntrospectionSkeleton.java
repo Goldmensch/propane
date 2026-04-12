@@ -2,43 +2,40 @@ package dev.goldmensch.propane;
 
 import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.event.Listener;
-import dev.goldmensch.propane.property.EnumerationProperty;
-import dev.goldmensch.propane.property.MappingProperty;
-import dev.goldmensch.propane.property.Property;
-import dev.goldmensch.propane.property.PropertyProvider;
-import dev.goldmensch.propane.property.SingletonProperty;
-import dev.goldmensch.propane.property.SpecificProperty;
+import dev.goldmensch.propane.property.*;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import dev.goldmensch.propane.spec.SkeletonMethod;
 import dev.goldmensch.propane.spec.SkeletonMethodException;
 
-/// The [Introspection] type is the central element of Propane.
+
+/// The [`Introspection`][IntrospectionSkeleton] type is the central element of Propane.
 /// Its purpose is to expose the property and event system to the user.
 ///
-/// Each [Introspection] instance is bound to a [Scope], allowing accessing the scopes' and its parents'
+/// Each [`Introspection`][IntrospectionSkeleton] instance is bound to a [Scope], allowing accessing the scopes' and its parents'
 /// [Properties][Property]. For more information visit the documentation of [Scope]. Unless
-/// the root scopes' [Introspection] instance, each [Introspection] instance is child of another, inheriting its values
+/// the root scopes' [`Introspection`][IntrospectionSkeleton] instance, each [`Introspection`][IntrospectionSkeleton] instance is child of another, inheriting its values
 /// that are combines with its own. For more information, visit the section [below](#properties)
 ///
 /// ## Properties
-/// An instance of [Introspection] can hold [PropertyProvider]s for all [properties][Property]
+/// An instance of [`Introspection`][IntrospectionSkeleton] can hold [`PropertyProvider`][PropertyProviderSkeleton]s for all [properties][Property]
 /// accessible by its [Scope]. An introspection instance
 /// will first compute its own value using the providers registered at it and possibly combine it with the
 /// values from the introspection instances' parent(s). For more information on how this is done, visit the documentation of
-/// [SingletonProperty], [MappingProperty] and [EnumerationProperty].
+/// [`SingletonProperty`][SingletonPropertySkeleton], [`MappingProperty`][MappingPropertySkeleton] and [`EnumerationProperty`][EnumerationPropertySkeleton].
 ///
-/// After [computing][PropertyProvider] a value, it will be cached for the lifetime of that introspection instance.
+/// After [computing][PropertyProviderSkeleton#supplier()] a value, it will be cached for the lifetime of that introspection instance.
 /// Accessing such an instance is threadsafe, and it is guaranteed to always return the same instance.
 ///
 /// TODO: docs (scoped access)
 ///
 /// ## Listeners
-/// A [Listener] registered on an [Introspection] instance is stored for the lifetime of this
+/// A [Listener] registered on an [`Introspection`][IntrospectionSkeleton] instance is stored for the lifetime of this
 /// instance. It will be called if the event it is registered for, is either fired in this introspection instance itself
 /// or any children of it.
 ///
 /// ```java
-/// Introspection A = ...;
-/// Introspection B with B is children of A
+/// IntrospectionSkeleton A = ...;
+/// IntrospectionSkeleton B with B is children of A
 ///
 /// A.subscribe(FooEvent.class, _ -> System.out.println("Foo fired"));
 ///
@@ -52,20 +49,21 @@ import dev.goldmensch.propane.spec.SkeletonMethodException;
 /// publish BarEvent in B -> "Bar fired" printed
 ///
 /// ```
+/// @see SpecificProperty why you have to use the "specific" version of this class
 @Skeleton
-public interface Introspection<SELF extends Introspection<SELF, S>, S extends Scope> {
+public interface IntrospectionSkeleton<SELF extends IntrospectionSkeleton<SELF, S>, S extends Scope> {
 
     /// TODO: docs (scoped access)
     @SkeletonMethod
     static boolean accessible() {
-        // return IntrospectionImpl.INTROSPECTION.isBound();
+        // return IntrospectionImplSkeleton.INTROSPECTION.isBound();
         throw new SkeletonMethodException();
     }
 
     /// TODO: docs (scoped access)
     @SkeletonMethod
-    static Introspection<?, ?> accessScoped() {
-        // return IntrospectionImpl.INTROSPECTION.get();
+    static IntrospectionSkeleton<?, ?> accessScoped() {
+        // return IntrospectionImplSkeleton.INTROSPECTION.get();
         throw new SkeletonMethodException();
     }
 
@@ -78,11 +76,11 @@ public interface Introspection<SELF extends Introspection<SELF, S>, S extends Sc
     }
 
     /// Returns the value for the requested property by either retrieving it from the cache
-    /// or computing it according to the [class' documentation][Introspection].
+    /// or computing it according to the [class' documentation][IntrospectionSkeleton].
     ///
     /// @param specific the requested property
     /// @return the value of the requested property
-    /// @see Introspection Introspections' class documentation
+    /// @see IntrospectionSkeleton Introspections' class documentation
     @SkeletonMethod
     <T> T get(SpecificProperty<T> specific);
 
@@ -91,7 +89,7 @@ public interface Introspection<SELF extends Introspection<SELF, S>, S extends Sc
     /// of this introspection instance.
     ///
     /// @param listener the [Listener] to be registered
-    /// @see Introspection Introspections' class documentation
+    /// @see IntrospectionSkeleton Introspections' class documentation
     void subscribe(Listener<? extends Event<S>, S, SELF> listener);
 
     /// Returns the [Scope] this introspection instance is bound to.

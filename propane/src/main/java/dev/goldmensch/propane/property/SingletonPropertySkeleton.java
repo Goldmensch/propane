@@ -1,29 +1,31 @@
 package dev.goldmensch.propane.property;
 
 import dev.goldmensch.propane.Scope;
+import dev.goldmensch.propane.Skeleton;
 
 import java.util.Objects;
 
-/// A [SingletonProperty] can only hold one instance. It is the most common type of property and
+/// A [`SingletonProperty`][SingletonPropertySkeleton] can only hold one instance. It is the most common type of property and
 /// is used for services and most configuration options, like simple booleans or strings.
 ///
-/// If multiple [PropertyProvider]s for this property are found at the same introspection instance, the one with the highest [PropertyProvider#priority()]
-/// is used. If multiple providers with the same priority share the highest rank, the latest registered one is used.
+/// If multiple [`PropertyProvider`][PropertyProviderSkeleton]s for this property are found at the same introspection instance, the one with the highest
+/// [`priority`][PropertyProviderSkeleton#priority()] is used.
+/// If multiple providers with the same priority share the highest rank, the latest registered one is used.
 ///
-/// If you have multiple [PropertyProvider]s registered at different introspection instances, that are related to each other
+/// If you have multiple [`PropertyProvider`][PropertyProviderSkeleton]s registered at different introspection instances, that are related to each other
 /// (the one is child of the other), the above applies for each introspection instance itself. The final value is the value
 /// of the nearst parent.
 ///
 /// For example, take a look here (simplified API):
 /// ```java
-/// Introspection A = IntrospectionImpl.create(Scopes.ROOT)
+/// IntrospectionSkeleton A = IntrospectionImplSkeleton.create(Scopes.ROOT)
 ///     .addBuilder(Property.SINGLETON, _ -> "Value A Builder") // builder has higher priority than fallback
 ///     .addFallback(Property.SINGLETON, _ -> "Value A Fallback")
 ///     .build();
 ///
 /// A.get(Property.SINGLETON) // returns "Value A Builder"
 ///
-/// Introspection B = A.createChild(Scopes.ROOT)
+/// IntrospectionSkeleton B = A.createChild(Scopes.ROOT)
 ///     .addFallback(Property.SINGLETON, _ -> "Value B")
 ///     .build();
 ///
@@ -31,7 +33,9 @@ import java.util.Objects;
 /// ```
 ///
 /// @param <T> the java type of this property
-public non-sealed abstract class SingletonProperty<T> implements Property.SingleValue<T> {
+/// @see SpecificProperty why you have to use the "specific" version of this class
+@Skeleton
+public non-sealed abstract class SingletonPropertySkeleton<T> implements Property.SingleValue<T> {
     private final String name;
     private final Source source;
     private final Scope scope;
@@ -40,9 +44,9 @@ public non-sealed abstract class SingletonProperty<T> implements Property.Single
     /// @param name the [name][Property#name() ] of this property
     /// @param scope the [scope][Property#scope()] of this property
     /// @param source the [source][Property#source()] of this property
-    /// @param type the [type][SingletonProperty#type()] of this property
-    public SingletonProperty(String name, Source source, Scope scope,
-                             Class<T> type) {
+    /// @param type the [type][SingletonPropertySkeleton#type()] of this property
+    public SingletonPropertySkeleton(String name, Source source, Scope scope,
+                                     Class<T> type) {
         this.name = name;
         this.source = source;
         this.scope = scope;
@@ -78,7 +82,7 @@ public non-sealed abstract class SingletonProperty<T> implements Property.Single
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (SingletonProperty<?>) obj;
+        var that = (SingletonPropertySkeleton<?>) obj;
         return Objects.equals(this.name, that.name) &&
                 Objects.equals(this.source, that.source) &&
                 Objects.equals(this.scope, that.scope) &&
@@ -92,7 +96,7 @@ public non-sealed abstract class SingletonProperty<T> implements Property.Single
 
     @Override
     public String toString() {
-        return "SingletonProperty[" +
+        return "SingletonPropertySkeleton[" +
                 "name=" + name + ", " +
                 "source=" + source + ", " +
                 "scope=" + scope + ", " +

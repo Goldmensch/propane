@@ -6,14 +6,16 @@ import dev.goldmensch.propane.Skeleton;
 import java.util.Collection;
 import java.util.Objects;
 
-/// An [EnumerationProperty] represents an [Collection]. It can hold multiple values of the same type and makes no guarantees
+/// An [`EnumerationProperty`][EnumerationPropertySkeleton] represents an [Collection]. It can hold multiple values of the same type and makes no guarantees
 /// about the order of its elements.
 ///
-/// If multiple [PropertyProvider]s are found for this property, they are generally combined.
+/// If multiple [`PropertyProvider`][PropertyProviderSkeleton]s are found for this property, they are generally combined.
 /// For information on how fallback values are trod, visit the documentation of [Property.FallbackStrategy].
 ///
 /// @param <T> the java type of the elements held by this property
-public non-sealed abstract class EnumerationProperty<T> implements Property.MultiValue<Collection<T>> {
+/// @see SpecificProperty why you have to use the "specific" version of this class
+@Skeleton
+public non-sealed abstract class EnumerationPropertySkeleton<T> implements Property.MultiValue<Collection<T>> {
     private final String name;
     private final Source source;
     private final Scope scope;
@@ -23,10 +25,10 @@ public non-sealed abstract class EnumerationProperty<T> implements Property.Mult
     /// @param name the [name][Property#name()] of this property
     /// @param source the [source][Property#source()] of this property
     /// @param scope the [scope][Property#scope()] of this property
-    /// @param type the [type][EnumerationProperty#type()] of this property
+    /// @param type the [type][EnumerationPropertySkeleton#type()] of this property
     /// @param fallbackStrategy the [fallback strategy][Property.MultiValue#fallbackBehaviour()] of this property
-    public EnumerationProperty(String name, Source source, Scope scope, Class<T> type,
-                               FallbackStrategy fallbackStrategy) {
+    public EnumerationPropertySkeleton(String name, Source source, Scope scope, Class<T> type,
+                                       FallbackStrategy fallbackStrategy) {
         this.name = name;
         this.source = source;
         this.scope = scope;
@@ -69,7 +71,7 @@ public non-sealed abstract class EnumerationProperty<T> implements Property.Mult
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (EnumerationProperty<?>) obj;
+        var that = (EnumerationPropertySkeleton<?>) obj;
         return Objects.equals(this.name, that.name) &&
                 Objects.equals(this.source, that.source) &&
                 Objects.equals(this.scope, that.scope) &&
@@ -84,7 +86,7 @@ public non-sealed abstract class EnumerationProperty<T> implements Property.Mult
 
     @Override
     public String toString() {
-        return "EnumerationProperty[" +
+        return "EnumerationPropertySkeleton[" +
                 "name=" + name + ", " +
                 "source=" + source + ", " +
                 "scope=" + scope + ", " +

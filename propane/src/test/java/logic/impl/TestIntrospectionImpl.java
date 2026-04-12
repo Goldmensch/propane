@@ -1,15 +1,15 @@
 package logic.impl;
 
-import dev.goldmensch.propane.IntrospectionImpl;
+import dev.goldmensch.propane.IntrospectionImplSkeleton;
 import dev.goldmensch.propane.Scope;
-import dev.goldmensch.propane.property.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import dev.goldmensch.propane.Registry;
 import dev.goldmensch.propane.internal.exposed.Properties;
 
 import java.util.Map;
 import java.util.function.Function;
 
-public class TestIntrospectionImpl extends IntrospectionImpl<TestIntrospectionImpl, TestIntrospection, TestIntrospectionImpl.TestBuilder, Scope> implements TestIntrospection {
+public class TestIntrospectionImpl extends IntrospectionImplSkeleton<TestIntrospectionImpl, TestIntrospection, TestIntrospectionImpl.TestBuilder, Scope> implements TestIntrospection {
 
     public static final ScopedValue<Registry<Scope>> TEST_REGISTRY = ScopedValue.newInstance();
 
@@ -43,25 +43,25 @@ public class TestIntrospectionImpl extends IntrospectionImpl<TestIntrospectionIm
     }
 
     // TestIntrospectionImpl.TestBuilder doesn't work, because of... java generics
-    public class TestBuilder extends IntrospectionImpl<TestIntrospectionImpl, TestIntrospection, TestBuilder, Scope>.Builder {
+    public class TestBuilder extends IntrospectionImplSkeleton<TestIntrospectionImpl, TestIntrospection, TestBuilder, Scope>.Builder {
         private TestBuilder(Scope scope) {
             super(scope);
         }
 
         public <T> TestBuilder addFallback(TestProperty<T> property, Function<TestIntrospection, T> supplier) {
-            return add(new TestPropertyProvider<>(property, PropertyProvider.Priority.FALLBACK, caller(), supplier));
+            return add(new TestPropertyProvider<>(property, PropertyProviderSkeleton.Priority.FALLBACK, caller(), supplier));
         }
 
         public <T> TestBuilder addBuilder(TestProperty<T> property, Function<TestIntrospection, T> supplier) {
-            return add(new TestPropertyProvider<>(property, PropertyProvider.Priority.BUILDER, caller(), supplier));
+            return add(new TestPropertyProvider<>(property, PropertyProviderSkeleton.Priority.BUILDER, caller(), supplier));
         }
 
         public <T> TestBuilder addFallback(TestProperty<T> property, Class<?> owner, Function<TestIntrospection, T> supplier) {
-            return add(new TestPropertyProvider<>(property, PropertyProvider.Priority.FALLBACK, owner, supplier));
+            return add(new TestPropertyProvider<>(property, PropertyProviderSkeleton.Priority.FALLBACK, owner, supplier));
         }
 
         public <T> TestBuilder addBuilder(TestProperty<T> property, Class<?> owner, Function<TestIntrospection, T> supplier) {
-            return add(new TestPropertyProvider<>(property, PropertyProvider.Priority.BUILDER, owner, supplier));
+            return add(new TestPropertyProvider<>(property, PropertyProviderSkeleton.Priority.BUILDER, owner, supplier));
         }
 
         @Override

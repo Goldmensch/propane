@@ -1,9 +1,9 @@
 package logic.impl;
 
 import dev.goldmensch.propane.Scope;
-import dev.goldmensch.propane.property.SingletonProperty;
+import dev.goldmensch.propane.property.SingletonPropertySkeleton;
 
-public class TestSingletonProperty<T> extends SingletonProperty<T> implements TestProperty<T>{
+public class TestSingletonProperty<T> extends SingletonPropertySkeleton<T> implements TestProperty<T>{
     public TestSingletonProperty(String name, Source source, Scope scope, Class<T> type) {
         super(name, source, scope, type);
     }

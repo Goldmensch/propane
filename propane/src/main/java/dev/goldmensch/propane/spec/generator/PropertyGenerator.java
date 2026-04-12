@@ -1,9 +1,9 @@
 package dev.goldmensch.propane.spec.generator;
 
 import com.palantir.javapoet.*;
-import dev.goldmensch.propane.Introspection;
-import dev.goldmensch.propane.IntrospectionImpl;
-import dev.goldmensch.propane.property.PropertyProvider;
+import dev.goldmensch.propane.IntrospectionSkeleton;
+import dev.goldmensch.propane.IntrospectionImplSkeleton;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import dev.goldmensch.propane.Registry;
 import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.internal.exposed.Properties;
@@ -92,7 +92,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
     }
 
     private TypeSpec provider() {
-        ParameterizedTypeName superClass = ParameterizedTypeName.get(ClassName.get(PropertyProvider.class),
+        ParameterizedTypeName superClass = ParameterizedTypeName.get(ClassName.get(PropertyProviderSkeleton.class),
                 T,
                 withTGeneric(specificName),
                 introspectionName);
@@ -107,7 +107,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
                         .addParameter(withTGeneric(specificName), "property")
-                        .addParameter(PropertyProvider.Priority.class, "priority")
+                        .addParameter(PropertyProviderSkeleton.Priority.class, "priority")
                         .addParameter(withGeneric(ClassName.get(Class.class), "?"), "owner")
                         .addParameter(function, "supplier")
                         .addStatement("super(property, priority, owner, supplier)")
@@ -117,7 +117,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
     private TypeSpec introspection() {
         return TypeSpec.interfaceBuilder(introspectionName)
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Introspection.class), introspectionName, scopeName))
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(IntrospectionSkeleton.class), introspectionName, scopeName))
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(MethodSpec.methodBuilder("get")
                         .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
@@ -147,7 +147,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
     }
 
     private TypeSpec introspectionImpl() {
-        ParameterizedTypeName parentIntrospection = ParameterizedTypeName.get(ClassName.get(IntrospectionImpl.class),
+        ParameterizedTypeName parentIntrospection = ParameterizedTypeName.get(ClassName.get(IntrospectionImplSkeleton.class),
                 introspectionImplName, introspectionName, builderName, scopeName);
 
         return TypeSpec.classBuilder(introspectionImplName)
@@ -193,7 +193,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addModifiers(Modifier.PROTECTED)
                         .addParameter(ParameterizedTypeName.get(ClassName.get(Properties.class), introspectionName), "properties")
                         .addStatement("properties.add(new $T<>($T.INTROSPECTION, $T.FALLBACK, $T.class, _ -> this))",
-                                providerName, specificName, PropertyProvider.Priority.class, introspectionName)
+                                providerName, specificName, PropertyProviderSkeleton.Priority.class, introspectionName)
                         .build())
                 .addType(TypeSpec.classBuilder(builderName)
                         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
@@ -240,7 +240,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
         return builder
                 .addParameter(function, "supplier")
-                .addStatement("return add(new $T<>(property, $T.$L, $L, supplier))", providerName, PropertyProvider.Priority.class, name, owner)
+                .addStatement("return add(new $T<>(property, $T.$L, $L, supplier))", providerName, PropertyProviderSkeleton.Priority.class, name, owner)
                 .build();
     }
 
@@ -346,7 +346,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         return TypeSpec.classBuilder(singletonClassName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addTypeVariable(TypeVariableName.get("T"))
-                .superclass(withTGeneric(ClassName.get(SingletonProperty.class)))
+                .superclass(withTGeneric(ClassName.get(SingletonPropertySkeleton.class)))
                 .addSuperinterface(withTGeneric(specificName))
                 .addMethod(propertySuperConstructor()
                         .addModifiers(Modifier.PUBLIC)
@@ -362,7 +362,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         return TypeSpec.classBuilder(enumerationClassName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addTypeVariable(TypeVariableName.get("T"))
-                .superclass(withTGeneric(ClassName.get(EnumerationProperty.class)))
+                .superclass(withTGeneric(ClassName.get(EnumerationPropertySkeleton.class)))
                 .addSuperinterface(ParameterizedTypeName.get(specificName, collectionType))
                 .addMethod(propertySuperConstructor()
                         .addModifiers(Modifier.PUBLIC)
@@ -383,7 +383,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
         return TypeSpec.classBuilder(mappingClassName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addTypeVariables(List.of(typeVariables))
-                .superclass(ParameterizedTypeName.get(ClassName.get(MappingProperty.class), typeVariables))
+                .superclass(ParameterizedTypeName.get(ClassName.get(MappingPropertySkeleton.class), typeVariables))
                 .addSuperinterface(ParameterizedTypeName.get(specificName, mapTypeName))
                 .addMethod(propertySuperConstructor()
                         .addModifiers(Modifier.PUBLIC)

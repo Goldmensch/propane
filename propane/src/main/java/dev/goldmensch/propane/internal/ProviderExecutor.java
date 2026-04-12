@@ -1,8 +1,8 @@
 package dev.goldmensch.propane.internal;
 
-import dev.goldmensch.propane.Introspection;
+import dev.goldmensch.propane.IntrospectionSkeleton;
 import dev.goldmensch.propane.property.Property;
-import dev.goldmensch.propane.property.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ProviderExecutor {
-    private static final ScopedValue<SequencedMap<Property<?>, PropertyProvider<?, ?, ?>>> STACK = ScopedValue.newInstance();
+    private static final ScopedValue<SequencedMap<Property<?>, PropertyProviderSkeleton<?, ?, ?>>> STACK = ScopedValue.newInstance();
 
     @Nullable
-    <T, I extends Introspection<I, ?>> T applyProvider(PropertyProvider<T, ?, I> provider, I introspection) {
-        SequencedMap<Property<?>, PropertyProvider<?, ?, ?>> stack = STACK.isBound()
+    <T, I extends IntrospectionSkeleton<I, ?>> T applyProvider(PropertyProviderSkeleton<T, ?, I> provider, I introspection) {
+        SequencedMap<Property<?>, PropertyProviderSkeleton<?, ?, ?>> stack = STACK.isBound()
                 ? new LinkedHashMap<>(STACK.get())
                 : new LinkedHashMap<>();
 
@@ -25,10 +25,10 @@ public class ProviderExecutor {
                 .call(() -> provider.supplier().apply(introspection));
     }
 
-    private void checkCycling(SequencedMap<Property<?>, PropertyProvider<?, ?, ?>> stack, PropertyProvider<?, ?, ?> current) {
+    private void checkCycling(SequencedMap<Property<?>, PropertyProviderSkeleton<?, ?, ?>> stack, PropertyProviderSkeleton<?, ?, ?> current) {
         Property<?> property = current.property().generalized();
         if (stack.containsKey(property)) {
-            SequencedCollection<PropertyProvider<?, ?, ?>> callchain = stack.sequencedValues();
+            SequencedCollection<PropertyProviderSkeleton<?, ?, ?>> callchain = stack.sequencedValues();
 
             if (callchain.getLast().property().equals(property)) {
                 throw new RuntimeException("cycling: call it self");
@@ -39,9 +39,9 @@ public class ProviderExecutor {
         }
     }
 
-    private String formatTree(SequencedCollection<PropertyProvider<?, ?, ?>> stack, PropertyProvider<?, ?, ?> current) {
-        SequencedCollection<PropertyProvider<?, ?, ?>> shortStack = new ArrayList<>();
-        for (PropertyProvider<?, ?, ?> p : stack.reversed()) {
+    private String formatTree(SequencedCollection<PropertyProviderSkeleton<?, ?, ?>> stack, PropertyProviderSkeleton<?, ?, ?> current) {
+        SequencedCollection<PropertyProviderSkeleton<?, ?, ?>> shortStack = new ArrayList<>();
+        for (PropertyProviderSkeleton<?, ?, ?> p : stack.reversed()) {
             shortStack.add(p);
             if (p.property().equals(current.property())) break;
         }

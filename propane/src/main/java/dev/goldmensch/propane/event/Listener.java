@@ -1,30 +1,30 @@
 package dev.goldmensch.propane.event;
 
-import dev.goldmensch.propane.Introspection;
+import dev.goldmensch.propane.IntrospectionSkeleton;
 import dev.goldmensch.propane.Scope;
 
 import java.util.function.BiConsumer;
 
 /// A [Listener] listens to the occurrence of a [certain][#event()] [Event].
 ///
-/// Listeners are registered on [Introspection] instances and life as long as they do.
+/// Listeners are registered on [`Introspection`][IntrospectionSkeleton] instances and life as long as they do.
 /// They are called when an event is fired, that matches the [one this listener is registered for][#event()]
-/// via the [Introspection] instance this listener is registered on or any direct child instance of it.
-/// Fore more information see the docs of [Introspection].
+/// via the [`Introspection`][IntrospectionSkeleton] instance this listener is registered on or any direct child instance of it.
+/// Fore more information see the docs of [`Introspection`][IntrospectionSkeleton].
 ///
-/// @see Introspection
+/// @see IntrospectionSkeleton
 /// @see Event
-public interface Listener<E extends Event<S>, S extends Scope, I extends Introspection<I, S>> {
+public interface Listener<E extends Event<S>, S extends Scope, I extends IntrospectionSkeleton<I, S>> {
 
     /// Will be called if a [matching][#event()] event occurs.
     ///
-    /// The provided instance of [Introspection] is the one used to publish the event. This means
+    /// The provided instance of [`Introspection`][IntrospectionSkeleton] is the one used to publish the event. This means
     /// that all properties accessible by the [scope][Event#scope()] of the event, can be retrieved.
     /// Additionally, implementors of this method must consider that the values returned from that
-    /// [Introspection] instance may vary depending on where the [Event] is fired.
+    /// [`Introspection`][IntrospectionSkeleton] instance may vary depending on where the [Event] is fired.
     ///
     /// @param event the fired [Event]
-    /// @param introspection the [Introspection] instance used to fire the event.
+    /// @param introspection the [`Introspection`][IntrospectionSkeleton] instance used to fire the event.
     void accept(E event, I introspection);
 
     /// Specifies the event, this Listener should be called for.
@@ -32,19 +32,19 @@ public interface Listener<E extends Event<S>, S extends Scope, I extends Introsp
     /// @return the [type][Class] of the event
     Class<E> event();
 
-    /// Creates an [Listener] based on the passed [Event] and [BiConsumer] that will be called as [Listener#accept(Event, Introspection)].
+    /// Creates an [Listener] based on the passed [Event] and [BiConsumer] that will be called as [Listener#accept(Event, IntrospectionSkeleton)].
     ///
-    /// This method is intended to be used inline with [Introspection#subscribe(Listener)]:
+    /// This method is intended to be used inline with [IntrospectionSkeleton#subscribe(Listener)]:
     /// ```java
-    /// Introspection intro = ...
+    /// IntrospectionSkeleton intro = ...
     /// intro.subscribe(Listener.create(FooEvent.class, (e, _) -> ...));
     /// ```
     ///
     /// @param event the [Event] that should trigger the [Listener] (see [#event()])
-    /// @param acceptor body of [Listener#accept(Event, Introspection)]
+    /// @param acceptor body of [Listener#accept(Event, IntrospectionSkeleton)]
     ///
     /// @return the created [Listener] instance
-    static <T extends Event<S>, S extends Scope, I extends Introspection<I, S>> Listener<T, S, I> create(Class<T> event, BiConsumer<T, I> acceptor) {
+    static <T extends Event<S>, S extends Scope, I extends IntrospectionSkeleton<I, S>> Listener<T, S, I> create(Class<T> event, BiConsumer<T, I> acceptor) {
         return new Listener<>() {
             @Override
             public void accept(T event, I introspection) {

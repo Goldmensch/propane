@@ -1,24 +1,24 @@
 package dev.goldmensch.propane.internal.exposed;
 
-import dev.goldmensch.propane.Introspection;
+import dev.goldmensch.propane.IntrospectionSkeleton;
 import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.internal.Scopes;
 import dev.goldmensch.propane.property.Property;
-import dev.goldmensch.propane.property.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 
 import java.util.*;
 
-public class Properties<INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
+public class Properties<INTROSPECTION extends IntrospectionSkeleton<INTROSPECTION, ?>> {
     private final Scope scope;
-    private final Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> providers = new HashMap<>();
+    private final Map<Property<?>, List<PropertyProviderSkeleton<?, ?, INTROSPECTION>>> providers = new HashMap<>();
 
     public Properties(Scope scope) {
         this.scope = scope;
     }
 
     /// validates property and provider invariants
-    private void validate(PropertyProvider<?, ?, ?> provider) {
-        PropertyProvider.Priority priority = provider.priority();
+    private void validate(PropertyProviderSkeleton<?, ?, ?> provider) {
+        PropertyProviderSkeleton.Priority priority = provider.priority();
         Property<?> property = provider.property().generalized();
         Property.Source source = property.source();
 
@@ -27,7 +27,7 @@ public class Properties<INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
         }
 
         if (source == Property.Source.PROVIDED) {
-            if (priority != PropertyProvider.Priority.FALLBACK) {
+            if (priority != PropertyProviderSkeleton.Priority.FALLBACK) {
                 throw new RuntimeException("provided property provider must always be priority = fallback");
             }
 
@@ -37,7 +37,7 @@ public class Properties<INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
         }
 
         if (source == Property.Source.BUILDER) {
-            if (priority != PropertyProvider.Priority.BUILDER && priority != PropertyProvider.Priority.FALLBACK) {
+            if (priority != PropertyProviderSkeleton.Priority.BUILDER && priority != PropertyProviderSkeleton.Priority.FALLBACK) {
                 throw new RuntimeException("builder property provider must always be priority = builder or fallback");
             }
         }
@@ -48,18 +48,18 @@ public class Properties<INTROSPECTION extends Introspection<INTROSPECTION, ?>> {
         }
     }
 
-    public void add(PropertyProvider<?, ?, INTROSPECTION> provider) {
+    public void add(PropertyProviderSkeleton<?, ?, INTROSPECTION> provider) {
         validate(provider);
 
         list(provider.property().generalized()).addFirst(provider);
     }
 
-    private List<PropertyProvider<?, ?, INTROSPECTION>> list(Property<?> property) {
+    private List<PropertyProviderSkeleton<?, ?, INTROSPECTION>> list(Property<?> property) {
         return providers.computeIfAbsent(property, _ -> new LinkedList<>());
     }
 
     // exposes the providers
-    public Map<Property<?>, List<PropertyProvider<?, ?, INTROSPECTION>>> providers() {
+    public Map<Property<?>, List<PropertyProviderSkeleton<?, ?, INTROSPECTION>>> providers() {
         return providers;
     }
 }

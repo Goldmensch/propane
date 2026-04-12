@@ -1,7 +1,7 @@
 package logic;
 
 import dev.goldmensch.propane.Scope;
-import dev.goldmensch.propane.property.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
@@ -44,7 +44,7 @@ public class ScopeTest {
     public void priority_must_not_negative() {
         ThrowingRunnable run = () -> {
             TestIntrospectionImpl.create(Scopes.NEGATIVE)
-                    .add(new TestPropertyProvider<>(Properties.NEGATIVE, PropertyProvider.Priority.FALLBACK, ScopeTest.class, _ -> "negative"))
+                    .add(new TestPropertyProvider<>(Properties.NEGATIVE, PropertyProviderSkeleton.Priority.FALLBACK, ScopeTest.class, _ -> "negative"))
                     .build();
         };
 

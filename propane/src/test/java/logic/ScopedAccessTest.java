@@ -1,7 +1,7 @@
 package logic;
 
 import dev.goldmensch.propane.Scope;
-import dev.goldmensch.propane.property.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.*;
 import org.junit.Assert;
@@ -28,7 +28,7 @@ public class ScopedAccessTest {
     @Test
     public void scoped_get() {
         TestIntrospectionImpl build = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProviderSkeleton.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
         ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
@@ -40,7 +40,7 @@ public class ScopedAccessTest {
     @Test
     public void scoped_get_on_property() {
         TestIntrospectionImpl build = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProviderSkeleton.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
         ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
@@ -51,7 +51,7 @@ public class ScopedAccessTest {
     @Test
     public void scoped_access_introspection() {
         TestIntrospectionImpl build = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProviderSkeleton.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
         ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {
@@ -63,7 +63,7 @@ public class ScopedAccessTest {
     @Test
     public void scoped_accessible() {
         TestIntrospectionImpl build = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProvider.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, PropertyProviderSkeleton.Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
                 .build();
 
         ScopedValue.where(TestIntrospectionImpl.INTROSPECTION, build).run(() -> {

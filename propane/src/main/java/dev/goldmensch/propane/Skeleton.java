@@ -1,5 +1,6 @@
 package dev.goldmensch.propane;
 
+import dev.goldmensch.propane.property.SpecificProperty;
 import dev.goldmensch.propane.spec.SkeletonMethodException;
 
 import java.lang.annotation.ElementType;
@@ -14,9 +15,7 @@ import java.lang.annotation.Target;
 /// Functional implementations of such methods are provided by the specific implementation
 /// of such a skeleton class.
 ///
-/// It's important to note, that only classes having methods throwing [SkeletonMethodException] will
-/// be marked as [@Skeleton][Skeleton]. That doesn't mean, that there aren't specific implementations of classes
-/// not annotated with [@Skeleton][Skeleton], which should be used instead.
+/// Fore more information take a look at the Javadocs of [SpecificProperty].
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface Skeleton {

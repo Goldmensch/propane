@@ -1,9 +1,9 @@
 package logic.impl;
 
-import dev.goldmensch.propane.Introspection;
+import dev.goldmensch.propane.IntrospectionSkeleton;
 import dev.goldmensch.propane.Scope;
 
-public interface TestIntrospection extends Introspection<TestIntrospection, Scope> {
+public interface TestIntrospection extends IntrospectionSkeleton<TestIntrospection, Scope> {
 
     static boolean accessible() {
         return TestIntrospectionImpl.INTROSPECTION.isBound();

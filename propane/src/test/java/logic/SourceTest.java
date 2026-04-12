@@ -2,7 +2,7 @@ package logic;
 
 import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.property.Property;
-import dev.goldmensch.propane.property.PropertyProvider;
+import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
 import logic.impl.TestPropertyProvider;
@@ -39,7 +39,7 @@ public class SourceTest {
     public void builder_reject_builder_extension() {
         Assert.assertThrows(RuntimeException.class, () -> {
             TestIntrospectionImpl.create(Scopes.ROOT)
-                    .add(new TestPropertyProvider<>(Properties.BUILDER_PROP, PropertyProvider.Priority.of(500), SourceTest.class, _ -> "bruch"))
+                    .add(new TestPropertyProvider<>(Properties.BUILDER_PROP, PropertyProviderSkeleton.Priority.of(500), SourceTest.class, _ -> "bruch"))
                     .build();
         });
     }
@@ -55,7 +55,7 @@ public class SourceTest {
     public void provided_reject_extension_priority() {
         Assert.assertThrows(RuntimeException.class, () -> {
             TestIntrospectionImpl.create(Scopes.ROOT)
-                    .add(new TestPropertyProvider<>(Properties.PROVIDED_PROP, PropertyProvider.Priority.of(500), SourceTest.class, _ -> "bruch"))
+                    .add(new TestPropertyProvider<>(Properties.PROVIDED_PROP, PropertyProviderSkeleton.Priority.of(500), SourceTest.class, _ -> "bruch"))
                     .build();
         });
     }
@@ -74,7 +74,7 @@ public class SourceTest {
         TestIntrospectionImpl.create(Scopes.ROOT)
                 .addBuilder(Properties.EXTENSION_PROP, _ -> "bruch")
                 .addFallback(Properties.EXTENSION_PROP, _ -> "bruch")
-                .add(new TestPropertyProvider<>(Properties.EXTENSION_PROP, PropertyProvider.Priority.of(500), SourceTest.class, _ -> "bruch"))
+                .add(new TestPropertyProvider<>(Properties.EXTENSION_PROP, PropertyProviderSkeleton.Priority.of(500), SourceTest.class, _ -> "bruch"))
                 .build();
     }
 
