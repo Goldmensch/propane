@@ -44,6 +44,14 @@ public class Priority implements Comparable<Priority> {
         return new Priority(ordinal);
     }
 
+    /// Returns the ordinal value of this [Priority], that is used to determine the
+    /// precedence.
+    ///
+    /// @return the ordinal value of this priority
+    public int ordinal() {
+        return ordinal;
+    }
+
     /// Compares two properties by their numeric value in [reverse order][Comparator#reverseOrder()].
     ///
     /// For example:
