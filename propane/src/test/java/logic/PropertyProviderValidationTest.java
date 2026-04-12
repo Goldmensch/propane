@@ -1,8 +1,8 @@
 package logic;
 
 import dev.goldmensch.propane.Scope;
+import dev.goldmensch.propane.property.Priority;
 import dev.goldmensch.propane.property.Property;
-import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import logic.impl.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,19 +25,19 @@ public class PropertyProviderValidationTest {
     @Test
     public void provided_always_fallback_priority() {
         TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(providedProvider(PropertyProviderSkeleton.Priority.FALLBACK))
+                .add(providedProvider(Priority.FALLBACK))
                 .build(); // should work
 
         Assert.assertThrows(RuntimeException.class, () -> TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(providedProvider(PropertyProviderSkeleton.Priority.BUILDER))
+                .add(providedProvider(Priority.BUILDER))
                 .build());
 
         Assert.assertThrows(RuntimeException.class, () -> TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(providedProvider(PropertyProviderSkeleton.Priority.of(007)))
+                .add(providedProvider(Priority.of(007)))
                 .build());
     }
 
-    private TestPropertyProvider<String> providedProvider(PropertyProviderSkeleton.Priority priority) {
+    private TestPropertyProvider<String> providedProvider(Priority priority) {
         return new TestPropertyProvider<>(providedProperty, priority, PropertyProviderValidationTest.class, _ -> "huhu");
     }
 
@@ -58,7 +58,7 @@ public class PropertyProviderValidationTest {
     }
 
     private TestPropertyProvider<Collection<String>> multiProvider(TestProperty<Collection<String>> property) {
-        return new TestPropertyProvider<>(property, PropertyProviderSkeleton.Priority.FALLBACK, PropertyProviderValidationTest.class, _ -> List.of());
+        return new TestPropertyProvider<>(property, Priority.FALLBACK, PropertyProviderValidationTest.class, _ -> List.of());
     }
 
 

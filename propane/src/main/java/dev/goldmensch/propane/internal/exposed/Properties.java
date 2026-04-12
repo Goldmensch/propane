@@ -3,6 +3,7 @@ package dev.goldmensch.propane.internal.exposed;
 import dev.goldmensch.propane.IntrospectionSkeleton;
 import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.internal.Scopes;
+import dev.goldmensch.propane.property.Priority;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 
@@ -18,7 +19,7 @@ public class Properties<INTROSPECTION extends IntrospectionSkeleton<INTROSPECTIO
 
     /// validates property and provider invariants
     private void validate(PropertyProviderSkeleton<?, ?, ?> provider) {
-        PropertyProviderSkeleton.Priority priority = provider.priority();
+        Priority priority = provider.priority();
         Property<?> property = provider.property().generalized();
         Property.Source source = property.source();
 
@@ -27,7 +28,7 @@ public class Properties<INTROSPECTION extends IntrospectionSkeleton<INTROSPECTIO
         }
 
         if (source == Property.Source.PROVIDED) {
-            if (priority != PropertyProviderSkeleton.Priority.FALLBACK) {
+            if (priority != Priority.FALLBACK) {
                 throw new RuntimeException("provided property provider must always be priority = fallback");
             }
 
@@ -37,7 +38,7 @@ public class Properties<INTROSPECTION extends IntrospectionSkeleton<INTROSPECTIO
         }
 
         if (source == Property.Source.BUILDER) {
-            if (priority != PropertyProviderSkeleton.Priority.BUILDER && priority != PropertyProviderSkeleton.Priority.FALLBACK) {
+            if (priority != Priority.BUILDER && priority != Priority.FALLBACK) {
                 throw new RuntimeException("builder property provider must always be priority = builder or fallback");
             }
         }

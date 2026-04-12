@@ -1,6 +1,7 @@
 package logic;
 
 import dev.goldmensch.propane.Scope;
+import dev.goldmensch.propane.property.Priority;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
@@ -35,8 +36,8 @@ public class DependenciesTest {
         Properties.TestStub testStub = new Properties.TestStub();
 
         TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.TEST_STUB, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, _ -> testStub))
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
+                .add(new TestPropertyProvider<>(Properties.TEST_STUB, Priority.FALLBACK, DependenciesTest.class, _ -> testStub))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, DependenciesTest.class, ctx -> {
                     assertSame(testStub, ctx.get(Properties.TEST_STUB));
                     return "Hello World";
                 }))
@@ -50,12 +51,12 @@ public class DependenciesTest {
         Properties.TestStub testStub = new Properties.TestStub();
 
         TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.TEST_STUB, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, _ -> testStub))
-                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
+                .add(new TestPropertyProvider<>(Properties.TEST_STUB, Priority.FALLBACK, DependenciesTest.class, _ -> testStub))
+                .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, DependenciesTest.class, ctx -> {
                     assertSame(testStub, ctx.get(Properties.TEST_STUB));
                     return "Hello World";
                 }))
-                .add(new TestPropertyProvider<>(Properties.GOODBYE, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
+                .add(new TestPropertyProvider<>(Properties.GOODBYE, Priority.FALLBACK, DependenciesTest.class, ctx -> {
                     String hello = ctx.get(Properties.HELLO_WORLD);
                     return hello + " was nice, but now: Goodbye!";
                 }))
@@ -68,7 +69,7 @@ public class DependenciesTest {
     public void check_cycling_self() {
         ThrowingRunnable run = () -> {
             TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                    .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
+                    .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, DependenciesTest.class, ctx -> {
                         ctx.get(Properties.HELLO_WORLD);
                         return "Hello World";
                     }))
@@ -85,15 +86,15 @@ public class DependenciesTest {
 
         ThrowingRunnable run = () -> {
             TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                    .add(new TestPropertyProvider<>(Properties.TEST_STUB, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
+                    .add(new TestPropertyProvider<>(Properties.TEST_STUB, Priority.FALLBACK, DependenciesTest.class, ctx -> {
                         ctx.get(Properties.GOODBYE);
                         return testStub;
                     }))
-                    .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
+                    .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, DependenciesTest.class, ctx -> {
                         assertSame(testStub, ctx.get(Properties.TEST_STUB));
                         return "Hello World";
                     }))
-                    .add(new TestPropertyProvider<>(Properties.GOODBYE, TestPropertyProvider.Priority.FALLBACK, DependenciesTest.class, ctx -> {
+                    .add(new TestPropertyProvider<>(Properties.GOODBYE, Priority.FALLBACK, DependenciesTest.class, ctx -> {
                         String hello = ctx.get(Properties.HELLO_WORLD);
                         return hello + " was nice, but now: Goodbye!";
                     }))

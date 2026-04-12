@@ -107,7 +107,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
                         .addParameter(withTGeneric(specificName), "property")
-                        .addParameter(PropertyProviderSkeleton.Priority.class, "priority")
+                        .addParameter(Priority.class, "priority")
                         .addParameter(withGeneric(ClassName.get(Class.class), "?"), "owner")
                         .addParameter(function, "supplier")
                         .addStatement("super(property, priority, owner, supplier)")
@@ -193,7 +193,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
                         .addModifiers(Modifier.PROTECTED)
                         .addParameter(ParameterizedTypeName.get(ClassName.get(Properties.class), introspectionName), "properties")
                         .addStatement("properties.add(new $T<>($T.INTROSPECTION, $T.FALLBACK, $T.class, _ -> this))",
-                                providerName, specificName, PropertyProviderSkeleton.Priority.class, introspectionName)
+                                providerName, specificName, Priority.class, introspectionName)
                         .build())
                 .addType(TypeSpec.classBuilder(builderName)
                         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
@@ -240,7 +240,7 @@ public class PropertyGenerator extends AbstractGenerator<PropertyGenerator.Prope
 
         return builder
                 .addParameter(function, "supplier")
-                .addStatement("return add(new $T<>(property, $T.$L, $L, supplier))", providerName, PropertyProviderSkeleton.Priority.class, name, owner)
+                .addStatement("return add(new $T<>(property, $T.$L, $L, supplier))", providerName, Priority.class, name, owner)
                 .build();
     }
 

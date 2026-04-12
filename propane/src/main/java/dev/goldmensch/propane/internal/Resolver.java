@@ -153,7 +153,7 @@ public class Resolver<INTROSPECTION extends IntrospectionSkeleton<INTROSPECTION,
     // if there are more than 1 provider, check if we should accumulate fallback values
     private <T> boolean shouldSkip(Collection<PropertyProviderSkeleton<T, ?, INTROSPECTION>> providers, PropertyProviderSkeleton<T, ?, INTROSPECTION> provider) {
         return providers.size() > 1
-                && provider.priority() == PropertyProviderSkeleton.Priority.FALLBACK
+                && provider.priority() == Priority.FALLBACK
                 && ((Property.MultiValue<T>) provider.property().generalized()).fallbackBehaviour() == Property.FallbackStrategy.IGNORE;
     }
 

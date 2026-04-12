@@ -1,7 +1,7 @@
 package logic;
 
 import dev.goldmensch.propane.Scope;
-import dev.goldmensch.propane.property.PropertyProviderSkeleton;
+import dev.goldmensch.propane.property.Priority;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.TestEnumerationProperty;
 import logic.impl.TestIntrospectionImpl;
@@ -36,7 +36,7 @@ public class EnumerationPropertyTest {
     @Test
     public void without_dependencies() {
         TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.ONE, PropertyProviderSkeleton.Priority.FALLBACK, EnumerationPropertyTest.class, _ -> List.of("hello", "world")))
+                .add(new TestPropertyProvider<>(Properties.ONE, Priority.FALLBACK, EnumerationPropertyTest.class, _ -> List.of("hello", "world")))
                 .build();
 
         assertEquals(List.of("hello", "world"), introspection.get(Properties.ONE));
@@ -46,7 +46,7 @@ public class EnumerationPropertyTest {
     public void should_always_return_same_instance() {
         AtomicReference<Collection<Properties.TestStub>> ref = new AtomicReference<>();
         TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.TWO, PropertyProviderSkeleton.Priority.FALLBACK, EnumerationPropertyTest.class, _ -> {
+                .add(new TestPropertyProvider<>(Properties.TWO, Priority.FALLBACK, EnumerationPropertyTest.class, _ -> {
                     ref.set(List.of(new Properties.TestStub()));
                     return ref.get();
                 }))
@@ -62,8 +62,8 @@ public class EnumerationPropertyTest {
     @Test
     public void should_not_accumulate_fallback() {
         TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.ONE, PropertyProviderSkeleton.Priority.FALLBACK, EnumerationPropertyTest.class, _ -> List.of("hello", "fallback")))
-                .add(new TestPropertyProvider<>(Properties.ONE, PropertyProviderSkeleton.Priority.of(10), EnumerationPropertyTest.class, _ -> List.of("hello", "world")))
+                .add(new TestPropertyProvider<>(Properties.ONE, Priority.FALLBACK, EnumerationPropertyTest.class, _ -> List.of("hello", "fallback")))
+                .add(new TestPropertyProvider<>(Properties.ONE, Priority.of(10), EnumerationPropertyTest.class, _ -> List.of("hello", "world")))
                 .build();
 
         assertEquals(List.of("hello", "world"), introspection.get(Properties.ONE));
@@ -72,8 +72,8 @@ public class EnumerationPropertyTest {
     @Test
     public void should_accumulate_fallback() {
         TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.TWO, PropertyProviderSkeleton.Priority.FALLBACK, EnumerationPropertyTest.class, _ -> List.of(new Properties.TestStub())))
-                .add(new TestPropertyProvider<>(Properties.TWO, PropertyProviderSkeleton.Priority.of(10), EnumerationPropertyTest.class, _ -> List.of(new Properties.TestStub())))
+                .add(new TestPropertyProvider<>(Properties.TWO, Priority.FALLBACK, EnumerationPropertyTest.class, _ -> List.of(new Properties.TestStub())))
+                .add(new TestPropertyProvider<>(Properties.TWO, Priority.of(10), EnumerationPropertyTest.class, _ -> List.of(new Properties.TestStub())))
                 .build();
 
         assertEquals(List.of(new Properties.TestStub(), new Properties.TestStub()), introspection.get(Properties.TWO));

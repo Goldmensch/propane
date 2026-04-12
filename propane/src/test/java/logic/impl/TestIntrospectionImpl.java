@@ -2,7 +2,7 @@ package logic.impl;
 
 import dev.goldmensch.propane.IntrospectionImplSkeleton;
 import dev.goldmensch.propane.Scope;
-import dev.goldmensch.propane.property.PropertyProviderSkeleton;
+import dev.goldmensch.propane.property.Priority;
 import dev.goldmensch.propane.Registry;
 import dev.goldmensch.propane.internal.exposed.Properties;
 
@@ -49,19 +49,19 @@ public class TestIntrospectionImpl extends IntrospectionImplSkeleton<TestIntrosp
         }
 
         public <T> TestBuilder addFallback(TestProperty<T> property, Function<TestIntrospection, T> supplier) {
-            return add(new TestPropertyProvider<>(property, PropertyProviderSkeleton.Priority.FALLBACK, caller(), supplier));
+            return add(new TestPropertyProvider<>(property, Priority.FALLBACK, caller(), supplier));
         }
 
         public <T> TestBuilder addBuilder(TestProperty<T> property, Function<TestIntrospection, T> supplier) {
-            return add(new TestPropertyProvider<>(property, PropertyProviderSkeleton.Priority.BUILDER, caller(), supplier));
+            return add(new TestPropertyProvider<>(property, Priority.BUILDER, caller(), supplier));
         }
 
         public <T> TestBuilder addFallback(TestProperty<T> property, Class<?> owner, Function<TestIntrospection, T> supplier) {
-            return add(new TestPropertyProvider<>(property, PropertyProviderSkeleton.Priority.FALLBACK, owner, supplier));
+            return add(new TestPropertyProvider<>(property, Priority.FALLBACK, owner, supplier));
         }
 
         public <T> TestBuilder addBuilder(TestProperty<T> property, Class<?> owner, Function<TestIntrospection, T> supplier) {
-            return add(new TestPropertyProvider<>(property, PropertyProviderSkeleton.Priority.BUILDER, owner, supplier));
+            return add(new TestPropertyProvider<>(property, Priority.BUILDER, owner, supplier));
         }
 
         @Override

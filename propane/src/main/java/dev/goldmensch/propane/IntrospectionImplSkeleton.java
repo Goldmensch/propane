@@ -6,6 +6,7 @@ import dev.goldmensch.propane.event.internal.EventBus;
 import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.internal.Resolver;
 import dev.goldmensch.propane.internal.Scopes;
+import dev.goldmensch.propane.property.Priority;
 import dev.goldmensch.propane.property.Property;
 import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import dev.goldmensch.propane.property.SpecificProperty;
@@ -149,7 +150,7 @@ implements IntrospectionSkeleton<I, S> {
 
         /// Adds an [`PropertyProvider`][PropertyProviderSkeleton] with given [Property] and [supplier][PropertyProviderSkeleton#supplier()].
         ///
-        /// [PropertyProviderSkeleton#priority()] will be set to [PropertyProviderSkeleton.Priority#FALLBACK]
+        /// [PropertyProviderSkeleton#priority()] will be set to [Priority#FALLBACK]
         /// [PropertyProviderSkeleton#owner()] will be the caller of this method, see [StackWalker#getCallerClass()].
         ///
         /// @param property the property the values are provided for
@@ -162,7 +163,7 @@ implements IntrospectionSkeleton<I, S> {
 
         /// Adds an [`PropertyProvider`][PropertyProviderSkeleton] with given [Property] and [supplier][PropertyProviderSkeleton#supplier()].
         ///
-        /// [PropertyProviderSkeleton#priority()] will be set to [PropertyProviderSkeleton.Priority#BUILDER]
+        /// [PropertyProviderSkeleton#priority()] will be set to [Priority#BUILDER]
         /// [PropertyProviderSkeleton#owner()] will be the caller of this method, see [StackWalker#getCallerClass()].
         ///
         /// @param property the property the values are provided for
@@ -176,7 +177,7 @@ implements IntrospectionSkeleton<I, S> {
         /// Adds an [`PropertyProvider`][PropertyProviderSkeleton] with given [Property], [supplier][PropertyProviderSkeleton#supplier()]
         /// and [owner][PropertyProviderSkeleton#owner()]
         ///
-        /// [PropertyProviderSkeleton#priority()] will be set to [PropertyProviderSkeleton.Priority#FALLBACK]
+        /// [PropertyProviderSkeleton#priority()] will be set to [Priority#FALLBACK]
         ///
         /// @param property the property the values are provided for
         /// @param supplier the supplier providing the values
@@ -189,7 +190,7 @@ implements IntrospectionSkeleton<I, S> {
         /// Adds an [`PropertyProvider`][PropertyProviderSkeleton] with given [Property], [supplier][PropertyProviderSkeleton#supplier()]
         /// and [owner][PropertyProviderSkeleton#owner()]
         ///
-        /// [PropertyProviderSkeleton#priority()] will be set to [PropertyProviderSkeleton.Priority#BUILDER]
+        /// [PropertyProviderSkeleton#priority()] will be set to [Priority#BUILDER]
         ///
         /// @param property the property the values are provided for
         /// @param supplier the supplier providing the values

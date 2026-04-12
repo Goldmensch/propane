@@ -1,7 +1,7 @@
 package logic;
 
 import dev.goldmensch.propane.Scope;
-import dev.goldmensch.propane.property.PropertyProviderSkeleton;
+import dev.goldmensch.propane.property.Priority;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.TestIntrospectionImpl;
 import logic.impl.TestProperty;
@@ -44,7 +44,7 @@ public class ScopeTest {
     public void priority_must_not_negative() {
         ThrowingRunnable run = () -> {
             TestIntrospectionImpl.create(Scopes.NEGATIVE)
-                    .add(new TestPropertyProvider<>(Properties.NEGATIVE, PropertyProviderSkeleton.Priority.FALLBACK, ScopeTest.class, _ -> "negative"))
+                    .add(new TestPropertyProvider<>(Properties.NEGATIVE, Priority.FALLBACK, ScopeTest.class, _ -> "negative"))
                     .build();
         };
 
@@ -85,14 +85,14 @@ public class ScopeTest {
     @Test
     public void add_value_same_scope() {
         TestIntrospectionImpl.create(Scopes.ROOT)
-                .add(new TestPropertyProvider<>(Properties.ONE, TestPropertyProvider.Priority.FALLBACK, ScopeTest.class, _ -> "one"))
+                .add(new TestPropertyProvider<>(Properties.ONE, Priority.FALLBACK, ScopeTest.class, _ -> "one"))
                 .build();
     }
 
     @Test
     public void add_value_parent_scope() {
         TestIntrospectionImpl.create(Scopes.CHILD)
-                .add(new TestPropertyProvider<>(Properties.ONE, TestPropertyProvider.Priority.FALLBACK, ScopeTest.class, _ -> "one"))
+                .add(new TestPropertyProvider<>(Properties.ONE, Priority.FALLBACK, ScopeTest.class, _ -> "one"))
                 .build();
     }
 
@@ -100,7 +100,7 @@ public class ScopeTest {
     public void add_value_child_scope() {
         ThrowingRunnable run = () -> {
             TestIntrospectionImpl.create(Scopes.ROOT)
-                    .add(new TestPropertyProvider<>(Properties.TWO, TestPropertyProvider.Priority.FALLBACK, ScopeTest.class, _ -> "two"))
+                    .add(new TestPropertyProvider<>(Properties.TWO, Priority.FALLBACK, ScopeTest.class, _ -> "two"))
                     .build();
         };
 

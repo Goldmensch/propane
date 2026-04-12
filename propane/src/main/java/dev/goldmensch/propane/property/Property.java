@@ -61,7 +61,7 @@ public sealed interface Property<T> {
     enum Source {
         /// For properties with source [#PROVIDED] [`PropertyProvider`][PropertyProviderSkeleton]s should only be registered
         /// by the library itself.
-        /// They must have their priority set to [PropertyProviderSkeleton.Priority#FALLBACK]
+        /// They must have their priority set to [Priority#FALLBACK]
         ///
         /// @see IntrospectionImplSkeleton.Builder#addFallback(SpecificProperty, Function)
         /// @see IntrospectionImplSkeleton.Builder#addFallback(SpecificProperty, Class, Function)
@@ -69,7 +69,7 @@ public sealed interface Property<T> {
 
         /// For properties with source [#BUILDER] [`PropertyProvider`][PropertyProviderSkeleton]s should be added by the
         /// library and user through a builder. For example, if the library provides a builder, the 'set' methods
-        /// inside that should add [`PropertyProvider`][PropertyProviderSkeleton]s with priority = [PropertyProviderSkeleton.Priority#BUILDER]
+        /// inside that should add [`PropertyProvider`][PropertyProviderSkeleton]s with priority = [Priority#BUILDER]
         ///
         /// @see IntrospectionImplSkeleton.Builder#addBuilder(SpecificProperty, Function)
         /// @see IntrospectionImplSkeleton.Builder#addBuilder(SpecificProperty, Class, Function)
@@ -94,7 +94,7 @@ public sealed interface Property<T> {
     sealed interface MultiValue<T> extends Property<T> permits EnumerationPropertySkeleton, MappingPropertySkeleton {
 
         /// the [Property.FallbackStrategy] used determine how to tread [`PropertyProvider`][PropertyProviderSkeleton]s with priority set to
-        /// [PropertyProviderSkeleton.Priority#FALLBACK]
+        /// [Priority#FALLBACK]
         ///
         /// @return the used [Property.FallbackStrategy]
         FallbackStrategy fallbackBehaviour();
@@ -105,13 +105,13 @@ public sealed interface Property<T> {
     ///
     /// During resolution the values of all [`PropertyProvider`][PropertyProviderSkeleton] of
     /// either [`EnumerationProperty`][EnumerationPropertySkeleton] or [`MappingProperty`][MappingPropertySkeleton] are combined (depending on the used property type).
-    /// This enum defines how values with priority = [PropertyProviderSkeleton.Priority#FALLBACK] are trod here.
+    /// This enum defines how values with priority = [Priority#FALLBACK] are trod here.
     enum FallbackStrategy {
-        /// Values from [`PropertyProviders`][PropertyProviderSkeleton] with priority set to [PropertyProviderSkeleton.Priority#FALLBACK]
+        /// Values from [`PropertyProviders`][PropertyProviderSkeleton] with priority set to [Priority#FALLBACK]
         /// will be ignored during resolution, if [`PropertyProviders`][PropertyProviderSkeleton] with other priorities are present.
         IGNORE,
 
-        /// Values from [`PropertyProviders`][PropertyProviderSkeleton] with priority set to [PropertyProviderSkeleton.Priority#FALLBACK]
+        /// Values from [`PropertyProviders`][PropertyProviderSkeleton] with priority set to [Priority#FALLBACK]
         /// will be combined with the other values.
         COMBINE
     }

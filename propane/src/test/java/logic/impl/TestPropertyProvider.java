@@ -1,5 +1,6 @@
 package logic.impl;
 
+import dev.goldmensch.propane.property.Priority;
 import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 
 import java.util.function.Function;
