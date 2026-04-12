@@ -1,13 +1,23 @@
 package logic;
 
+import dev.goldmensch.propane.Registry;
 import dev.goldmensch.propane.Scope;
+import dev.goldmensch.propane.event.Event;
+import dev.goldmensch.propane.event.Listener;
 import dev.goldmensch.propane.property.Priority;
 import dev.goldmensch.propane.property.Property;
 import logic.impl.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class ScopedAccessTest {
+
+    static Registry<Scope> registry = new Registry<>(Map.of(
+            FooEvent.class, Scopes.ROOT
+    ));
 
     private enum Scopes implements Scope {
         ROOT;
@@ -22,7 +32,14 @@ public class ScopedAccessTest {
         private record TestStub() {}
 
         static TestProperty<String> HELLO_WORLD = new TestSingletonProperty<>("HELLO_WORLD", Property.Source.EXTENSION, Scopes.ROOT, String.class);
-        static TestProperty<Properties.TestStub> TEST_STUB = new TestSingletonProperty<>("TEST_STUB", Property.Source.EXTENSION, Scopes.ROOT, Properties.TestStub.class);
+    }
+
+    private class FooEvent implements Event<Scope> {
+
+        @Override
+        public Scopes scope() {
+            return Scopes.ROOT;
+        }
     }
 
     @Test
@@ -73,5 +90,25 @@ public class ScopedAccessTest {
 
         boolean val = TestIntrospection.accessible();
         Assert.assertFalse(val);
+    }
+
+    @Test
+    public void inside_listener() {
+        ScopedValue.where(TestIntrospectionImpl.TEST_REGISTRY, registry).run(() -> {
+            TestIntrospectionImpl build = TestIntrospectionImpl.create(Scopes.ROOT)
+                    .add(new TestPropertyProvider<>(Properties.HELLO_WORLD, Priority.FALLBACK, ScopedAccessTest.class, _ -> "hi"))
+                    .build();
+
+            AtomicReference<String> val = new AtomicReference<>();
+            build.subscribe(Listener.create(FooEvent.class, (_, _) -> {
+                String v = TestIntrospection.scopedGet(Properties.HELLO_WORLD);
+                val.set(v);
+            }));
+
+            build.publish(new FooEvent());
+
+            Assert.assertEquals("hi", val.get());
+        });
+
     }
 }

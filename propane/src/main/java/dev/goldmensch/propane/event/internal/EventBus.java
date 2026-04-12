@@ -1,5 +1,6 @@
 package dev.goldmensch.propane.event.internal;
 
+import dev.goldmensch.propane.IntrospectionImplSkeleton;
 import dev.goldmensch.propane.IntrospectionSkeleton;
 import dev.goldmensch.propane.Registry;
 import dev.goldmensch.propane.Scope;
@@ -46,7 +47,7 @@ public class EventBus<I extends IntrospectionSkeleton<I, S>, S extends Scope> {
 
     private void call(Event<S> event, I introspection) {
         for (Listener<Event<S>, S, I> listener : listeners.getOrDefault(event.getClass(), List.of())) {
-            listener.accept(event, introspection);
+            ((IntrospectionImplSkeleton<?, ?, ?, ?>) introspection).scoped().run(() -> listener.accept(event, introspection));
         }
 
         if (parent != null) {

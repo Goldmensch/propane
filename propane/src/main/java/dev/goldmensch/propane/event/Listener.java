@@ -2,6 +2,7 @@ package dev.goldmensch.propane.event;
 
 import dev.goldmensch.propane.IntrospectionSkeleton;
 import dev.goldmensch.propane.Scope;
+import dev.goldmensch.propane.property.SpecificProperty;
 
 import java.util.function.BiConsumer;
 
@@ -20,6 +21,12 @@ public interface Listener<E extends Event<S>, S extends Scope, I extends Introsp
     ///
     /// The provided instance of [`Introspection`][IntrospectionSkeleton] is the one used to publish the event. This means
     /// that all properties accessible by the [scope][Event#scope()] of the event, can be retrieved.
+    ///
+    /// Furthermore, in the context of this method (inside this method), scoped access to the given
+    /// [`Introspection`][IntrospectionSkeleton] is available, that means that you can use a specific
+    /// version of [IntrospectionSkeleton#scopedGet(SpecificProperty)] to get the values of properties.
+    /// To learn more about scoped access, take a look [here][IntrospectionSkeleton].
+    ///
     /// Additionally, implementors of this method must consider that the values returned from that
     /// [`Introspection`][IntrospectionSkeleton] instance may vary depending on where the [Event] is fired.
     ///

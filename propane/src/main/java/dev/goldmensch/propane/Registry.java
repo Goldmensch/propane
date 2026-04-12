@@ -21,7 +21,7 @@ public class Registry<S extends Scope> {
         S scope = eventScopes.get(event);
 
         if (scope == null) {
-            throw new RuntimeException("No scope found for event %s. Most likely it's falsely missing from the registry implementation.");
+            throw new RuntimeException("No scope found for event %s. Most likely it's falsely missing from the registry implementation.".formatted(event));
         }
 
         return scope;
