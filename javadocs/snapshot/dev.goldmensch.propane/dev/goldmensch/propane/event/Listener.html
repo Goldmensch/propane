@@ -142,8 +142,12 @@ Fore more information see the docs of <a href="../IntrospectionSkeleton.html" ti
  <a href="#type-param-I" title="type parameter in Listener">I</a>&nbsp;introspection)</span></div>
 <div class="block"><p>Will be called if a <a href="#event()">matching</a> event occurs.</p>
 <p>The provided instance of <a href="../IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> is the one used to publish the event. This means
-that all properties accessible by the <a href="Event.html#scope()">scope</a> of the event, can be retrieved.
-Additionally, implementors of this method must consider that the values returned from that
+that all properties accessible by the <a href="Event.html#scope()">scope</a> of the event, can be retrieved.</p>
+<p>Furthermore, in the context of this method (inside this method), scoped access to the given
+<a href="../IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> is available, that means that you can use a specific
+version of <a href="../IntrospectionSkeleton.html#scopedGet(dev.goldmensch.propane.property.SpecificProperty)"><code>IntrospectionSkeleton.scopedGet(SpecificProperty)</code></a> to get the values of properties.
+To learn more about scoped access, take a look <a href="../IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane">here</a>.</p>
+<p>Additionally, implementors of this method must consider that the values returned from that
 <a href="../IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> instance may vary depending on where the <a href="Event.html" title="interface in dev.goldmensch.propane.event"><code>Event</code></a> is fired.</p>
 </div>
 <dl class="notes">
