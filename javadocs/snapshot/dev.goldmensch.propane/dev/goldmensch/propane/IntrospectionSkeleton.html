@@ -94,7 +94,50 @@ values from the introspection instances' parent(s). For more information on how 
 <a href="property/SingletonPropertySkeleton.html" title="class in dev.goldmensch.propane.property"><code>SingletonProperty</code></a>, <a href="property/MappingPropertySkeleton.html" title="class in dev.goldmensch.propane.property"><code>MappingProperty</code></a> and <a href="property/EnumerationPropertySkeleton.html" title="class in dev.goldmensch.propane.property"><code>EnumerationProperty</code></a>.</p>
 <p>After <a href="property/PropertyProviderSkeleton.html#supplier()">computing</a> a value, it will be cached for the lifetime of that introspection instance.
 Accessing such an instance is threadsafe, and it is guaranteed to always return the same instance.</p>
-<p>TODO: docs (scoped access)</p>
+<h4 id="scopes-access-heading">Scopes access</h4>
+<p>Beside using <a href="#get(dev.goldmensch.propane.property.SpecificProperty)"><code>get(SpecificProperty)</code></a> directly on an introspection instance, you can sometimes utilize
+Java's <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.html" title="class or interface in java.lang" class="external-link"><code>ScopedValue</code></a> API to get a properties value. For that to work, the <a href="IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> class
+features multiple static methods like <a href="#scopedGet(dev.goldmensch.propane.property.SpecificProperty)"><code>scopedGet(SpecificProperty)</code></a>. Methods using this scopes system, are always
+prefixed with &quot;scoped&quot;.</p>
+<p>For further understanding, it is helpful to know how the <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.html" title="class or interface in java.lang" class="external-link"><code>ScopedValue</code></a> API works.
+In short: The <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.html" title="class or interface in java.lang" class="external-link"><code>ScopedValue</code></a> API allows data to be available in a &quot;context&quot; whether only by field.
+A context is for example the callchain in which you are, take following example:</p>
+<pre><code class="language-java">static ScopedValue&lt;MyIntrospection&gt; VAL = ScopedValue.newInstance();
+
+void one() {
+    inner();
+}
+
+void two() {
+    MyIntrospection introspection = VAL.get();
+    // the call above will fail
+}
+
+void inner() {
+    MyIntrospection introspection = VAL.get();
+    // use the introspection.instance()
+}
+
+void main() {
+    MyIntrospection introspection = MyIntrospectionImpl.create(...)
+                                        ...
+                                        .build();
+
+    // calls &quot;one&quot; with the ScopedValue &quot;VAL&quot; set to the introspection variable
+    ScopedValue.where(VAL, introspection).run(() -&gt; one());
+
+    two();
+}
+</code></pre>
+<p>The value for &quot;VAL&quot; is set for all method calls inside the lambda of <code>run(() -&gt; one())</code>. This means
+that it's accessible inside &quot;one&quot;, &quot;inner&quot; and any subsequent method call, but not inside <code>two</code> because
+it is called outside of <code>run()</code>.</p>
+<p>The <a href="IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> and <a href="IntrospectionImplSkeleton.html" title="class in dev.goldmensch.propane"><code>IntrospectionImpl</code></a> classes
+implement the above logic natively, covering up the underlying <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.html" title="class or interface in java.lang" class="external-link"><code>ScopedValue</code></a>. Instead of <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.html#get()" title="class or interface in java.lang" class="external-link"><code>ScopedValue.get()</code></a>
+you can use <a href="#scopedGet(dev.goldmensch.propane.property.SpecificProperty)"><code>MyIntrospection#getScoped(MY_PROPERTY)</code></a>.</p>
+<p>Please note, that the availability of scoped access to introspection instances vary widely and is different for
+places inside the callchain. Each library decide whether and how to support them, so please take a look at the libraries
+documentation on where you can use it and where not.</p>
 <h3 id="listeners-heading">Listeners</h3>
 <p>A <a href="event/Listener.html" title="interface in dev.goldmensch.propane.event"><code>Listener</code></a> registered on an <a href="IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane"><code>Introspection</code></a> instance is stored for the lifetime of this
 instance. It will be called if the event it is registered for, is either fired in this introspection instance itself
@@ -141,12 +184,14 @@ publish BarEvent in B -&gt; &quot;Bar fired&quot; printed
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#accessible()" class="member-name-link">accessible</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">
-<div class="block">TODO: docs (scoped access)</div>
+<div class="block">Whether scoped access to the introspection instance (by calling <code>scopedGet</code>)
+is possible.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane">IntrospectionSkeleton</a><wbr>&lt;?,<wbr>?&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#accessScoped()" class="member-name-link">accessScoped</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
-<div class="block">TODO: docs (scoped access)</div>
+<div class="block">Returns the introspection instance set via <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.html" title="class or interface in java.lang" class="external-link"><code>ScopedValue</code></a> if set, else throws
+<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/NoSuchElementException.html" title="class or interface in java.util" class="external-link"><code>NoSuchElementException</code></a>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>&lt;T&gt;&nbsp;T</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#get(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">get</a><wbr>(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;specific)</code></div>
@@ -162,7 +207,7 @@ or computing it according to the <a href="IntrospectionSkeleton.html" title="int
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;T</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#scopedGet(dev.goldmensch.propane.property.SpecificProperty)" class="member-name-link">scopedGet</a><wbr>(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;property)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">
-<div class="block">TODO: docs (scoped access)</div>
+<div class="block">Shorthand for <code>accessScoped().get(property)</code>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#subscribe(dev.goldmensch.propane.event.Listener)" class="member-name-link">subscribe</a><wbr>(<a href="event/Listener.html" title="interface in dev.goldmensch.propane.event">Listener</a>&lt;? extends <a href="event/Event.html" title="interface in dev.goldmensch.propane.event">Event</a>&lt;<a href="#type-param-S" title="type parameter in IntrospectionSkeleton">S</a>&gt;, <a href="#type-param-S" title="type parameter in IntrospectionSkeleton">S</a>, <a href="#type-param-SELF" title="type parameter in IntrospectionSkeleton">SELF</a>&gt;&nbsp;listener)</code></div>
@@ -188,7 +233,12 @@ or computing it according to the <a href="IntrospectionSkeleton.html" title="int
 <h3>accessible</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">accessible</span>()</div>
-<div class="block">TODO: docs (scoped access)</div>
+<div class="block">Whether scoped access to the introspection instance (by calling <code>scopedGet</code>)
+is possible.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>whether scoped access is possible</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -197,7 +247,18 @@ or computing it according to the <a href="IntrospectionSkeleton.html" title="int
 <h3>accessScoped</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane">IntrospectionSkeleton</a>&lt;?,<wbr>?&gt;</span>&nbsp;<span class="element-name">accessScoped</span>()</div>
-<div class="block">TODO: docs (scoped access)</div>
+<div class="block">Returns the introspection instance set via <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.html" title="class or interface in java.lang" class="external-link"><code>ScopedValue</code></a> if set, else throws
+<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/NoSuchElementException.html" title="class or interface in java.util" class="external-link"><code>NoSuchElementException</code></a>.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the introspection instance of this scope</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.html#get()" title="class or interface in java.lang" class="external-link"><code>ScopedValue.get()</code></a></li>
+</ul>
+</dd>
+</dl>
 </div>
 </section>
 </li>
@@ -206,7 +267,14 @@ or computing it according to the <a href="IntrospectionSkeleton.html" title="int
 <h3>scopedGet</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">scopedGet</span><wbr><span class="parameters">(<a href="property/SpecificProperty.html" title="interface in dev.goldmensch.propane.property">SpecificProperty</a>&lt;T&gt;&nbsp;property)</span></div>
-<div class="block">TODO: docs (scoped access)</div>
+<div class="block">Shorthand for <code>accessScoped().get(property)</code>. Throws <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/NoSuchElementException.html" title="class or interface in java.util" class="external-link"><code>NoSuchElementException</code></a>
+if <a href="#accessible()"><code>accessible()</code></a> returns <code>false</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>property</code> - the property to get</dd>
+<dt>Returns:</dt>
+<dd>the value for the property</dd>
+</dl>
 </div>
 </section>
 </li>

@@ -72,6 +72,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#createChild(S)" tabindex="0">createChild(S)</a></li>
 <li><a href="#subscribe(dev.goldmensch.propane.event.Listener)" tabindex="0">subscribe(Listener)</a></li>
 <li><a href="#publish(dev.goldmensch.propane.event.Event)" tabindex="0">publish(Event)</a></li>
+<li><a href="#scoped()" tabindex="0">scoped()</a></li>
 </ol>
 </li>
 </ol>
@@ -202,9 +203,14 @@ or computing it according to the <a href="IntrospectionSkeleton.html" title="int
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the <a href="Scope.html" title="interface in dev.goldmensch.propane"><code>Scope</code></a> this introspection instance is bound to.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#subscribe(dev.goldmensch.propane.event.Listener)" class="member-name-link">subscribe</a><wbr>(<a href="event/Listener.html" title="interface in dev.goldmensch.propane.event">Listener</a>&lt;? extends <a href="event/Event.html" title="interface in dev.goldmensch.propane.event">Event</a>&lt;<a href="#type-param-S" title="type parameter in IntrospectionImplSkeleton">S</a>&gt;, <a href="#type-param-S" title="type parameter in IntrospectionImplSkeleton">S</a>, <a href="#type-param-I" title="type parameter in IntrospectionImplSkeleton">I</a>&gt;&nbsp;listener)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.Carrier.html" title="class or interface in java.lang" class="external-link">ScopedValue.Carrier</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#scoped()" class="member-name-link">scoped</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns an <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.Carrier.html" title="class or interface in java.lang" class="external-link"><code>ScopedValue.Carrier</code></a> with the introspection instance set.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#subscribe(dev.goldmensch.propane.event.Listener)" class="member-name-link">subscribe</a><wbr>(<a href="event/Listener.html" title="interface in dev.goldmensch.propane.event">Listener</a>&lt;? extends <a href="event/Event.html" title="interface in dev.goldmensch.propane.event">Event</a>&lt;<a href="#type-param-S" title="type parameter in IntrospectionImplSkeleton">S</a>&gt;, <a href="#type-param-S" title="type parameter in IntrospectionImplSkeleton">S</a>, <a href="#type-param-I" title="type parameter in IntrospectionImplSkeleton">I</a>&gt;&nbsp;listener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Subscribes to an <a href="event/Event.html" title="interface in dev.goldmensch.propane.event">event</a> with the given <a href="event/Listener.html" title="interface in dev.goldmensch.propane.event"><code>Listener</code></a>.</div>
 </div>
 </div>
@@ -364,6 +370,35 @@ for the type of this event will be called.</p>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>event</code> - the <a href="event/Event.html" title="interface in dev.goldmensch.propane.event"><code>Event</code></a> to be published</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="scoped()">
+<h3>scoped</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.Carrier.html" title="class or interface in java.lang" class="external-link">ScopedValue.Carrier</a></span>&nbsp;<span class="element-name">scoped</span>()</div>
+<div class="block"><p>Returns an <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.Carrier.html" title="class or interface in java.lang" class="external-link"><code>ScopedValue.Carrier</code></a> with the introspection instance set. So you can use
+<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ScopedValue.Carrier.html#call(java.lang.ScopedValue.CallableOp)" title="class or interface in java.lang" class="external-link"><code>ScopedValue.Carrier.call(ScopedValue.CallableOp)</code></a> and friends to make this instance available
+in the scope.</p>
+<pre><code class="language-java">void foo() {
+    // returns the value of MY_PROPERTY
+    MyIntrospection.scopedGet(MY_PROPERTY);
+}
+
+MyIntrospection introspection = ...
+
+introspection.scoped().run(() -&gt; foo());
+</code></pre>
+</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list-long">
+<li><a href="IntrospectionSkeleton.html" title="interface in dev.goldmensch.propane">the Javadocs about 'Scopes access'</a></li>
+</ul>
+</dd>
 </dl>
 </div>
 </section>
