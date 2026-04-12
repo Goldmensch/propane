@@ -116,7 +116,12 @@ public sealed interface Property<T> {
         COMBINE
     }
 
-    // TODO docs (scoped access)
+    /// Shortcut for `Introspection.getScoped()`.
+    ///
+    /// Returns the value of the current scope for this property.
+    ///
+    /// @return the value of this property inside this scope
+    /// @see IntrospectionSkeleton#getScoped()
     T getScoped();
 
 }
