@@ -37,6 +37,10 @@ public class EventBus<I extends IntrospectionSkeleton<I, S>, S extends Scope> {
         list.add((Listener<Event<S>, S, I>) listener);
     }
 
+    public void remove(Listener<? extends Event<S>, S, I> listener) {
+        listeners.getOrDefault(listener.event(), new ArrayList<>()).remove(listener);
+    }
+
     public void publish(Event<S> event, I introspection) {
         if (!Scopes.isSame(event.scope(), scope)) {
             throw new RuntimeException("event scope must be current scope");

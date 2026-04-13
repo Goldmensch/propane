@@ -2,6 +2,7 @@ package dev.goldmensch.propane;
 
 import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.event.Listener;
+import dev.goldmensch.propane.event.Subscription;
 import dev.goldmensch.propane.event.internal.EventBus;
 import dev.goldmensch.propane.internal.exposed.Properties;
 import dev.goldmensch.propane.internal.Resolver;
@@ -108,8 +109,10 @@ implements IntrospectionSkeleton<I, S> {
 
     /// {@inheritDoc}
     @Override
-    public void subscribe(Listener<? extends Event<S>, S, I> listener) {
+    public Subscription<I, S> subscribe(Listener<? extends Event<S>, S, I> listener) {
         eventBus.add(listener);
+
+        return new Subscription<>(listener, eventBus);
     }
 
     /// Publishes the given event to this introspection and its parents.

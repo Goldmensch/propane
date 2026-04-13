@@ -2,6 +2,7 @@ package dev.goldmensch.propane;
 
 import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.event.Listener;
+import dev.goldmensch.propane.event.Subscription;
 import dev.goldmensch.propane.property.*;
 import dev.goldmensch.propane.property.PropertyProviderSkeleton;
 import dev.goldmensch.propane.spec.SkeletonMethod;
@@ -152,8 +153,9 @@ public interface IntrospectionSkeleton<SELF extends IntrospectionSkeleton<SELF, 
     /// of this introspection instance.
     ///
     /// @param listener the [Listener] to be registered
+    /// @return the [Subscription] identifying this registered listener
     /// @see IntrospectionSkeleton Introspections' class documentation
-    void subscribe(Listener<? extends Event<S>, S, SELF> listener);
+    Subscription<SELF, S> subscribe(Listener<? extends Event<S>, S, SELF> listener);
 
     /// Returns the [Scope] this introspection instance is bound to.
     ///

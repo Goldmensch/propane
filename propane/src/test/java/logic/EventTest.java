@@ -4,6 +4,7 @@ import dev.goldmensch.propane.Registry;
 import dev.goldmensch.propane.Scope;
 import dev.goldmensch.propane.event.Event;
 import dev.goldmensch.propane.event.Listener;
+import dev.goldmensch.propane.event.Subscription;
 import logic.impl.TestIntrospection;
 import logic.impl.TestIntrospectionImpl;
 import org.jspecify.annotations.NonNull;
@@ -63,6 +64,22 @@ public class EventTest {
                     .build();
 
             introspection.subscribe(new FooListener());
+        });
+    }
+
+    @Test
+    public void unregister() {
+        ScopedValue.where(TestIntrospectionImpl.TEST_REGISTRY, registry).run(() -> {
+            TestIntrospectionImpl introspection = TestIntrospectionImpl.create(Scopes.SECOND)
+                    .build();
+
+            AtomicReference<String> val = new AtomicReference<>("unset");
+            Subscription<?, ?> subscription = introspection.subscribe(Listener.create(FooEvent.class, (_, _) -> val.set("set")));
+            subscription.unsubscribe();
+
+            introspection.publish(new FooEvent(""));
+
+            Assert.assertEquals("unset", val.get());
         });
     }
 
