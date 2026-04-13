@@ -121,7 +121,7 @@ public sealed interface Property<T> {
     /// Returns the value of the current scope for this property.
     ///
     /// @return the value of this property inside this scope
-    /// @see IntrospectionSkeleton#getScoped()
+    /// @see IntrospectionSkeleton#scopedGet(SpecificProperty)
     T getScoped();
 
 }
