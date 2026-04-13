@@ -55,7 +55,7 @@ public non-sealed abstract class MappingPropertySkeleton<K, V> implements Proper
     /// @param scope the [scope][Property#scope()] of this property
     /// @param keyType the [key's java type][MappingPropertySkeleton#keyType()] of this property
     /// @param valueType the [value's java type][MappingPropertySkeleton#valueType()] of this property
-    /// @param fallbackStrategy the [fallback strategy][Property.MultiValue#fallbackBehaviour()] of this property
+    /// @param fallbackStrategy the [fallback strategy][Property.MultiValue#fallbackStrategy()] of this property
     public MappingPropertySkeleton(String name, Source source, Scope scope, Class<K> keyType,
                                    Class<V> valueType,
                                    FallbackStrategy fallbackStrategy) {
@@ -87,7 +87,7 @@ public non-sealed abstract class MappingPropertySkeleton<K, V> implements Proper
 
     /// {@inheritDoc}
     @Override
-    public FallbackStrategy fallbackBehaviour() {
+    public FallbackStrategy fallbackStrategy() {
         return fallbackStrategy;
     }
 

@@ -97,7 +97,7 @@ public sealed interface Property<T> {
         /// [Priority#FALLBACK]
         ///
         /// @return the used [Property.FallbackStrategy]
-        FallbackStrategy fallbackBehaviour();
+        FallbackStrategy fallbackStrategy();
     }
 
     /// The [FallbackStrategy] specifies how fallback values of [multi value properties][MultiValue] are

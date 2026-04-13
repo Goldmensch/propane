@@ -154,7 +154,7 @@ public class Resolver<INTROSPECTION extends IntrospectionSkeleton<INTROSPECTION,
     private <T> boolean shouldSkip(Collection<PropertyProviderSkeleton<T, ?, INTROSPECTION>> providers, PropertyProviderSkeleton<T, ?, INTROSPECTION> provider) {
         return providers.size() > 1
                 && provider.priority() == Priority.FALLBACK
-                && ((Property.MultiValue<T>) provider.property().generalized()).fallbackBehaviour() == Property.FallbackStrategy.IGNORE;
+                && ((Property.MultiValue<T>) provider.property().generalized()).fallbackStrategy() == Property.FallbackStrategy.IGNORE;
     }
 
 

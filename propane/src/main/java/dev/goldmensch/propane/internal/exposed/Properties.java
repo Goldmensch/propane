@@ -32,7 +32,7 @@ public class Properties<INTROSPECTION extends IntrospectionSkeleton<INTROSPECTIO
                 throw new RuntimeException("provided property provider must always be priority = fallback");
             }
 
-            if (property instanceof Property.MultiValue<?> val && val.fallbackBehaviour() != Property.FallbackStrategy.COMBINE) {
+            if (property instanceof Property.MultiValue<?> val && val.fallbackStrategy() != Property.FallbackStrategy.COMBINE) {
                 throw new RuntimeException("provided multi value property (collection/map) must have fallbackStrategy set to accumulate");
             }
         }

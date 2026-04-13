@@ -26,7 +26,7 @@ public non-sealed abstract class EnumerationPropertySkeleton<T> implements Prope
     /// @param source the [source][Property#source()] of this property
     /// @param scope the [scope][Property#scope()] of this property
     /// @param type the [type][EnumerationPropertySkeleton#type()] of this property
-    /// @param fallbackStrategy the [fallback strategy][Property.MultiValue#fallbackBehaviour()] of this property
+    /// @param fallbackStrategy the [fallback strategy][Property.MultiValue#fallbackStrategy()] of this property
     public EnumerationPropertySkeleton(String name, Source source, Scope scope, Class<T> type,
                                        FallbackStrategy fallbackStrategy) {
         this.name = name;
@@ -56,7 +56,7 @@ public non-sealed abstract class EnumerationPropertySkeleton<T> implements Prope
 
     /// {@inheritDoc}
     @Override
-    public FallbackStrategy fallbackBehaviour() {
+    public FallbackStrategy fallbackStrategy() {
         return fallbackStrategy;
     }
 
