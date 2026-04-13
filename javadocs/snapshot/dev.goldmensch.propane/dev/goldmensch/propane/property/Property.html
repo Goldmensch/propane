@@ -163,7 +163,9 @@ can be &quot;registered&quot;.</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#type-param-T" title="type parameter in Property">T</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getScoped()" class="member-name-link">getScoped</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Shortcut for <code>Introspection.getScoped()</code>.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#name()" class="member-name-link">name</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
@@ -246,6 +248,19 @@ its scope and any child of it.</div>
 <h3>getScoped</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="return-type"><a href="#type-param-T" title="type parameter in Property">T</a></span>&nbsp;<span class="element-name">getScoped</span>()</div>
+<div class="block"><p>Shortcut for <code>Introspection.getScoped()</code>.</p>
+<p>Returns the value of the current scope for this property.</p>
+</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the value of this property inside this scope</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list-long">
+<li><a href="../IntrospectionSkeleton.html#scopedGet(dev.goldmensch.propane.property.SpecificProperty)"><code>IntrospectionSkeleton.scopedGet(SpecificProperty)</code></a></li>
+</ul>
+</dd>
+</dl>
 </div>
 </section>
 </li>

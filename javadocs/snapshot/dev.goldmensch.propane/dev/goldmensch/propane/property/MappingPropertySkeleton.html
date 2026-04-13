@@ -67,7 +67,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#name()" tabindex="0">name()</a></li>
 <li><a href="#source()" tabindex="0">source()</a></li>
 <li><a href="#scope()" tabindex="0">scope()</a></li>
-<li><a href="#fallbackBehaviour()" tabindex="0">fallbackBehaviour()</a></li>
+<li><a href="#fallbackStrategy()" tabindex="0">fallbackStrategy()</a></li>
 <li><a href="#keyType()" tabindex="0">keyType()</a></li>
 <li><a href="#valueType()" tabindex="0">valueType()</a></li>
 <li><a href="#equals(java.lang.Object)" tabindex="0">equals(Object)</a></li>
@@ -180,7 +180,7 @@ B.get(Property.MAPPING).get(&quot;foo&quot;) // returns &quot;Value B&quot;
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;obj)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fallbackBehaviour()" class="member-name-link">fallbackBehaviour</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fallbackStrategy()" class="member-name-link">fallbackStrategy</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">the <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a> used determine how to tread <a href="PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to
 <a href="Priority.html#FALLBACK"><code>Priority.FALLBACK</code></a></div>
@@ -253,7 +253,7 @@ B.get(Property.MAPPING).get(&quot;foo&quot;) // returns &quot;Value B&quot;
 <dd><code>scope</code> - the <a href="Property.html#scope()">scope</a> of this property</dd>
 <dd><code>keyType</code> - the <a href="#keyType()">key's java type</a> of this property</dd>
 <dd><code>valueType</code> - the <a href="#valueType()">value's java type</a> of this property</dd>
-<dd><code>fallbackStrategy</code> - the <a href="Property.MultiValue.html#fallbackBehaviour()">fallback strategy</a> of this property</dd>
+<dd><code>fallbackStrategy</code> - the <a href="Property.MultiValue.html#fallbackStrategy()">fallback strategy</a> of this property</dd>
 </dl>
 </div>
 </section>
@@ -321,15 +321,15 @@ its scope and any child of it.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="fallbackBehaviour()">
-<h3>fallbackBehaviour</h3>
+<section class="detail" id="fallbackStrategy()">
+<h3>fallbackStrategy</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></span>&nbsp;<span class="element-name">fallbackBehaviour</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property">Property.FallbackStrategy</a></span>&nbsp;<span class="element-name">fallbackStrategy</span>()</div>
 <div class="block">the <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a> used determine how to tread <a href="PropertyProviderSkeleton.html" title="class in dev.goldmensch.propane.property"><code>PropertyProvider</code></a>s with priority set to
 <a href="Priority.html#FALLBACK"><code>Priority.FALLBACK</code></a></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="Property.MultiValue.html#fallbackBehaviour()">fallbackBehaviour</a></code>&nbsp;in interface&nbsp;<code><a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a>&lt;<a href="#type-param-K" title="type parameter in MappingPropertySkeleton">K</a>&gt;</code></dd>
+<dd><code><a href="Property.MultiValue.html#fallbackStrategy()">fallbackStrategy</a></code>&nbsp;in interface&nbsp;<code><a href="Property.MultiValue.html" title="interface in dev.goldmensch.propane.property">Property.MultiValue</a>&lt;<a href="#type-param-K" title="type parameter in MappingPropertySkeleton">K</a>&gt;</code></dd>
 <dt>Returns:</dt>
 <dd>the used <a href="Property.FallbackStrategy.html" title="enum class in dev.goldmensch.propane.property"><code>Property.FallbackStrategy</code></a></dd>
 </dl>
