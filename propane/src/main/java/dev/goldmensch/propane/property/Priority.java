@@ -3,7 +3,7 @@ package dev.goldmensch.propane.property;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-/// A [Priority] specifies with [PropertyProviderSkeleton]s take precedence over others.
+/// A [Priority] specifies which [`PropertyProviders`][PropertyProviderSkeleton] take precedence over others.
 ///
 /// Each [Priority] is backed by an [Integer]: Higher/greater priorities take precedence
 /// over lower ones.
