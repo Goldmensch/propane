@@ -1,0 +1,13 @@
+module:dev.goldmensch.propane
+dev.goldmensch.propane
+dev.goldmensch.propane.event
+dev.goldmensch.propane.event.internal
+dev.goldmensch.propane.internal
+dev.goldmensch.propane.internal.exposed
+dev.goldmensch.propane.property
+dev.goldmensch.propane.spec
+dev.goldmensch.propane.spec.annotation
+dev.goldmensch.propane.spec.generator
+dev.goldmensch.propane.spec.processor
+dev.goldmensch.propane.spec.processor.syntax
+dev.goldmensch.propane.spec.processor.util
